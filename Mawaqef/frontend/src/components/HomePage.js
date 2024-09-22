@@ -10,7 +10,7 @@ export default class HomePage extends Component{
     }
 
     render(){
-        return <p>ggg</p>;/* (
+        return <p>igib</p>;/* (
         <Router>
             <Routes>
                 <Route path= '' ><Login /> </Route>
