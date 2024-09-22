@@ -13,7 +13,7 @@ export default class HomePage extends Component{
         return  (//<Login />
         <Router>
             <Routes>
-                <Route path= '' ><p>hh</p></Route> 
+                <Route path= '/' ><p>hh</p></Route> 
 
             </Routes>
             
