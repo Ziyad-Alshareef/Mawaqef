@@ -12,12 +12,12 @@ export default class HomePage extends Component{
     render(){
         return  (//<Login />
             <Router>
-                <Routes>
-                
+            <Routes>
+                {/* This matches the root path '/' */}
                 <Route path="/" element={<p>hh</p>} /> 
-                </Routes>
-            </Router>
-            );
+            </Routes>
+        </Router>
+    );
     }
 
 
