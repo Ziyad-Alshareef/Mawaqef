@@ -11,15 +11,13 @@ export default class HomePage extends Component{
 
     render(){
         return  (//<Login />
-        <Router>
-            <Routes>
-                <Route path= '/' ><p>hh</p></Route> 
-
-            </Routes>
-            
-            
-            
-        </Router>);
+            <Router>
+                <Routes>
+                
+                <Route path="/" element={<p>hh</p>} /> 
+                </Routes>
+            </Router>
+            );
     }
 
 
