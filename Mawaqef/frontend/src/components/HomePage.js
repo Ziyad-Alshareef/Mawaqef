@@ -10,10 +10,10 @@ export default class HomePage extends Component{
     }
 
     render(){
-        return  (
+        return  (//<Login />
         <Router>
             <Routes>
-                <Route path= '' ><Login /> </Route>
+                <Route path= '' ><p>hh</p></Route> 
 
             </Routes>
             
