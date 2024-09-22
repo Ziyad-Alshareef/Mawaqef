@@ -10,7 +10,7 @@ export default class HomePage extends Component{
     }
 
     render(){
-        return <p>igib</p>;/* (
+        return  (
         <Router>
             <Routes>
                 <Route path= '' ><Login /> </Route>
@@ -19,7 +19,7 @@ export default class HomePage extends Component{
             
             
             
-        </Router>);*/
+        </Router>);
     }
 
 
