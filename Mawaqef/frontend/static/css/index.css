@@ -18,3 +18,92 @@ body {
   height: 100%;
   display: flex;
 }
+
+body{font-family: 'Cairo', sans-serif; }
+.navbar-nav{float: right; }
+.carousel-caption.d-md-block {
+    font-size: 30px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 25px;
+}
+h5.ara {font-size: 50px;}
+.w-100 {height: 650px !important;}
+.bg-dark {
+    height: 90px;
+}
+
+i.fa.fa-eye, i.fa.fa-bookmark {
+    border: 1px solid;
+    border-radius: 25px;
+    padding: 5px;
+    margin: 5px;
+}
+.sale {
+    padding: 20px;
+    background: gold;
+    margin: 35px;
+}
+.results{
+    text-align: right;
+    float: right;
+}
+li.nav-item , li.nav-item.active{
+margin: 15px;
+}
+.collapse.show {
+    display: block;
+    z-index: 9999;
+    background: rgba(0,0,0,0.9);
+    border-radius: 15px;
+}
+.form-control{
+    background: white;
+    border: 1px solid #ced4da;
+    direction: ltr !important;
+}
+input.form-control.add,select.form-control.add,textarea.form-control.add {
+    background: white;
+}
+h2.doch2 {
+    font-size: 18px;
+    background: red;
+    padding: 12px;
+    color: white;
+}
+i.fa.fa-file-pdf-o {
+    text-align: center;
+    font-size: 78px;
+    padding: 25px;
+}
+h4.card-title {
+    text-align: center;
+    font-size: 19px;
+}
+
+i.fa.fa-trash-o {
+    color: red;
+    font-size: 28px;
+}
+
+.footerTop {
+    
+    text-align: right;
+    background: currentColor;
+}
+p.mt-3 {
+    color: white;
+}
+h6.mb-4.mx-4 {
+    color: white;
+}
+.col-sm-4.col-7.pl-md-0.pt-4 {
+    color: white;
+}
+.col-md-12.text-center.pb-3 {
+    color: white;
+}
+
+.dark-mode {
+    background-color: black;
+    color: white;
+}
