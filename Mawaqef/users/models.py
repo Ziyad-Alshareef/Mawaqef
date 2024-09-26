@@ -11,7 +11,7 @@ class Admin(models.Model):
 
 # Model for Operator
 class Operator(models.Model):
-    organization = models.CharField(max_length=255)  # Organization name
+    organization = models.CharField(max_length=255, unique=True)  # Organization name
     email = models.EmailField(max_length=255, unique=True)  # Ensures email is unique
     password = models.CharField(max_length=255)  # Password field
     phone_number = models.CharField(max_length=15)  # Phone number field
