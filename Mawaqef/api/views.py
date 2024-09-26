@@ -2,9 +2,11 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework import generics
 from users.models import Admin
-from users.serializers import AdminSerializer
-from users.serializers import OperatorSerializer
+from users.serializers import AdminSerializer, OperatorSerializer, RegOperatorSerializer
 from users.models import Operator
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
 
 # Create your views here.
 
@@ -18,3 +20,11 @@ class AdminView(generics.ListAPIView):
 class OperatorView(generics.ListAPIView):
     queryset = Operator.objects.all()
     serializer_class = OperatorSerializer
+
+class RegOperatorView(APIView):
+    serializer_class = RegOperatorSerializer
+
+    def post(self, request, format=None):
+        pass
+
+

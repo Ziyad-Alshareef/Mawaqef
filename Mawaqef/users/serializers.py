@@ -12,3 +12,11 @@ class OperatorSerializer(serializers.ModelSerializer):
     class Meta:
         model =Operator
         fields = ('id', 'organization' , 'name','email', 'password','phone_number','authorized')
+
+
+
+class RegOperatorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model =Operator
+        fields = ('organization' , 'name','email', 'password','phone_number')
+
