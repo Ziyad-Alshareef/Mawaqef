@@ -35,10 +35,10 @@ function App() {
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/"  element={<Body1 />} />
+        <Route path="/" element={<Body1 />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/adminDS" element={<Admin />} /> {/* Add route for Admin */}
+        <Route path="/admin" element={<Admin />} /> {/* Add route for Admin */}
       </Routes>
     </Router>
   )
