@@ -1,0 +1,75 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.signin-container {
+    display: flex;
+    width: 90vh;
+    /* Set width to 75% of the page */
+    height: 65vh;
+    /* Set height to 75% of the page */
+    max-width: 100%;
+    /* Remove max-width constraint */
+    max-height: 100%;
+    /* Remove max-height constraint */
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.signin-box {
+    flex: 1;
+    padding: 50px;
+}
+
+.signin-box h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.signin-image {
+    flex: 1;
+    background: url('./assets/ParkingSpots-1.png') no-repeat center center;
+    background-size: cover;
+}
