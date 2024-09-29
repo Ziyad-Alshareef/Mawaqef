@@ -40,8 +40,8 @@ function Form({ route, method }) {
                 localStorage.setItem(ACCESS_TOKEN, res.data.access);
                 localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
              
-                console.log(res.data.role)
-                navigate("/operator")
+                if (res.data.role === 'admin'){navigate("/AdminDashboard")}
+                else{navigate("/operator")}
             } else {
                 navigate("/login")
             }
