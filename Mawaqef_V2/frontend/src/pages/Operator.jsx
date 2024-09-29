@@ -1,15 +1,39 @@
 import { useState, useEffect } from "react";
 import api from "../api";
+import { useNavigate } from "react-router-dom";
 import Note from "../components/Note"
+import { ACCESS_TOKEN, REFRESH_TOKEN , ROLE_TOKEN, AUTHORIZED_TOKEN} from "../constants";
 import "../styles/Home.css"
 
 function operator() {
     const [notes, setNotes] = useState([]);
     const [content, setContent] = useState("");
     const [title, setTitle] = useState("");
+    const navigate = useNavigate();
 
     useEffect(() => {
         getNotes();
+        const checkAdminRole = async () => {
+            const accessToken = localStorage.getItem(ACCESS_TOKEN);
+            console.log(accessToken);
+            if (!accessToken) {
+              navigate("/login");
+              return;
+            }
+      
+            try {
+              const userRes = await api.get("/api/user/");
+              if (userRes.data.role !== "operator") {
+                navigate("/");
+              } else {
+                // code
+              }
+            } catch (error) {
+              console.error("Unauthorized", error);
+              navigate("/login");
+            }
+          };
+          checkAdminRole();
     }, []);
     console.log(localStorage.getItem("ACCESS_TOKEN"));
     const getNotes = () => {
@@ -45,7 +69,7 @@ function operator() {
             })
             .catch((err) => alert(err));
     };
-
+    
     return (
         <div>
             <div>
