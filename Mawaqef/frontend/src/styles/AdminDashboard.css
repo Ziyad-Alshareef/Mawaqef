@@ -1,0 +1,119 @@
+.admin-dashboard {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    height: 100vh;
+
+    overflow: hidden;
+
+}
+
+.admin-dashboard h1 {
+    color: #333;
+
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2.5em;
+    padding-top: 20px;
+}
+
+.table-container {
+    height: calc(100vh - 140px);
+
+    overflow-y: auto;
+
+}
+
+.admin-dashboard table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+
+}
+
+.admin-dashboard table,
+.admin-dashboard th,
+.admin-dashboard td {
+    border: 1px solid #ddd;
+}
+
+.admin-dashboard th,
+.admin-dashboard td {
+    padding: 12px;
+    text-align: left;
+    color: #4a4a4a;
+
+}
+
+.admin-dashboard th {
+    background-color: #40648a;
+
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.admin-dashboard tr:nth-child(even) {
+    background-color: #f2f2f2;
+
+}
+
+.admin-dashboard tr:hover {
+    background-color: #ddd;
+
+}
+
+.admin-dashboard button {
+    background-color: #40648a;
+
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.admin-dashboard button:hover {
+    background-color: #0056b3;
+
+}
+
+.admin-dashboard p {
+    text-align: center;
+    font-size: 1.2em;
+    color: #4a4a4a;
+
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination button {
+    background-color: #40648a;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin: 0 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.pagination button:hover {
+    background-color: #0056b3;
+}
+
+.pagination button.active {
+    background-color: #0056b3;
+}

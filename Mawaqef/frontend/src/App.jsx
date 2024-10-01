@@ -1,15 +1,31 @@
-import './index.css'
-import './App.css'
-import { useState } from 'react'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import Body1 from './Body1.jsx'   //Import the Body1 component
-import Signin from './Signin.jsx' // Import the SignIn component
-import Signup from './Signup.jsx' // Import the SignUp component
-import Admin from './Admin.jsx'   // Import the Admin component
+import React, { useContext } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Operator from './pages/Operator';
+import NotFound from "./pages/NotFound";
+import ProtectedRoute from "./components/ProtectedRoute";
+import AdminDashboard from "./pages/AdminDashboard";
+import Body1 from "./pages/Body1";
+import { AuthContext, AuthProvider } from "./components/AuthContext"; // Import AuthContext and AuthProvider
 
+function Logout() {
+  const { setIsLoggedIn } = useContext(AuthContext); // Use AuthContext
+  localStorage.clear();
+  setIsLoggedIn(false); // Update AuthContext
+  return <Navigate to="/" />;
+}
 
+function RegisterAndLogout() {
+  localStorage.clear();
+  return <Register />;
+}
 
 function Navbar() {
+  const { isLoggedIn, userRole } = useContext(AuthContext);
+
+  console.log("Is Logged In:", isLoggedIn); // Debugging log
+
   return (
     <nav className="navbar">
       <div className="navbar-left">
@@ -20,28 +36,50 @@ function Navbar() {
         </span>
       </div>
       <div className="navbar-right">
-        <a href="/Ogranizations">Organizations</a>
-        <a href="/signin">Sign In</a>
-        <a href="/signup">Sign Up</a>
+        {userRole === 'admin' ? (
+          <a href="/AdminDashboard">Admin Dashboard</a>
+        ) : userRole === 'operator' ? (
+          <a href="/operator">Operator Dashboard</a>
+        ) : (
+          <a href="/Ogranizations"></a> //here will be the organizations page in the next spritns
+        )}
+        {isLoggedIn ? (
+          <a href="/logout">Sign Out</a>
+        ) : (
+          <>
+            <a href="/login">Sign In</a>
+            <a href="/register">Sign Up</a>
+          </>
+        )}
       </div>
     </nav>
-  )
+  );
 }
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Body1 />} />
-        <Route path="/signin" element={<Signin />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/admin" element={<Admin />} /> {/* Add route for Admin */}
-      </Routes>
-    </Router>
-  )
+    <AuthProvider>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Body1 />} />
+          <Route
+            path="/operator"
+            element={
+              <ProtectedRoute>
+                <Operator />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/login" element={<Login />} />
+          <Route path="/AdminDashboard" element={<AdminDashboard />} />
+          <Route path="/logout" element={<Logout />} />
+          <Route path="/register" element={<RegisterAndLogout />} />
+          <Route path="*" element={<NotFound />}></Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;
