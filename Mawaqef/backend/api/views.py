@@ -76,6 +76,25 @@ class AuthorizeOperatorView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class RejectOperatorView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, operator_id):
+        # Check if the user is an admin
+        if request.user.role != "admin":
+            return Response({"detail": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+
+        # Attempt to retrieve the operator
+        try:
+            operator = User.objects.get(id=operator_id, role="operator")
+        except User.DoesNotExist:
+            return Response({"detail": "Operator not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Delete the operator from the database
+        operator.delete()
+        return Response({"detail": "Operator deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+
 class UserDetailView(APIView):
     permission_classes = [IsAuthenticated]
 

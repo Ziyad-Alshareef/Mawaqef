@@ -55,6 +55,16 @@ const AdminDashboard = () => {
     }
   };
 
+  const RejectOP = async (operatorId) => {
+    try {
+      await api.delete(`/api/operators/${operatorId}/Reject/`);
+      console.log("errrrrrr");
+      setOperators((prev) => prev.filter((operator) => operator.id !== operatorId));
+    } catch (error) {
+      console.error("Error authorizing operator", error);
+    }
+  };
+
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -91,7 +101,8 @@ const AdminDashboard = () => {
                   <td>{operator.email}</td>
                   <td>{operator.phone_number}</td>
                   <td>
-                    <button onClick={() => handleAuthorize(operator.id)}>Authorize</button>
+                    <button onClick={() => handleAuthorize(operator.id)}>Accept</button>
+                    <button onClick={() => RejectOP(operator.id)}>Reject</button>
                   </td>
                 </tr>
               ))}
