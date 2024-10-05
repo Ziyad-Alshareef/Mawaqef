@@ -55,10 +55,21 @@ const FormReg = ({ route, method }) => {
                 });
             }
         } catch (error) {
-            setError(error.response?.data?.message || "Registration failed. Please try again.");
-        }
+            // Handle specific validation errors from the backend
+            if (error.response?.data) {
+                const errorData = error.response.data;
+                if (errorData.organization) {
+                    setError(`${errorData.organization[0]}`);
+                } else if (errorData.email) {
+                    setError(`${errorData.email[0]}`);
+                } else {
+                    setError("Registration failed. Please try again.");
+                }
+            } else {
+                setError("Registration failed. Please try again.");
+            }
     };
-
+    }
     return (
         <div className="reg-form-container">
             <div className="reg-form-box">
