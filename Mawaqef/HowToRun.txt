@@ -10,9 +10,9 @@ Terminal 1:
             """
     }
 
-    pip install -r requirements.txt
     cd mawaqef_v3
     cd backend
+    pip install -r requirements.txt
     python manage.py runserver
     
 Terminal 2:
