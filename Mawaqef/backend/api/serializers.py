@@ -56,3 +56,22 @@ class OperatorAuthorizeSerializer(serializers.ModelSerializer):
         instance.authorized = validated_data.get('authorized', instance.authorized)
         instance.save()
         return instance
+    
+
+from rest_framework import serializers
+from .models import ParkingSpotsMap, ParkingSpot, VirtualSensor
+
+class ParkingSpotsMapSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ParkingSpotsMap
+        fields = '__all__'
+
+class ParkingSpotSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ParkingSpot
+        fields = '__all__'
+
+class VirtualSensorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VirtualSensor
+        fields = '__all__'

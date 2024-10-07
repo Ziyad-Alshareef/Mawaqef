@@ -55,3 +55,69 @@ class Note(models.Model):
 
     def __str__(self):
         return self.title
+
+
+
+
+from django.utils import timezone
+import random
+import threading
+import time
+from django.conf import settings
+
+class ParkingSpotsMap(models.Model):
+    operator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # assuming you use Django's built-in User model
+    length = models.IntegerField()
+    width = models.IntegerField()
+    orientation = models.CharField(max_length=10, choices=[('horizontal', 'Horizontal'), ('vertical', 'Vertical')])
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Map {self.id} by {self.operator.email}"
+
+class ParkingSpot(models.Model):
+    parking_spots_map = models.ForeignKey(ParkingSpotsMap, on_delete=models.CASCADE)
+    x_axis = models.IntegerField()
+    y_axis = models.IntegerField()
+    sensor_status = models.CharField(max_length=10, choices=[('used', 'Used'), ('unused', 'Unused')])
+    status = models.CharField(max_length=20, choices=[
+        ('sensor', 'Sensor Status'),
+        ('maintenance', 'Maintenance'),
+        ('unavailable', 'Unavailable'),
+        ('road', 'Road')
+    ], default='sensor')
+
+    def __str__(self):
+        return f"Parking Spot {self.id}"
+    
+    def flip_status(self):
+        if self.sensor_status == 'unused' and random.random() < 0.15:
+            self.sensor_status = 'used'
+        elif self.sensor_status == 'used' and random.random() < 0.10:
+            self.sensor_status = 'unused'
+        self.save()
+
+class VirtualSensor(models.Model):
+    parking_spot = models.OneToOneField(ParkingSpot, on_delete=models.CASCADE)
+    status = models.CharField(max_length=10, choices=[('used', 'Used'), ('unused', 'Unused')], default='unused')
+
+    def __str__(self):
+        return f"Sensor for Spot {self.parking_spot.id}"
+
+    def flip_status(self):
+        if self.status == 'unused' and random.random() < 0.15:
+            self.status = 'used'
+        elif self.status == 'used' and random.random() < 0.10:
+            self.status = 'unused'
+        self.save()
+
+def run_virtual_sensor_algorithm():
+    while True:
+        for spot in ParkingSpot.objects.all():
+            spot.flip_status()
+        time.sleep(10)  # Run every 10 seconds
+
+# Starting the background algorithm
+thread = threading.Thread(target=run_virtual_sensor_algorithm)
+thread.daemon = True
+thread.start()

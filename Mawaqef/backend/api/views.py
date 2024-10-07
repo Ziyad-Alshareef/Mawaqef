@@ -114,3 +114,61 @@ class AllAuthorizedOperatorsView(APIView):
         operators = User.objects.filter(role="operator", authorized=True)
         serializer = OperatorSerializer(operators, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from .models import ParkingSpotsMap, ParkingSpot, VirtualSensor
+from .serializers import ParkingSpotsMapSerializer, ParkingSpotSerializer
+
+class CreateParkingSpotsMapView(APIView):
+    def post(self, request):
+        if request.user.is_authenticated and request.user.role == 'operator':
+            length = request.data.get('length')
+            width = request.data.get('width')
+            orientation = request.data.get('orientation')
+            
+            parking_map = ParkingSpotsMap.objects.create(
+                operator=request.user,
+                length=length,
+                width=width,
+                orientation=orientation
+            )
+            
+            # Automatically generate parking spots and sensors
+            for x in range(width):
+                for y in range(length):
+                    spot = ParkingSpot.objects.create(
+                        parking_spots_map=parking_map,
+                        x_axis=x,
+                        y_axis=y,
+                        sensor_status='unused'
+                    )
+                    VirtualSensor.objects.create(parking_spot=spot)
+                    
+            return Response({"detail": "ParkingSpotsMap created and spots generated"}, status=status.HTTP_201_CREATED)
+        return Response({"detail": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+
+class ParkingSpotsMapView(APIView):
+    def get(self, request, operator_id):
+        try:
+            parking_map = ParkingSpotsMap.objects.filter( operator_id=operator_id)
+            pS=ParkingSpotsMapSerializer(parking_map, many=True)
+            return Response(pS.data)
+        except ParkingSpotsMap.DoesNotExist:
+            return Response({"detail": "Map not found"}, status=status.HTTP_404_NOT_FOUND)
+
+'''
+
+class ParkingSpotsMapView(APIView):
+    def get(self, request, operator_id):
+        try:
+            parking_map = ParkingSpotsMap.objects.get( operator_id=operator_id)
+            spots = ParkingSpot.objects.filter(parking_spots_map_id=parking_map.id)
+            spots_serializer = ParkingSpotSerializer(spots, many=True)
+            return Response(spots_serializer.data)
+        except ParkingSpotsMap.DoesNotExist:
+            return Response({"detail": "Map not found"}, status=status.HTTP_404_NOT_FOUND)
+
+'''
