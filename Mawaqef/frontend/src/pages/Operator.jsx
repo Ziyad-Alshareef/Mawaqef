@@ -11,6 +11,7 @@ function Operator() {
     const [parkingMaps, setParkingMaps] = useState([]);
     const [dimensions, setDimensions] = useState({ width: 0, length: 0 });
     const [orientation, setOrientation] = useState("horizontal");
+    const [name, setName] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -52,6 +53,7 @@ function Operator() {
     const handleCreateParkingMap = async () => {
         try {
             const res = await api.post("/api/create-parking-map/", {
+                name: name,
                 width: dimensions.width,
                 length: dimensions.length,
                 orientation: orientation,
@@ -70,6 +72,17 @@ function Operator() {
                    
                     <div>
                         <h3 className="fontcolorsss">Create Parking Spot Map</h3>
+                        <label className="fontcolorsss">
+                            Name:
+                            <input
+                                type="text"
+                                value={name}
+                                onChange={(e) =>
+                                    setName(e.target.value)
+                                }
+                            />
+                        </label>
+                        <br/>
                         <label className="fontcolorsss">
                             Width:
                             <input
@@ -112,6 +125,7 @@ function Operator() {
                             parkingMaps.map((map) => (
                                 <div key={map.id}>
                                     <h4 className="fontcolorsss">Map ID: {map.id}</h4>
+                                    <h4 className="fontcolorsss">Name: {map.name}</h4>
                                     <p className="fontcolorsss">Dimensions: {map.width} x {map.length}</p>
                                     <p className="fontcolorsss">Orientation: {map.orientation}</p>
                                 </div>

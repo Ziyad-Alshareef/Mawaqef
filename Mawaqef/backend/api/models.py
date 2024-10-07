@@ -67,6 +67,7 @@ from django.conf import settings
 
 class ParkingSpotsMap(models.Model):
     operator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # assuming you use Django's built-in User model
+    name=models.CharField(max_length=10)
     length = models.IntegerField()
     width = models.IntegerField()
     orientation = models.CharField(max_length=10, choices=[('horizontal', 'Horizontal'), ('vertical', 'Vertical')])

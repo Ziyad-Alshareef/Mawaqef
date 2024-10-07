@@ -125,12 +125,14 @@ from .serializers import ParkingSpotsMapSerializer, ParkingSpotSerializer
 class CreateParkingSpotsMapView(APIView):
     def post(self, request):
         if request.user.is_authenticated and request.user.role == 'operator':
+            name= request.data.get('name')
             length = request.data.get('length')
             width = request.data.get('width')
             orientation = request.data.get('orientation')
             
             parking_map = ParkingSpotsMap.objects.create(
                 operator=request.user,
+                name=name,
                 length=length,
                 width=width,
                 orientation=orientation
