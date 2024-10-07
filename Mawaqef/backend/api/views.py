@@ -101,3 +101,16 @@ class UserDetailView(APIView):
     def get(self, request):
         serializer = UserSerializer(request.user)
         return Response(serializer.data)
+    
+    
+    
+class AllAuthorizedOperatorsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        if request.user.role != "admin":
+            return Response({"detail": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+
+        operators = User.objects.filter(role="operator", authorized=True)
+        serializer = OperatorSerializer(operators, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
