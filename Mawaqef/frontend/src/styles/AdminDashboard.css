@@ -1,9 +1,9 @@
 .admin-dashboard {
     font-family: Arial, sans-serif;
     padding: 20px;
-    height: 100vh;
+    min-height: 100vh;
 
-    overflow: hidden;
+    overflow: auto;
 
 }
 
@@ -17,9 +17,11 @@
 }
 
 .table-container {
-    height: calc(100vh - 140px);
+    max-height: calc(100vh - 140px);
+    /* Use max-height instead of height */
 
     overflow-y: auto;
+    /* Keep this for scrolling */
 
 }
 
@@ -116,4 +118,21 @@
 
 .pagination button.active {
     background-color: #0056b3;
+}
+
+.Table-heading {
+    color: #333;
+
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+.modal-content {
+    text-align: center;
+    color: #333;
+}
+
+.button-container1 {
+    text-align: center;
 }
