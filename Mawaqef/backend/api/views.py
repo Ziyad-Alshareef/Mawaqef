@@ -2,11 +2,17 @@ from django.shortcuts import render
 from api.models import User
 from rest_framework.views import APIView
 from rest_framework import generics
-from .serializers import UserSerializer, NoteSerializer, OperatorAuthorizeSerializer,OperatorSerializer
+from .serializers import UserSerializer, NoteSerializer, OperatorAuthorizeSerializer,OperatorSerializer, ParkingSpotsMapSerializer, ParkingSpotSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Note
 from rest_framework.response import Response
 from rest_framework import status
+from .models import ParkingSpotsMap, ParkingSpot, VirtualSensor
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializers import CustomTokenObtainPairSerializer
+from rest_framework import status as rest_status
+
+
 
 class NoteListCreate(generics.ListCreateAPIView):
     serializer_class = NoteSerializer
@@ -38,8 +44,6 @@ class CreateUserView(generics.CreateAPIView):
     permission_classes = [AllowAny]
 
 
-from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import CustomTokenObtainPairSerializer
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
@@ -116,11 +120,7 @@ class AllAuthorizedOperatorsView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from .models import ParkingSpotsMap, ParkingSpot, VirtualSensor
-from .serializers import ParkingSpotsMapSerializer, ParkingSpotSerializer
+
 
 class CreateParkingSpotsMapView(APIView):
     def post(self, request):
@@ -161,6 +161,56 @@ class ParkingSpotsMapView(APIView):
         except ParkingSpotsMap.DoesNotExist:
             return Response({"detail": "Map not found"}, status=status.HTTP_404_NOT_FOUND)
 
+
+class FlipParkingSpotStatusView2(APIView):
+    def post(self, request, pk):
+        try:
+            # Retrieve the parking spot by its ID
+            parking_spot = ParkingSpot.objects.get(pk=pk)
+
+            # Define the cycle of statuses
+            status_cycle = ['sensor', 'maintenance', 'unavailable', 'road']
+
+            # Get the current index of the status
+            current_index = status_cycle.index(parking_spot.status)
+
+            # Flip to the next status
+            new_index = (current_index + 1) % len(status_cycle)  # Ensure it loops back to the start
+            parking_spot.status = status_cycle[new_index]
+            parking_spot.save()
+
+            # Serialize the updated parking spot and return the response
+            serializer = ParkingSpotSerializer(parking_spot)
+            return Response(serializer.data, status=rest_status.HTTP_200_OK)
+
+        except ParkingSpot.DoesNotExist:
+            return Response({"error": "Parking spot not found."}, status=rest_status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"error": str(e)}, status=rest_status.HTTP_400_BAD_REQUEST)
+        
+
+class ParkingSpotsView(APIView):
+    def get(self, request, map_id):
+        spots = ParkingSpot.objects.filter(parking_spots_map_id=map_id)
+        serializer = ParkingSpotSerializer(spots, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class FlipParkingSpotStatusView(APIView):
+    def patch(self, request, spot_id):
+        try:
+            spot = ParkingSpot.objects.get(id=spot_id)
+        except ParkingSpot.DoesNotExist:
+            return Response({"detail": "Parking spot not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Define the status flipping logic
+        status_order = ["sensor", "maintenance", "unavailable", "road"]
+        current_index = status_order.index(spot.status)
+        new_status = status_order[(current_index + 1) % len(status_order)]
+
+        spot.status = new_status
+        spot.save()
+        serializer = ParkingSpotSerializer(spot)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 '''
 
 class ParkingSpotsMapView(APIView):

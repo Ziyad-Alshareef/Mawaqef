@@ -72,6 +72,7 @@ class ParkingSpotsMap(models.Model):
     width = models.IntegerField()
     orientation = models.CharField(max_length=10, choices=[('horizontal', 'Horizontal'), ('vertical', 'Vertical')])
     created_at = models.DateTimeField(auto_now_add=True)
+    accepted = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Map {self.id} by {self.operator.email}"
