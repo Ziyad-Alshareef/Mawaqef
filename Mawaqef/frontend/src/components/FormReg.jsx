@@ -27,6 +27,14 @@ const FormReg = ({ route, method }) => {
         setSuccess(null);
 
         // Password policy checks
+        if (formData.phone_number.length != 10) {
+            setError("Phone number must be 10 digits long.");
+            return;
+        }
+        if (formData.email.length < 1) {
+            setError("Email cannot be empty.");
+            return;
+        }
         if (formData.password.length < 8) {
             setError("Password must be at least 8 characters long.");
             return;
@@ -94,7 +102,7 @@ const FormReg = ({ route, method }) => {
                             name="email"
                             value={formData.email.toLowerCase()}
                             onChange={handleChange}
-                            required
+                            
                         />
                     </div>
                     <div className="reg-input-group">

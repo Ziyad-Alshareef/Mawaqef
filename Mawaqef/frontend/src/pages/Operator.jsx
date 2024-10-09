@@ -17,6 +17,7 @@ function Operator() {
     const [showMap, setShowMap] = useState(false);
     const [Mapid, setMapid] = useState("");
     const [parkingSpots, setParkingSpots] = useState([]);
+    const [error, setError] = useState(null);
     
     const [mapId, setMapId] = useState(""); // Ensure this is correctly set in your component
    
@@ -147,11 +148,13 @@ function Operator() {
     }, [navigate], [Mapid]);
 
     const handleCreateParkingMap = async () => {
+        setError(null);
+        if(dimensions.width>0&&dimensions.length>0){
         try {
             const res = await api.post("/api/create-parking-map/", {
                 name: name,
-                width: dimensions.width,
-                length: dimensions.length,
+                width: parseInt(dimensions.width),
+                length: parseInt(dimensions.length),
                 orientation: orientation,
             });
             try {
@@ -166,7 +169,8 @@ function Operator() {
         } catch (error) {
             console.error("Error creating parking map", error);
         }
-    };
+}else {setError("Width and length can only be positive numbers.");}
+};
 
     return (
         <div>
@@ -195,7 +199,7 @@ function Operator() {
                         )}
                     </div>
 
-                    <div><br /> <br />
+                    <div className="divce"><br /> <br />
                         <h3 className="fontcolorsss">Create Parking Spot Map</h3>
                         <label className="fontcolorsss">
                             Name:
@@ -214,7 +218,7 @@ function Operator() {
                                 type="number"
                                 value={dimensions.width}
                                 onChange={(e) =>
-                                    setDimensions({ ...dimensions, width: parseInt(e.target.value) })
+                                    setDimensions({ ...dimensions, width: e.target.value })
                                 }
                             />
                         </label>
@@ -225,7 +229,7 @@ function Operator() {
                                 type="number"
                                 value={dimensions.length}
                                 onChange={(e) =>
-                                    setDimensions({ ...dimensions, length: parseInt(e.target.value) })
+                                    setDimensions({ ...dimensions, length: e.target.value })
                                 }
                             />
                         </label>
@@ -242,6 +246,8 @@ function Operator() {
                             </select>
                         </label>
                         */}
+                        <br/>
+                        {error && <p style={{ color: 'red' }}>{error}</p>}
                         <br/>
                         <button onClick={handleCreateParkingMap}>Create Parking Spot Map</button>
                     </div>
