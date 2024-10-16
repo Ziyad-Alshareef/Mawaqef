@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
-import Note from "../components/Note";
 import { ACCESS_TOKEN } from "../constants";
 import "../styles/Home.css";
 
 function Operator() {
-    const [notes, setNotes] = useState([]);
     const [isAuthorized, setIsAuthorized] = useState(false);
     const [parkingMaps, setParkingMaps] = useState([]);
     const [dimensions, setDimensions] = useState({ width: 0, length: 0 });
@@ -18,16 +16,18 @@ function Operator() {
     const [Mapid, setMapid] = useState("");
     const [parkingSpots, setParkingSpots] = useState([]);
     const [error, setError] = useState(null);
-    
-    const [mapId, setMapId] = useState(""); // Ensure this is correctly set in your component
-   
-   
+    const [mapId, setMapId] = useState("");
+    const [showParkingMaps, setShowParkingMaps] = useState(false);
+    const [showCreateMap, setShowCreateMap] = useState(false);
+    const [isEditingMap, setIsEditingMap] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const cardsPerPage = 10; // Maximum cards per page
+    const [loading, setLoading] = useState(true);
+
     const getColorByStatus = (status, sensor_status) => {
         switch (status) {
             case "sensor":
-                if (sensor_status=="used")
-                {return "red";}
-                else{return "green"}
+                return sensor_status === "used" ? "red" : "green";
             case "maintenance":
                 return "yellow";
             case "unavailable":
@@ -39,14 +39,16 @@ function Operator() {
         }
     };
 
-
     const navigate = useNavigate();
-    const loadParkingMaps = async (operatorId) => {
+
+    const fetchParkingMaps = async (operatorId) => {
         try {
-            const res = await api.get(`/api/parking-map/${operatorId}/`); // Correct URL
+            const res = await api.get(`/api/parking-map/${operatorId}/`);
             setParkingMaps(res.data);
+            setLoading(false);
         } catch (error) {
             console.error("Failed to load parking maps", error);
+            setLoading(false);
         }
     };
 
@@ -59,12 +61,12 @@ function Operator() {
         }
     };
 
-    // Function to flip the status of the parking spot when clicked
+
     const flipParkingSpotStatus = async (spotId) => {
         try {
             const response = await api.patch(`/api/parking-spot/${spotId}/flip-status/`);
             const updatedSpot = response.data;
-            setParkingSpots((prevSpots) => 
+            setParkingSpots((prevSpots) =>
                 prevSpots.map((spot) => (spot.id === spotId ? updatedSpot : spot))
             );
         } catch (error) {
@@ -72,46 +74,7 @@ function Operator() {
         }
     };
 
- 
     useEffect(() => {
-        if (Mapid) {
-            console.log("Fetching parking spots for mapId:", Mapid);
-            fetchParkingSpots(); // Initial fetch
-            const interval = setInterval(fetchParkingSpots, 5000); // Fetch every 5 seconds
-            return () => clearInterval(interval); // Cleanup interval on unmount
-        }
-    }, [Mapid]);
-
-    useEffect(() => {
-        console.log("Parking spots:", parkingSpots);
-    }, [parkingSpots]);
-    useEffect(() => {
-        if (Mapid) {
-            console.log("Fetching parking spots for mapId:", Mapid);
-            fetchParkingSpots(); // Initial fetch
-            const interval = setInterval(fetchParkingSpots, 5000); // Fetch every 5 seconds
-            return () => clearInterval(interval); // Cleanup interval on unmount
-        }
-
-        // Function to get the color based on the parking spot status
-    const getColorByStatus = (status, sensor_status) => {
-        switch (status) {
-            case "sensor":
-                if (sensor_status=="used")
-                {return "red";}
-                else{return "green"}
-            case "maintenance":
-                return "yellow";
-            case "unavailable":
-                return "gray";
-            case "road":
-                return "black";
-            default:
-                return "white";
-        }
-    };
-    
-
         const checkOperatorRole = async () => {
             const accessToken = localStorage.getItem(ACCESS_TOKEN);
             if (!accessToken) {
@@ -126,7 +89,7 @@ function Operator() {
                 } else {
                     setIsAuthorized(userRes.data.authorized);
                     if (userRes.data.authorized) {
-                        loadParkingMaps(userRes.data.id);
+                        fetchParkingMaps(userRes.data.id);
                     }
                 }
             } catch (error) {
@@ -135,28 +98,65 @@ function Operator() {
             }
         };
 
-        const loadParkingMaps = async (operatorId) => {
-            try {
-                const res = await api.get(`/api/parking-map/${operatorId}/`); // Correct URL
-                setParkingMaps(res.data);
-            } catch (error) {
-                console.error("Failed to load parking maps", error);
-            }
-        };
-
         checkOperatorRole();
-    }, [navigate], [Mapid]);
+    }, [navigate]);
+
+    useEffect(() => {
+        if (Mapid) {
+            console.log("Fetching parking spots for mapId:", Mapid);
+            fetchParkingSpots();
+            const interval = setInterval(fetchParkingSpots, 50000);
+            return () => clearInterval(interval);
+        }
+    }, [Mapid]);
+
+    useEffect(() => {
+        console.log("Parking spots:", parkingSpots);
+    }, [parkingSpots]);
+
+
+    const indexOfLastCard = currentPage * cardsPerPage;
+    const indexOfFirstCard = indexOfLastCard - cardsPerPage;
+    const currentCards = parkingMaps.slice(indexOfFirstCard, indexOfLastCard);
+
+
+    const totalPages = Math.ceil(parkingMaps.length / cardsPerPage);
+    const loadParkingMaps = async (operatorId) => {
+        try {
+            const res = await api.get(`/api/parking-map/${operatorId}/`); // Correct URL
+            setParkingMaps(res.data);
+        } catch (error) {
+            console.error("Failed to load parking maps", error);
+        }
+    };
 
     const handleCreateParkingMap = async () => {
         setError(null);
-        if(dimensions.width>0&&dimensions.length>0){
+
+
+        if (dimensions.width <= 0 || dimensions.length <= 0) {
+            setError("Width and length must be positive numbers.");
+            return;
+        }
+
         try {
+
             const res = await api.post("/api/create-parking-map/", {
                 name: name,
                 width: parseInt(dimensions.width),
                 length: parseInt(dimensions.length),
                 orientation: orientation,
             });
+
+
+            const newMap = {
+                id: res.data.id,
+                name: res.data.name,
+                width: res.data.width,
+                length: res.data.length,
+                orientation: res.data.orientation,
+            };
+
             try {
                 const userRes2 = await api.get("/api/user/");  
                 loadParkingMaps(userRes2.data.id);
@@ -165,99 +165,122 @@ function Operator() {
                 console.error("Unauthorized", error);
                 
             }
-            //setParkingMaps([...parkingMaps, res.data]);
+            //setParkingMaps((prev) => [...prev, newMap]);
+
+
+            setShowCreateMap(false);
+            setName("");
+            setDimensions({ width: 0, length: 0 });
         } catch (error) {
             console.error("Error creating parking map", error);
+            fetchParkingMaps();
         }
-}else {setError("Width and length can only be positive numbers.");}
-};
+    };
+
+    const handleEditMap = (mapId) => {
+        setMapid(mapId);
+        setIsEditingMap(true);
+        setShowParkingMaps(false);
+        setShowMap(true);
+    };
+
+    const handleBack = () => {
+        setShowParkingMaps(true);
+        setShowMap(false);
+        setMapid("");
+        setIsEditingMap(false);
+    };
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
     return (
-        <div>
-            <h2 className="welcome-operator">Welcome Operator</h2>
-            {isAuthorized&& showAllMaps && (
-                <div>
-                   
-                    {
-                        console.log(Mapid)
-                    }
+        <div className="operator-container">
+            <h2 className="welcome-operator">Operator Dashboard</h2>
+            {isAuthorized && (
+                <div className="button-container">
+                    <button className="Opbutton" onClick={() => { setShowParkingMaps(true); setShowCreateMap(false); }}>Show Parking Spot Maps</button>
+                    <button className="Opbutton" onClick={() => { setShowParkingMaps(false); setShowCreateMap(true); }}>Create Parking Spot Map</button>
+                </div>
+            )}
 
-                    <div>
-                        <h3 className="fontcolorsss">Parking Spot Maps</h3>
-                        {parkingMaps.length > 0 ? (
-                            parkingMaps.map((map) => (
-                                <div key={map.id}>
+            {isAuthorized && showParkingMaps && (
+                <>
+                    <h3 className="fontcolorsss">Parking Spot Maps</h3>
+                    <div className="card-container">
+                        {currentCards.length > 0 ? (
+                            currentCards.map((map) => (
+                                <div className="card" key={map.id}>
                                     <h4 className="fontcolorsss">Map ID: {map.id}</h4>
                                     <h4 className="fontcolorsss">Name: {map.name}</h4>
                                     <p className="fontcolorsss">Dimensions: {map.width} x {map.length}</p>
-                                    
-                                    <button onClick={() => { setShowMap(true); setShowAllMaps(false); setMapid(map.id); console.log(map.id)}}>Edit Parking Spot Map</button>
+                                    <button className="Opbutton" onClick={() => handleEditMap(map.id)}>Edit Parking Spot Map</button>
                                 </div>
-                            )) 
+                            ))
                         ) : (
                             <p className="fontcolorsss">No parking spot maps available.</p>
                         )}
                     </div>
 
-                    <div className="divce"><br /> <br />
-                        <h3 className="fontcolorsss">Create Parking Spot Map</h3>
-                        <label className="fontcolorsss">
-                            Name:
-                            <input
-                                type="text"
-                                value={name}
-                                onChange={(e) =>
-                                    setName(e.target.value)
-                                }
-                            />
-                        </label>
-                        <br/>
-                        <label className="fontcolorsss">
-                            Width:
-                            <input
-                                type="number"
-                                value={dimensions.width}
-                                onChange={(e) =>
-                                    setDimensions({ ...dimensions, width: e.target.value })
-                                }
-                            />
-                        </label>
-                        <br/>
-                        <label className="fontcolorsss">
-                            Length:
-                            <input
-                                type="number"
-                                value={dimensions.length}
-                                onChange={(e) =>
-                                    setDimensions({ ...dimensions, length: e.target.value })
-                                }
-                            />
-                        </label>
-                        <br/>
-                        {/*
-                        <label className="fontcolorsss">
-                            Orientation:
-                            <select
-                                value={orientation}
-                                onChange={(e) => setOrientation(e.target.value)}
-                            >
-                                <option value="horizontal">Horizontal</option>
-                                <option value="vertical">Vertical</option>
-                            </select>
-                        </label>
-                        */}
-                        <br/>
-                        {error && <p style={{ color: 'red' }}>{error}</p>}
-                        <br/>
-                        <button onClick={handleCreateParkingMap}>Create Parking Spot Map</button>
+                    {/* Pagination Controls */}
+                    <div className="pagination">
+                        {currentPage > 1 && (
+                            <button onClick={() => setCurrentPage(currentPage - 1)}>
+                                Previous
+                            </button>
+                        )}
+
+                        {currentPage < totalPages && (
+                            <button onClick={() => setCurrentPage(currentPage + 1)}>
+                                Next
+                            </button>
+                        )}
                     </div>
+                </>
+            )}
+
+            {isAuthorized && showCreateMap && (
+                <div className="divce">
+                    <h3 className="fontcolorsss">Create Parking Spot Map</h3>
+                    <label className="fontcolorsss">
+                        Name:
+                        <input
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                    </label>
+                    <br />
+                    <label className="fontcolorsss">
+                        Width:
+                        <input
+                            type="number"
+                            value={dimensions.width}
+                            onChange={(e) => setDimensions({ ...dimensions, width: e.target.value })}
+                        />
+                    </label>
+                    <br />
+                    <label className="fontcolorsss">
+                        Length:
+                        <input
+                            type="number"
+                            value={dimensions.length}
+                            onChange={(e) => setDimensions({ ...dimensions, length: e.target.value })}
+                        />
+                    </label>
+                    <br />
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    <br />
+                    <button className="Opbutton" onClick={handleCreateParkingMap}>Create Parking Spot Map</button>
                 </div>
             )}
-            {isAuthorized&& showMap && (<div>
-                    <button onClick={() => { setShowMap(false); setShowAllMaps(true); setMapid(""); }}>
+
+            {isAuthorized && showMap && (
+                <div>
+                    <button className="Opbutton" onClick={handleBack}>
                         Back
                     </button>
-
                     {/* Render parking spots in a table */}
                     <table>
                         <tbody>
@@ -281,12 +304,10 @@ function Operator() {
                             )}
                         </tbody>
                     </table>
-                </div>)
+                </div>
+            )}
 
-            }
-            
-            
-             { !isAuthorized && (
+            {!isAuthorized && (
                 <div>
                     <p className="welcome-operator">
                         You are not authorized. An admin will contact you soon 😊.
@@ -298,64 +319,3 @@ function Operator() {
 }
 
 export default Operator;
-
-
-
-/*import { useState, useEffect } from "react";
-import api from "../api";
-import { useNavigate } from "react-router-dom";
-import Note from "../components/Note"
-import { ACCESS_TOKEN, REFRESH_TOKEN, ROLE_TOKEN, AUTHORIZED_TOKEN } from "../constants";
-import "../styles/Home.css"
-
-function operator() {
-    const [notes, setNotes] = useState([]);
-    const [content, setContent] = useState("");
-    const [title, setTitle] = useState("");
-    const [isAuthorized, setIsAuthorized] = useState(false);
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        const checkAdminRole = async () => {
-            const accessToken = localStorage.getItem(ACCESS_TOKEN);
-            console.log(accessToken);
-            if (!accessToken) {
-                navigate("/login");
-                return;
-            }
-
-            try {
-                const userRes = await api.get("/api/user/");
-                if (userRes.data.role !== "operator") {
-                    navigate("/");
-                } else {
-                    setIsAuthorized(userRes.data.authorized);
-                }
-            } catch (error) {
-                console.error("Unauthorized", error);
-                navigate("/login");
-            }
-        };
-        checkAdminRole();
-    }, []);
-    console.log(localStorage.getItem("ACCESS_TOKEN"));
-
-    return (
-        <div>
-            <h2 className="welcome-operator">Welcome Operator</h2>
-            {isAuthorized ? (
-                <div>
-                    <p className="welcome-operator">You are authorized. be patient⏳</p>
-                    
-                </div>
-            ) : (
-                <div>
-                    <p className="welcome-operator">You are not authorized. an admin will contact you soon 😊.</p>
-                </div>
-            )}
-        </div>
-    );
-}
-
-export default operator;
-*/

@@ -1,9 +1,46 @@
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  /* Allow cards to wrap to the next line */
+  justify-content: flex-start;
+  /* Align cards to the start */
+  gap: 20px;
+  /* Space between cards */
+  height: auto;
+  width: auto;
+}
+
+.card {
+  background-color: #f9f9f9;
+  /* Card background color */
+  border: 1px solid #ddd;
+  /* Card border */
+  border-radius: 8px;
+  /* Rounded corners */
+  padding: 15px;
+  /* Inner padding */
+  width: calc(20% - 20px);
+  /* 5 cards in a row, accounting for gap */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  /* Subtle shadow for card effect */
+  transition: transform 0.2s;
+  /* Animation for hover effect */
+  height: auto;
+  width: auto;
+  text-align: center;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  /* Slightly enlarge card on hover */
+}
+
 div {
   font-family: Arial, sans-serif;
 }
 
-.divce{
-  
+.divce {
+
   justify-content: center;
   align-items: center;
 }
@@ -14,13 +51,17 @@ div {
 
 .welcome-operator {
   color: #333;
-  font-size: 24px;
-  margin-bottom: 20px;
+
+  text-align: center;
+  margin-bottom: 5px;
+  font-size: 2em;
+  padding-top: 15px;
 }
+
 .fontcolorsss {
   color: #333;
-  
 }
+
 .notes-section h2 {
   color: #333;
   font-size: 24px;
@@ -78,4 +119,150 @@ form input[type="submit"] {
 
 form input[type="submit"]:hover {
   background-color: #0056b3;
+}
+
+.operator-container {
+  margin-top: 15px;
+  /* Adjust as needed */
+  padding: 0 20px;
+  /* Optional: Add some padding */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* Align items to the start (top) */
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  min-height: 100vh;
+
+  overflow: auto;
+
+}
+
+.Opbutton {
+  background-color: #40648a;
+
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s ease-in-out;
+
+}
+
+.Opbutton:hover {
+  background-color: #5694d7;
+
+}
+
+.Opbutton,
+.welcome-operator {
+  text-align: center;
+}
+
+button {
+  text-align: center;
+}
+
+.operator-container {
+  margin-top: 15px;
+  /* Adjust as needed */
+  padding: 0 20px;
+  /* Optional: Add some padding */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Center items horizontally */
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  min-height: 100vh;
+  overflow: auto;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  /* Center buttons horizontally */
+  margin-bottom: 20px;
+  /* Add space below the buttons */
+}
+
+.Opbutton {
+  background-color: #40648a;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  /* Space between buttons */
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.Opbutton:hover {
+  background-color: #5694d7;
+}
+
+@media (max-width: 768px) {
+  .card {
+    width: calc(50% - 20px);
+    /* 2 cards in a row on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    width: calc(100% - 20px);
+    /* 1 card in a row on very small screens */
+  }
+}
+
+form input,
+form textarea {
+  width: 100%;
+  padding: 10px;
+  /* Increased padding for better spacing */
+  margin: 8px 0 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+  /* Smooth transition for border color */
+}
+
+form input:focus,
+form textarea:focus {
+  border-color: #007bff;
+  /* Change border color on focus */
+  outline: none;
+  /* Remove default outline */
+}
+
+/* Confirmation message styling */
+.confirmation-message {
+  background-color: #d4edda;
+  /* Light green background */
+  color: #155724;
+  /* Dark green text */
+  border: 1px solid #c3e6cb;
+  /* Border color */
+  border-radius: 4px;
+  /* Rounded corners */
+  padding: 10px;
+  /* Padding for spacing */
+  margin-top: 10px;
+  /* Space above the message */
+  text-align: center;
+  /* Center the text */
+  font-weight: bold;
+  /* Bold text */
 }
