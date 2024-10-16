@@ -189,6 +189,7 @@ function Operator() {
         setShowMap(false);
         setMapid("");
         setIsEditingMap(false);
+        setParkingSpots([]);
     };
 
     if (loading) {
@@ -277,10 +278,10 @@ function Operator() {
             )}
 
             {isAuthorized && showMap && (
-                <div>
-                    <button className="Opbutton" onClick={handleBack}>
+                <div><br/><div className="centerre"> <button className="Opbutton" onClick={handleBack}>
                         Back
-                    </button>
+                    </button></div><br/><br/>
+                    
                     {/* Render parking spots in a table */}
                     <table>
                         <tbody>
@@ -304,7 +305,7 @@ function Operator() {
                             )}
                         </tbody>
                     </table>
-                </div>
+                    </div>
             )}
 
             {!isAuthorized && (
