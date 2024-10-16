@@ -85,9 +85,10 @@ function Form({ route, method }) {
                     {error && <p style={{ color: 'red' }}>{error}</p>}
                     
                     {loading && <LoadingIndicator />}
-                    <button className="form-button" type="submit">
+                    <div><button className="form-button" type="submit">
                         {name}
-                    </button>
+                    </button></div><br/>
+                    <a href="/forgotpass"> Forgot your password?</a>
                 </form>
             </div>
             <div className="form-image" style={{ backgroundImage: "url('../../public/parkingspots-1.png')" }}></div>

@@ -6,6 +6,7 @@ import Operator from './pages/Operator';
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminDashboard from "./pages/AdminDashboard";
+import ForgotPassword from "./pages/ForgotPassword";
 import Body1 from "./pages/Body1";
 import { AuthContext, AuthProvider } from "./components/AuthContext"; // Import AuthContext and AuthProvider
 
@@ -72,6 +73,7 @@ function App() {
             }
           />
           <Route path="/login" element={<Login />} />
+          <Route path="/forgotpass" element={<ForgotPassword />} />
           <Route path="/AdminDashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/register" element={<RegisterAndLogout />} />

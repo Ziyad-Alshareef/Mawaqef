@@ -211,6 +211,54 @@ class FlipParkingSpotStatusView(APIView):
         spot.save()
         serializer = ParkingSpotSerializer(spot)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+from .models import Operator
+from django.core.mail import send_mail
+
+class ForgotPasswordView(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        email = request.data.get('email')
+        try:
+            user = User.objects.get(email=email)
+            
+            user.generate_pin()
+            
+            # Send email with the PIN
+            send_mail(
+                'Password Reset PIN',
+                f'Your PIN is {user.pin}. It is valid for 10 minutes.',
+                'no-reply@example.com',
+                [user.email],
+                fail_silently=False,
+            )
+            return Response({"message": "PIN sent to your email"}, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response({"error": "Email not found"}, status=status.HTTP_404_NOT_FOUND)
+        #except Operator.DoesNotExist:
+         #   return Response({"error": "Operator not found"}, status=status.HTTP_404_NOT_FOUND)
+
+class ResetPasswordView(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        email = request.data.get('email')
+        pin = request.data.get('pin')
+        new_password = request.data.get('new_password')
+        
+        try:
+            user = User.objects.get(email=email)
+            
+            if user.pin_is_valid(pin):
+                user.set_password(new_password)
+                user.save()
+                return Response({"message": "Password reset successful"}, status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "Invalid or expired PIN"}, status=status.HTTP_400_BAD_REQUEST)
+        except User.DoesNotExist:
+            return Response({"error": "Email not found"}, status=status.HTTP_404_NOT_FOUND)
+        #except Operator.DoesNotExist:
+          #  return Response({"error": "Operator not found"}, status=status.HTTP_404_NOT_FOUND)
+
 '''
 
 class ParkingSpotsMapView(APIView):

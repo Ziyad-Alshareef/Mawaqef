@@ -58,7 +58,7 @@ body {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
-  margin-left: 10px;
+  margin-left: 0px;
   /* Match the button margin */
 }
 

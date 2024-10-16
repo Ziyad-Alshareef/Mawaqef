@@ -37,11 +37,23 @@ class User(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     authorized = models.BooleanField(default=False)  # Specific for Operators, if applicable
+    pin = models.CharField(max_length=6, blank=True, null=True)
+    pin_expiration = models.DateTimeField(blank=True, null=True)
 
+    
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+
+    def generate_pin(self):
+        self.pin = ''.join([str(random.randint(0, 9)) for _ in range(6)])
+        self.pin_expiration = datetime.datetime.now() + datetime.timedelta(minutes=10)  # 10 minutes expiration
+        self.save()
+
+    def pin_is_valid(self, input_pin):
+        # Make sure the current time is timezone-aware
+        return self.pin == input_pin and self.pin_expiration > timezone.now()
 
     def __str__(self):
         return self.email
@@ -123,3 +135,20 @@ def run_virtual_sensor_algorithm():
 thread = threading.Thread(target=run_virtual_sensor_algorithm)
 thread.daemon = True
 thread.start()
+
+
+import random
+import datetime
+''''''
+class Operator(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    pin = models.CharField(max_length=6, blank=True, null=True)
+    pin_expiration = models.DateTimeField(blank=True, null=True)
+
+    def generate_pin(self):
+        self.pin = ''.join([str(random.randint(0, 9)) for _ in range(6)])
+        self.pin_expiration = datetime.datetime.now() + datetime.timedelta(minutes=10)  # 10 minutes expiration
+        self.save()
+
+    def pin_is_valid(self, input_pin):
+        return self.pin == input_pin and self.pin_expiration > datetime.datetime.now()
