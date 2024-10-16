@@ -20,6 +20,13 @@ function ForgotPassword() {
     };
 
     const handleResetPassword = async () => {
+        if (newPassword.length<8){
+            setMessage("Password must be at least 8 characters long.");
+            return;}
+        if (!/[a-zA-Z]/.test(newPassword)){
+            setMessage("Password must contain at least one letter.");
+            return;
+        }
         try {
             const response = await api.post('/api/reset-password/', { email, pin, new_password: newPassword });
             setMessage(response.data.message);
