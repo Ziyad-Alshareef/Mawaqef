@@ -44,7 +44,7 @@ function ForgotPassword() {
                     <label>Email:</label>
                     <input
                         type="email"
-                        value={email}
+                        value={email.toLowerCase()}
                         onChange={(e) => setEmail(e.target.value)}
                     />
                     <button onClick={handleSendPin}>Send PIN</button>
