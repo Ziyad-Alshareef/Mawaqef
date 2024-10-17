@@ -66,6 +66,16 @@ class ParkingSpotsMapSerializer(serializers.ModelSerializer):
         model = ParkingSpotsMap
         fields = '__all__'
 
+class MapAuthorizeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ParkingSpotsMap
+        fields = ['accepted']
+
+    def update(self, instance, validated_data):
+        instance.accepted = validated_data.get('accepted', instance.accepted)
+        instance.save()
+        return instance
+
 class ParkingSpotSerializer(serializers.ModelSerializer):
     class Meta:
         model = ParkingSpot

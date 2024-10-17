@@ -46,9 +46,9 @@ function Operator() {
             const res = await api.get(`/api/parking-map/${operatorId}/`);
             setParkingMaps(res.data);
             setLoading(false);
-        } catch (error) {
+        } catch (error) {setLoading(false);
             console.error("Failed to load parking maps", error);
-            setLoading(false);
+            
         }
     };
 
@@ -90,7 +90,7 @@ function Operator() {
                     setIsAuthorized(userRes.data.authorized);
                     if (userRes.data.authorized) {
                         fetchParkingMaps(userRes.data.id);
-                    }
+                    }else setLoading(false);
                 }
             } catch (error) {
                 console.error("Unauthorized", error);
@@ -105,7 +105,7 @@ function Operator() {
         if (Mapid) {
             console.log("Fetching parking spots for mapId:", Mapid);
             fetchParkingSpots();
-            const interval = setInterval(fetchParkingSpots, 50000);
+            const interval = setInterval(fetchParkingSpots, 5000);
             return () => clearInterval(interval);
         }
     }, [Mapid]);
