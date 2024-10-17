@@ -134,7 +134,7 @@ function Operator() {
         setError(null);
 
 
-        if (dimensions.width <= 0 || dimensions.length <= 0) {
+        if (dimensions.width <= 1 || dimensions.length <= 1) {
             setError("Width and length must be positive numbers.");
             return;
         }
