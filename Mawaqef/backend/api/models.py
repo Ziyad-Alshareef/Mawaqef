@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.db import transaction, OperationalError
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -107,11 +108,22 @@ class ParkingSpot(models.Model):
         return f"Parking Spot {self.id}"
     
     def flip_status(self):
-        if self.sensor_status == 'unused' and random.random() < 0.15:
-            self.sensor_status = 'used'
-        elif self.sensor_status == 'used' and random.random() < 0.10:
-            self.sensor_status = 'unused'
-        self.save()
+        retries = 5  # Number of retries for saving
+        while retries > 0:
+            try:
+                with transaction.atomic():  # Ensure atomic database transaction
+                    if self.sensor_status == 'unused' and random.random() < 0.15:
+                        self.sensor_status = 'used'
+                    elif self.sensor_status == 'used' and random.random() < 0.10:
+                        self.sensor_status = 'unused'
+                    self.save()
+                break  # Exit the loop if successful
+            except OperationalError:  # Handle any database locking errors
+                retries -= 1
+                time.sleep(0.5)  # Wait for 500ms before retrying
+        if retries == 0:
+            print(f"Failed to update parking spot {self.id} after several retries.")
+
 
 class VirtualSensor(models.Model):
     parking_spot = models.OneToOneField(ParkingSpot, on_delete=models.CASCADE)
@@ -121,16 +133,36 @@ class VirtualSensor(models.Model):
         return f"Sensor for Spot {self.parking_spot.id}"
 
     def flip_status(self):
-        if self.status == 'unused' and random.random() < 0.15:
-            self.status = 'used'
-        elif self.status == 'used' and random.random() < 0.10:
-            self.status = 'unused'
-        self.save()
+        retries = 5  # Number of retries for saving
+        while retries > 0:
+            try:
+                with transaction.atomic():  # Ensure atomic database transaction
+                    if self.sensor_status == 'unused' and random.random() < 0.90:
+                        self.sensor_status = 'used'
+                    elif self.sensor_status == 'used' and random.random() < 0.85:
+                        self.sensor_status = 'unused'
+                    self.save()
+                break  # Exit the loop if successful
+            except OperationalError:  # Handle any database locking errors
+                retries -= 1
+                time.sleep(0.5)  # Wait for 500ms before retrying
+        if retries == 0:
+            print(f"Failed to update parking spot {self.id} after several retries.")
 
 def run_virtual_sensor_algorithm():
     while True:
-        for spot in ParkingSpot.objects.all():
+        # Get all parking spot IDs
+        all_spots = list(ParkingSpot.objects.values_list('id', flat=True))
+        
+        # Randomly select a subset of parking spots (e.g., 30% of all spots)
+        num_spots = int(len(all_spots) * 0.15)  # Adjust percentage as needed
+        selected_spots = random.sample(all_spots, num_spots) if num_spots > 0 else []
+        
+        # Update the randomly selected spots
+        for spot_id in selected_spots:
+            spot = ParkingSpot.objects.get(id=spot_id)
             spot.flip_status()
+        
         time.sleep(10)  # Run every 10 seconds
 
 # Starting the background algorithm

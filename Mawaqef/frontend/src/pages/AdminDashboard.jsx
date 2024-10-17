@@ -5,6 +5,7 @@ import api from "../api";
 import "../styles/AdminDashboard.css";
 import ConfirmationModal from "../components/ConfirmationModal";
 import Confmodal from "../components/Confmodal";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 const AdminDashboard = () => {
   const [operators, setOperators] = useState([]);
@@ -30,6 +31,7 @@ const AdminDashboard = () => {
   const [showMap, setShowMap] = useState(false);
   const [Mapid, setMapid] = useState("");
   const [parkingSpots, setParkingSpots] = useState([]);
+  const [loadingM, setLoadingM] = useState(false);
   const navigate = useNavigate();
   const rowsPerPage = 5;
 
@@ -79,6 +81,7 @@ const AdminDashboard = () => {
     try {
         const response = await api.get(`/api/parking-map/${Mapid}/spots/`);
         setParkingSpots(response.data);
+        setLoadingM(false);
     } catch (error) {
         console.error("Error fetching parking spots:", error);
     }
@@ -96,6 +99,7 @@ const AdminDashboard = () => {
     //setIsEditingMap(true);
     setIsTableVisible(false);
     setShowMap(true);
+    setLoadingM(true);
 };
 
 const handleBack = () => {
@@ -104,6 +108,7 @@ const handleBack = () => {
     setMapid("");
     //setIsEditingMap(false);
     setParkingSpots([]);
+    setLoadingM(false);
 };
   const fetchOperators = async () => {
     try {
@@ -462,7 +467,7 @@ const handleBack = () => {
         <div><br/><div className="centerre"> <button className="Opbutton" onClick={handleBack}>
         Back
     </button></div><br/><br/>
-    
+    {loadingM && <LoadingIndicator />}
     {/* Render parking spots in a table */}
     <table>
         <tbody>

@@ -3,6 +3,7 @@ import api from "../api";
 import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN } from "../constants";
 import "../styles/Home.css";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 function Operator() {
     const [isAuthorized, setIsAuthorized] = useState(false);
@@ -23,6 +24,7 @@ function Operator() {
     const [currentPage, setCurrentPage] = useState(1);
     const cardsPerPage = 10; // Maximum cards per page
     const [loading, setLoading] = useState(true);
+    const [loadingM, setLoadingM] = useState(false);
 
     const getColorByStatus = (status, sensor_status) => {
         switch (status) {
@@ -56,6 +58,7 @@ function Operator() {
         try {
             const response = await api.get(`/api/parking-map/${Mapid}/spots/`);
             setParkingSpots(response.data);
+            setLoadingM(false);
         } catch (error) {
             console.error("Error fetching parking spots:", error);
         }
@@ -104,7 +107,9 @@ function Operator() {
     useEffect(() => {
         if (Mapid) {
             console.log("Fetching parking spots for mapId:", Mapid);
+            
             fetchParkingSpots();
+            
             const interval = setInterval(fetchParkingSpots, 5000);
             return () => clearInterval(interval);
         }
@@ -140,7 +145,7 @@ function Operator() {
         }
 
         try {
-
+            setLoadingM(true);
             const res = await api.post("/api/create-parking-map/", {
                 name: name,
                 width: parseInt(dimensions.width),
@@ -169,17 +174,20 @@ function Operator() {
 
 
             setShowCreateMap(false);
+            setLoadingM(false);
             setName("");
             setDimensions({ width: 0, length: 0 });
         } catch (error) {
             console.error("Error creating parking map", error);
             fetchParkingMaps();
+            setLoadingM(false);
         }
     };
 
     const handleEditMap = (mapId) => {
         setMapid(mapId);
         setIsEditingMap(true);
+        setLoadingM(true);
         setShowParkingMaps(false);
         setShowMap(true);
     };
@@ -190,6 +198,7 @@ function Operator() {
         setMapid("");
         setIsEditingMap(false);
         setParkingSpots([]);
+        setLoadingM(false);
     };
 
     if (loading) {
@@ -273,6 +282,8 @@ function Operator() {
                     <br />
                     {error && <p style={{ color: 'red' }}>{error}</p>}
                     <br />
+                    {loadingM && <LoadingIndicator />}
+                    <br/>
                     <button className="Opbutton" onClick={handleCreateParkingMap}>Create Parking Spot Map</button>
                 </div>
             )}
@@ -281,7 +292,7 @@ function Operator() {
                 <div><br/><div className="centerre"> <button className="Opbutton" onClick={handleBack}>
                         Back
                     </button></div><br/><br/>
-                    
+                    {loadingM && <LoadingIndicator />}
                     {/* Render parking spots in a table */}
                     <table>
                         <tbody>
