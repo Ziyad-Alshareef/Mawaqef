@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import api from "../api";
+import "../styles/ForgotPass.css"; // Ensure you import the CSS file
 
 function ForgotPassword() {
     const [email, setEmail] = useState('');
@@ -20,10 +21,11 @@ function ForgotPassword() {
     };
 
     const handleResetPassword = async () => {
-        if (newPassword.length<8){
+        if (newPassword.length < 8) {
             setMessage("Password must be at least 8 characters long.");
-            return;}
-        if (!/[a-zA-Z]/.test(newPassword)){
+            return;
+        }
+        if (!/[a-zA-Z]/.test(newPassword)) {
             setMessage("Password must contain at least one letter.");
             return;
         }
@@ -37,38 +39,44 @@ function ForgotPassword() {
     };
 
     return (
-        <div>
-            <h2>Forgot Password</h2>
-            {!pinSent ? (
-                <div>
-                    <label>Email:</label>
-                    <input
-                        type="email"
-                        value={email.toLowerCase()}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <button onClick={handleSendPin}>Send PIN</button>
-                </div>
-            ) : !passwordChanged ? (
-                <div>
-                    <label>PIN:</label>
-                    <input
-                        type="text"
-                        value={pin}
-                        onChange={(e) => setPin(e.target.value)}
-                    />
-                    <label>New Password:</label>
-                    <input
-                        type="password"
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
-                    />
-                    <button onClick={handleResetPassword}>Reset Password</button>
-                </div>
-            ) : (
-                <p>Password reset successfully!</p>
-            )}
-            {message && <p>{message}</p>}
+        <div className="forgot-password-container">
+            <div className="forgot-password-box">
+                <h2>Forgot Password</h2>
+                {!pinSent ? (
+                    <div className="input-group">
+                        <label>Email:</label>
+                        <input
+                            type="email"
+                            className="forgot-password-input"
+                            value={email.toLowerCase()}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <button className="forgot-password-button" onClick={handleSendPin}>Send PIN</button>
+                    </div>
+                ) : !passwordChanged ? (
+                    <div className="input-group">
+                        <label>PIN:</label>
+                        <input
+                            type="text"
+                            className="forgot-password-input"
+                            value={pin}
+                            onChange={(e) => setPin(e.target.value)}
+                        />
+                        <label>New Password:</label>
+                        <input
+                            type="password"
+                            className="forgot-password-input"
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                        />
+                        <button className="forgot-password-button" onClick={handleResetPassword}>Reset Password</button>
+                    </div>
+                ) : (
+                    <h4>Password reset successfully!😊</h4>
+                )}
+                {message && <p>{message}</p>}
+            </div>
+            <div className="forgot-password-image"></div>
         </div>
     );
 }

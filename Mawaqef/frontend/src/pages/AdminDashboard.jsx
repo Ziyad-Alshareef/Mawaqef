@@ -37,18 +37,18 @@ const AdminDashboard = () => {
 
   const getColorByStatus = (status, sensor_status) => {
     switch (status) {
-        case "sensor":
-            return sensor_status === "used" ? "red" : "green";
-        case "maintenance":
-            return "yellow";
-        case "unavailable":
-            return "gray";
-        case "road":
-            return "black";
-        default:
-            return "white";
+      case "sensor":
+        return sensor_status === "used" ? "red" : "green";
+      case "maintenance":
+        return "yellow";
+      case "unavailable":
+        return "gray";
+      case "road":
+        return "black";
+      default:
+        return "white";
     }
-};
+  };
 
   useEffect(() => {
     const checkAdminRole = async () => {
@@ -79,37 +79,37 @@ const AdminDashboard = () => {
 
   const fetchParkingSpots = async () => {
     try {
-        const response = await api.get(`/api/parking-map/${Mapid}/spots/`);
-        setParkingSpots(response.data);
-        setLoadingM(false);
+      const response = await api.get(`/api/parking-map/${Mapid}/spots/`);
+      setParkingSpots(response.data);
+      setLoadingM(false);
     } catch (error) {
-        console.error("Error fetching parking spots:", error);
+      console.error("Error fetching parking spots:", error);
     }
-};
+  };
   useEffect(() => {
     if (Mapid) {
-        console.log("Fetching parking spots for mapId:", Mapid);
-        fetchParkingSpots();
-        const interval = setInterval(fetchParkingSpots, 5000);
-        return () => clearInterval(interval);
+      console.log("Fetching parking spots for mapId:", Mapid);
+      fetchParkingSpots();
+      const interval = setInterval(fetchParkingSpots, 5000);
+      return () => clearInterval(interval);
     }
-}, [Mapid]);
+  }, [Mapid]);
   const handleEditMap = (mapId) => {
     setMapid(mapId);
     //setIsEditingMap(true);
     setIsTableVisible(false);
     setShowMap(true);
     setLoadingM(true);
-};
+  };
 
-const handleBack = () => {
+  const handleBack = () => {
     setIsTableVisible(true);
     setShowMap(false);
     setMapid("");
     //setIsEditingMap(false);
     setParkingSpots([]);
     setLoadingM(false);
-};
+  };
   const fetchOperators = async () => {
     try {
       const res = await api.get("/api/operators/unapproved/");
@@ -419,79 +419,79 @@ const handleBack = () => {
 
       {showAllAutMaps && isTableVisible && ( // Check if the table should be visible
         <div className="table-container">
-        <h2 className='Table-heading'>All Accepted Maps</h2>
-        {allMaps.length === 0 ? (
-          <p>No accepted maps available for deletion.</p>
-        ) : (
-          <div>
-            <table>
-              <thead>
-                <tr>
-                  <th>Organization</th>
-                  <th>Email</th>
-                  <th>Map name</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentRowsAllMaps.map((Map) => (
-                  <tr key={Map.id}>
-                    <td>{Map.org}</td>
-                    <td>{Map.email}</td>
-                    <td>{Map.name}</td>
-                    <td>
-                      
-                      <button onClick={() => openModalM(Map, 'delete')}>Delete</button> {/* Delete button */}
-                    </td>
+          <h2 className='Table-heading'>All Accepted Maps</h2>
+          {allMaps.length === 0 ? (
+            <p>No accepted maps available for deletion.</p>
+          ) : (
+            <div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Organization</th>
+                    <th>Email</th>
+                    <th>Map name</th>
+                    <th>Actions</th>
                   </tr>
+                </thead>
+                <tbody>
+                  {currentRowsAllMaps.map((Map) => (
+                    <tr key={Map.id}>
+                      <td>{Map.org}</td>
+                      <td>{Map.email}</td>
+                      <td>{Map.name}</td>
+                      <td>
+
+                        <button onClick={() => openModalM(Map, 'delete')}>Delete</button> {/* Delete button */}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className="pagination">
+                {Array.from({ length: totalPagesAllMaps }, (_, index) => (
+                  <button
+                    key={index + 1}
+                    onClick={() => setCurrentPageAllMaps(index + 1)}
+                    className={currentPageAllMaps === index + 1 ? "active" : ""}
+                  >
+                    {index + 1}
+                  </button>
                 ))}
-              </tbody>
-            </table>
-            <div className="pagination">
-              {Array.from({ length: totalPagesAllMaps }, (_, index) => (
-                <button
-                  key={index + 1}
-                  onClick={() => setCurrentPageAllMaps(index + 1)}
-                  className={currentPageAllMaps === index + 1 ? "active" : ""}
-                >
-                  {index + 1}
-                </button>
-              ))}
+              </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
       )}
 
       {!isTableVisible && showMap && (
-        <div><br/><div className="centerre"> <button className="Opbutton" onClick={handleBack}>
-        Back
-    </button></div><br/><br/>
-    {loadingM && <LoadingIndicator />}
-    {/* Render parking spots in a table */}
-    <table>
-        <tbody>
-            {parkingSpots.length > 0 && (
+        <div><br /><div className="centerre"> <button className="Opbutton" onClick={handleBack}>
+          Back
+        </button></div><br /><br />
+          {loadingM && <LoadingIndicator />}
+          {/* Render parking spots in a table */}
+          <table>
+            <tbody>
+              {parkingSpots.length > 0 && (
                 [...Array(Math.max(...parkingSpots.map(spot => spot.y_axis)) + 1)].map((_, row) => (
-                    <tr key={row}>
-                        {[...Array(Math.max(...parkingSpots.map(spot => spot.x_axis)) + 1)].map((_, col) => {
-                            const spot = parkingSpots.find(s => s.x_axis === col && s.y_axis === row);
-                            return (
-                                <td className="tdspots"
-                                    key={col}
-                                    style={{ backgroundColor: spot ? getColorByStatus(spot.status, spot.sensor_status) : 'white' }}
-                                    //onClick={() => spot && flipParkingSpotStatus(spot.id)}
-                                >
-                                    {/*spot ? `Spot ${spot.id}` : 'N/A'*/}
-                                </td>
-                            );
-                        })}
-                    </tr>
+                  <tr key={row}>
+                    {[...Array(Math.max(...parkingSpots.map(spot => spot.x_axis)) + 1)].map((_, col) => {
+                      const spot = parkingSpots.find(s => s.x_axis === col && s.y_axis === row);
+                      return (
+                        <td className="tdspots"
+                          key={col}
+                          style={{ backgroundColor: spot ? getColorByStatus(spot.status, spot.sensor_status) : 'white' }}
+                        //onClick={() => spot && flipParkingSpotStatus(spot.id)}
+                        >
+                          {/*spot ? `Spot ${spot.id}` : 'N/A'*/}
+                        </td>
+                      );
+                    })}
+                  </tr>
                 ))
-            )}
-        </tbody>
-    </table>
-    </div>
+              )}
+            </tbody>
+          </table>
+        </div>
       )}
 
       <ConfirmationModal

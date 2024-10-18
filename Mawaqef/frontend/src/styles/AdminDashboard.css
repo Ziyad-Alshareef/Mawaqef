@@ -48,7 +48,7 @@
 
 }
 
-.tdspots{
+.tdspots {
     width: 50px;
     height: 50px;
 }
@@ -62,6 +62,7 @@
     top: 0;
     z-index: 1;
 }
+
 .centerre {
     margin: 0;
     position: absolute;
@@ -69,7 +70,7 @@
     left: 50%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
-  }
+}
 
 .admin-dashboard tr:nth-child(even) {
     background-color: #f2f2f2;
@@ -149,4 +150,33 @@
 
 .button-container1 {
     text-align: center;
+}
+
+@media (max-width: 768px) {
+    .table-container table {
+        width: 100%;
+        /* Keep the table full width on small screens */
+        font-size: 0.6em;
+        /* Keep the font size for tables */
+    }
+
+    .table-container th,
+    .table-container td {
+        padding: 4px;
+        /* Keep padding for table cells */
+    }
+
+    .pagination button {
+        font-size: 0.6em;
+        /* Slightly increase pagination button size */
+        padding: 6px 12px;
+        /* Adjust padding for slightly larger buttons */
+    }
+
+    .admin-dashboard button {
+        font-size: 0.6em;
+        /* Slightly increase button size */
+        padding: 6px 12px;
+        /* Adjust padding for slightly larger buttons */
+    }
 }

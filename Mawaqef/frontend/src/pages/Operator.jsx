@@ -22,7 +22,7 @@ function Operator() {
     const [showCreateMap, setShowCreateMap] = useState(false);
     const [isEditingMap, setIsEditingMap] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const cardsPerPage = 10; // Maximum cards per page
+    const [cardsPerPage, setCardsPerPage] = useState(10);
     const [loading, setLoading] = useState(true);
     const [loadingM, setLoadingM] = useState(false);
 
@@ -48,9 +48,10 @@ function Operator() {
             const res = await api.get(`/api/parking-map/${operatorId}/`);
             setParkingMaps(res.data);
             setLoading(false);
-        } catch (error) {setLoading(false);
+        } catch (error) {
+            setLoading(false);
             console.error("Failed to load parking maps", error);
-            
+
         }
     };
 
@@ -93,7 +94,7 @@ function Operator() {
                     setIsAuthorized(userRes.data.authorized);
                     if (userRes.data.authorized) {
                         fetchParkingMaps(userRes.data.id);
-                    }else setLoading(false);
+                    } else setLoading(false);
                 }
             } catch (error) {
                 console.error("Unauthorized", error);
@@ -107,9 +108,9 @@ function Operator() {
     useEffect(() => {
         if (Mapid) {
             console.log("Fetching parking spots for mapId:", Mapid);
-            
+
             fetchParkingSpots();
-            
+
             const interval = setInterval(fetchParkingSpots, 5000);
             return () => clearInterval(interval);
         }
@@ -163,12 +164,12 @@ function Operator() {
             };
 
             try {
-                const userRes2 = await api.get("/api/user/");  
+                const userRes2 = await api.get("/api/user/");
                 loadParkingMaps(userRes2.data.id);
-                
+
             } catch (error) {
                 console.error("Unauthorized", error);
-                
+
             }
             //setParkingMaps((prev) => [...prev, newMap]);
 
@@ -201,6 +202,33 @@ function Operator() {
         setLoadingM(false);
     };
 
+    useEffect(() => {
+        const updateCardsPerPage = () => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            if (height >= 1000 && width >= 500) {
+                setCardsPerPage(6);
+            }
+            else if (width >= 1200) { // Large screens
+                setCardsPerPage(12);
+            } else if (width >= 768) { // Medium screens
+                setCardsPerPage(10);
+            } else if (width >= 390) { // Phone screens
+                setCardsPerPage(2);
+            }
+            else {
+                setCardsPerPage(1); //very small
+            }
+        };
+
+        updateCardsPerPage(); // Set initial value
+        window.addEventListener('resize', updateCardsPerPage); // Update on resize
+
+        return () => {
+            window.removeEventListener('resize', updateCardsPerPage); // Cleanup
+        };
+    }, []);
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -208,7 +236,7 @@ function Operator() {
     return (
         <div className="operator-container">
             <h2 className="welcome-operator">Operator Dashboard</h2>
-            {isAuthorized && (
+            {isAuthorized && !isEditingMap && (
                 <div className="button-container">
                     <button className="Opbutton" onClick={() => { setShowParkingMaps(true); setShowCreateMap(false); }}>Show Parking Spot Maps</button>
                     <button className="Opbutton" onClick={() => { setShowParkingMaps(false); setShowCreateMap(true); }}>Create Parking Spot Map</button>
@@ -251,9 +279,9 @@ function Operator() {
             )}
 
             {isAuthorized && showCreateMap && (
-                <div className="divce">
-                    <h3 className="fontcolorsss">Create Parking Spot Map</h3>
-                    <label className="fontcolorsss">
+                <div className="create-map-container">
+                    <h3 className="create-map-heading">Create Parking Spot Map</h3>
+                    <label className="create-map-label">
                         Name:
                         <input
                             type="text"
@@ -262,7 +290,7 @@ function Operator() {
                         />
                     </label>
                     <br />
-                    <label className="fontcolorsss">
+                    <label className="create-map-label">
                         Width:
                         <input
                             type="number"
@@ -271,7 +299,7 @@ function Operator() {
                         />
                     </label>
                     <br />
-                    <label className="fontcolorsss">
+                    <label className="create-map-label">
                         Length:
                         <input
                             type="number"
@@ -280,43 +308,47 @@ function Operator() {
                         />
                     </label>
                     <br />
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    {error && <p className="error-message">{error}</p>}
                     <br />
                     {loadingM && <LoadingIndicator />}
-                    <br/>
-                    <button className="Opbutton" onClick={handleCreateParkingMap}>Create Parking Spot Map</button>
+                    <br />
+                    <button className="create-map-button" onClick={handleCreateParkingMap}>Create Parking Spot Map</button>
                 </div>
             )}
 
+
             {isAuthorized && showMap && (
-                <div><br/><div className="centerre"> <button className="Opbutton" onClick={handleBack}>
+                <>
+                    <button className="Opbutton" onClick={handleBack}>
                         Back
-                    </button></div><br/><br/>
-                    {loadingM && <LoadingIndicator />}
-                    {/* Render parking spots in a table */}
-                    <table>
-                        <tbody>
-                            {parkingSpots.length > 0 && (
-                                [...Array(Math.max(...parkingSpots.map(spot => spot.y_axis)) + 1)].map((_, row) => (
-                                    <tr key={row}>
-                                        {[...Array(Math.max(...parkingSpots.map(spot => spot.x_axis)) + 1)].map((_, col) => {
-                                            const spot = parkingSpots.find(s => s.x_axis === col && s.y_axis === row);
-                                            return (
-                                                <td
-                                                    key={col}
-                                                    style={{ backgroundColor: spot ? getColorByStatus(spot.status, spot.sensor_status) : 'white' }}
-                                                    onClick={() => spot && flipParkingSpotStatus(spot.id)}
-                                                >
-                                                    {spot ? `Spot ${spot.id}` : 'N/A'}
-                                                </td>
-                                            );
-                                        })}
-                                    </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
+                    </button>
+                    <div className="table-cont"><div className="centerre"> </div>
+                        {loadingM && <LoadingIndicator />}
+                        {/* Render parking spots in a table */}
+                        <table>
+                            <tbody>
+                                {parkingSpots.length > 0 && (
+                                    [...Array(Math.max(...parkingSpots.map(spot => spot.y_axis)) + 1)].map((_, row) => (
+                                        <tr key={row}>
+                                            {[...Array(Math.max(...parkingSpots.map(spot => spot.x_axis)) + 1)].map((_, col) => {
+                                                const spot = parkingSpots.find(s => s.x_axis === col && s.y_axis === row);
+                                                return (
+                                                    <td
+                                                        key={col}
+                                                        style={{ backgroundColor: spot ? getColorByStatus(spot.status, spot.sensor_status) : 'white' }}
+                                                        onClick={() => spot && flipParkingSpotStatus(spot.id)}
+                                                    >
+                                                        {spot ? `Spot ${spot.id}` : 'N/A'}
+                                                    </td>
+                                                );
+                                            })}
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
                     </div>
+                </>
             )}
 
             {!isAuthorized && (

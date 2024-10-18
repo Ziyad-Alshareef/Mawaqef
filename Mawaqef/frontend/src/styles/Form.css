@@ -59,6 +59,8 @@ body {
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
   margin-left: 0px;
+  margin: 0 auto;
+  margin-top: 5px;
   /* Match the button margin */
 }
 
@@ -191,6 +193,8 @@ input:checked+.slider:before {
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
   margin-left: 10px;
+  margin: 0 auto;
+  margin-top: 5px;
 
 }
 
