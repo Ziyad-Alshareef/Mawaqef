@@ -464,34 +464,37 @@ const AdminDashboard = () => {
       )}
 
       {!isTableVisible && showMap && (
-        <div><br /><div className="centerre"> <button className="Opbutton" onClick={handleBack}>
-          Back
-        </button></div><br /><br />
-          {loadingM && <LoadingIndicator />}
-          {/* Render parking spots in a table */}
-          <table>
-            <tbody>
-              {parkingSpots.length > 0 && (
-                [...Array(Math.max(...parkingSpots.map(spot => spot.y_axis)) + 1)].map((_, row) => (
-                  <tr key={row}>
-                    {[...Array(Math.max(...parkingSpots.map(spot => spot.x_axis)) + 1)].map((_, col) => {
-                      const spot = parkingSpots.find(s => s.x_axis === col && s.y_axis === row);
-                      return (
-                        <td className="tdspots"
-                          key={col}
-                          style={{ backgroundColor: spot ? getColorByStatus(spot.status, spot.sensor_status) : 'white' }}
-                        //onClick={() => spot && flipParkingSpotStatus(spot.id)}
-                        >
-                          {/*spot ? `Spot ${spot.id}` : 'N/A'*/}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+        <>
+          <br /><div className="centerre"> <button className="Opbutton" onClick={handleBack}>
+            Back
+          </button></div><br /><br />
+          <div className="table-cont">
+            {loadingM && <LoadingIndicator />}
+            {/* Render parking spots in a table */}
+            <table>
+              <tbody>
+                {parkingSpots.length > 0 && (
+                  [...Array(Math.max(...parkingSpots.map(spot => spot.y_axis)) + 1)].map((_, row) => (
+                    <tr key={row}>
+                      {[...Array(Math.max(...parkingSpots.map(spot => spot.x_axis)) + 1)].map((_, col) => {
+                        const spot = parkingSpots.find(s => s.x_axis === col && s.y_axis === row);
+                        return (
+                          <td className="tdspots"
+                            key={col}
+                            style={{ backgroundColor: spot ? getColorByStatus(spot.status, spot.sensor_status) : 'white' }}
+                          //onClick={() => spot && flipParkingSpotStatus(spot.id)}
+                          >
+                            {/*spot ? `Spot ${spot.id}` : 'N/A'*/}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
 
       <ConfirmationModal
