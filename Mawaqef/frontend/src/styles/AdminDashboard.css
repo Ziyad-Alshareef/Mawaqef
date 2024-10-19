@@ -18,10 +18,10 @@
 
 .table-container {
     max-height: calc(100vh - 140px);
-    /* Use max-height instead of height */
+
 
     overflow-y: auto;
-    /* Keep this for scrolling */
+
 
 }
 
@@ -155,28 +155,81 @@
 @media (max-width: 768px) {
     .table-container table {
         width: 100%;
-        /* Keep the table full width on small screens */
+
         font-size: 0.6em;
-        /* Keep the font size for tables */
+
     }
 
     .table-container th,
     .table-container td {
-        padding: 4px;
-        /* Keep padding for table cells */
+        padding: 6px;
+
     }
 
     .pagination button {
         font-size: 0.6em;
-        /* Slightly increase pagination button size */
+
         padding: 6px 12px;
-        /* Adjust padding for slightly larger buttons */
+
     }
 
     .admin-dashboard button {
-        font-size: 0.6em;
-        /* Slightly increase button size */
-        padding: 6px 12px;
-        /* Adjust padding for slightly larger buttons */
+        font-size: 0.4em;
+
+        padding: 10px 10px;
+
+    }
+}
+
+@media (max-width: 480px) {
+    table {
+        width: 100%;
+
+        font-size: 10px;
+
+    }
+
+    th,
+    td {
+        padding: 4px;
+
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-dashboard h1 {
+        color: #333;
+
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: 1.75em;
+        padding-top: 20px;
+    }
+
+    .Table-heading {
+        font-size: 1.5em;
+    }
+
+    table {
+        width: 85%;
+        font-size: 12px;
+    }
+
+    th,
+    td {
+        padding: 6px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    table {
+        width: 100%;
+        font-size: 10px;
+    }
+
+    th,
+    td {
+        padding: 4px;
     }
 }

@@ -1,30 +1,30 @@
 .table-cont {
   overflow-x: auto;
   overflow-y: auto;
-  /* Both horizontal and vertical scrolling enabled */
+
   max-width: 1500px;
   max-height: 650px;
-  /* Scroll constraints */
+
   border: 1px solid #ccc;
   border-radius: 5px;
   margin: 0 auto;
   display: block;
   white-space: nowrap;
-  /* Prevents content wrapping inside the container */
+
 }
 
-/* Table styling */
+
 table {
   border-collapse: collapse;
   width: max-content;
-  /* Ensures the table takes up only the necessary space */
+
   min-width: 100%;
-  /* Prevents the table from shrinking below the container width */
+
   table-layout: fixed;
-  /* Makes table cells a fixed size, respecting the container width */
+
 }
 
-/* Table cell and header borders */
+
 table,
 th,
 td {
@@ -36,10 +36,18 @@ td {
   padding: 10px;
   text-align: left;
   white-space: nowrap;
-  /* Prevent text wrapping inside table cells */
+
+
 }
 
-/* Table header styling */
+td {
+  border: 1px solid black;
+  word-wrap: break-word;
+  /* Prevents overflow into neighboring cells */
+  overflow: scroll;
+  /* Hides any overflow text */
+}
+
 th {
   background-color: #f2f2f2;
 }
@@ -47,47 +55,47 @@ th {
 .create-map-container {
   background-color: #ffffff;
   border-radius: 8px;
-  /* Reduced border radius */
+
   padding: 15px;
-  /* Reduced padding for compactness */
+
   width: 350px;
-  /* Reduced width */
+
   margin: 10px auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
 
 }
 
-/* Heading styling */
+
 .create-map-heading {
   font-size: 20px;
-  /* Reduced font size */
+
   color: #2c3e50;
   margin-bottom: 10px;
-  /* Reduced margin */
+
   text-align: center;
   font-weight: bold;
 }
 
-/* Label and input styling */
+
 .create-map-label {
   display: block;
   font-size: 14px;
-  /* Reduced font size */
+
   color: #34495e;
   margin-bottom: 6px;
-  /* Reduced margin */
+
 }
 
 .create-map-label input {
   display: block;
   width: 90%;
   padding: 8px;
-  /* Reduced padding */
+
   margin-top: 4px;
   border: 1px solid #bdc3c7;
   border-radius: 4px;
-  /* Slightly reduced border radius */
+
   font-size: 14px;
   transition: border-color 0.3s;
 }
@@ -97,30 +105,30 @@ th {
   outline: none;
 }
 
-/* Error message styling */
+
 .error-message {
   color: #e74c3c;
   font-size: 12px;
-  /* Reduced font size */
+
   margin-top: 8px;
   text-align: center;
 }
 
-/* Button styling */
+
 .create-map-button {
   background-color: #40648a;
   color: white;
   border: none;
   border-radius: 4px;
-  /* Reduced border radius */
+
   padding: 10px 16px;
-  /* Reduced padding */
+
   font-size: 14px;
   cursor: pointer;
   display: block;
   width: 100%;
   margin-top: 15px;
-  /* Reduced margin */
+
   text-align: center;
   transition: background-color 0.3s;
 }
@@ -130,24 +138,24 @@ th {
 }
 
 
-/* Loading indicator styling */
+
 .loading-indicator {
   text-align: center;
   margin-top: 15px;
   font-size: 16px;
-  /* Increased font size for visibility */
+
   color: #7f8c8d;
-  /* Softer color for loading text */
+
 }
 
 .card-container {
   display: flex;
   flex-wrap: wrap;
-  /* Allow cards to wrap to the next line */
+
   justify-content: flex-start;
-  /* Align cards to the start */
+
   gap: 20px;
-  /* Space between cards */
+
   height: auto;
   width: auto;
 
@@ -155,19 +163,19 @@ th {
 
 .card {
   background-color: #f9f9f9;
-  /* Card background color */
+
   border: 1px solid #ddd;
-  /* Card border */
+
   border-radius: 8px;
-  /* Rounded corners */
+
   padding: 15px;
-  /* Inner padding */
+
   width: calc(20% - 20px);
-  /* 5 cards in a row, accounting for gap */
+
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  /* Subtle shadow for card effect */
+
   transition: transform 0.2s;
-  /* Animation for hover effect */
+
   height: auto;
   width: auto;
   text-align: center;
@@ -175,7 +183,7 @@ th {
 
 .card:hover {
   transform: scale(1.05);
-  /* Slightly enlarge card on hover */
+
 }
 
 div {
@@ -266,13 +274,13 @@ form input[type="submit"]:hover {
 
 .operator-container {
   margin-top: 15px;
-  /* Adjust as needed */
+
   padding: 0 20px;
-  /* Optional: Add some padding */
+
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  /* Align items to the start (top) */
+
   font-family: Arial, sans-serif;
   padding: 20px;
   min-height: 100vh;
@@ -307,7 +315,7 @@ form input[type="submit"]:hover {
 .centerre {
   margin: 0;
   position: absolute;
-  /*top: 50%;*/
+
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
@@ -324,13 +332,13 @@ button {
 
 .operator-container {
   margin-top: 15px;
-  /* Adjust as needed */
+
   padding: 0 20px;
-  /* Optional: Add some padding */
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* Center items horizontally */
+
   font-family: Arial, sans-serif;
   padding: 20px;
   min-height: 100vh;
@@ -340,9 +348,9 @@ button {
 .button-container {
   display: flex;
   justify-content: center;
-  /* Center buttons horizontally */
+
   margin-bottom: 20px;
-  /* Add space below the buttons */
+
 }
 
 .Opbutton {
@@ -355,7 +363,7 @@ button {
   display: inline-block;
   font-size: 16px;
   margin: 4px 2px;
-  /* Space between buttons */
+
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.2s ease-in-out;
@@ -369,14 +377,14 @@ button {
 @media (max-width: 768px) {
   .card {
     width: calc(50% - 20px);
-    /* 2 cards in a row on smaller screens */
+
   }
 }
 
 @media (max-width: 480px) {
   .card {
     width: calc(100% - 20px);
-    /* 1 card in a row on very small screens */
+
   }
 }
 
@@ -384,70 +392,70 @@ form input,
 form textarea {
   width: 100%;
   padding: 10px;
-  /* Increased padding for better spacing */
+
   margin: 8px 0 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
   transition: border-color 0.3s;
-  /* Smooth transition for border color */
+
 }
 
 form input:focus,
 form textarea:focus {
   border-color: #007bff;
-  /* Change border color on focus */
+
   outline: none;
-  /* Remove default outline */
+
 }
 
-/* Confirmation message styling */
+
 .confirmation-message {
   background-color: #d4edda;
-  /* Light green background */
+
   color: #155724;
-  /* Dark green text */
+
   border: 1px solid #c3e6cb;
-  /* Border color */
+
   border-radius: 4px;
-  /* Rounded corners */
+
   padding: 10px;
-  /* Padding for spacing */
+
   margin-top: 10px;
-  /* Space above the message */
+
   text-align: center;
-  /* Center the text */
+
   font-weight: bold;
-  /* Bold text */
-  /*nn*/
+
+
 }
 
 @media (max-width: 768px) {
   table {
     width: 85%;
-    /* Reduce table width on smaller screens */
+
     font-size: 12px;
-    /* Reduce font size for better fit */
+
   }
 
   th,
   td {
     padding: 6px;
-    /* Reduce padding for table cells */
+
   }
 }
 
 @media (max-width: 480px) {
   table {
     width: 100%;
-    /* Full width on very small screens */
+
     font-size: 10px;
-    /* Further reduce font size */
+
   }
 
   th,
   td {
     padding: 4px;
-    /* Further reduce padding for table cells */
+
   }
 }
