@@ -253,6 +253,7 @@ function Operator() {
                                     <h4 className="fontcolorsss">Map ID: {map.id}</h4>
                                     <h4 className="fontcolorsss">Name: {map.name}</h4>
                                     <p className="fontcolorsss">Dimensions: {map.width} x {map.length}</p>
+                                    <p className="fontcolorsss">Status: {map.accepted ? 'Accepted' : 'Pending⏳'}</p>
                                     <button className="Opbutton" onClick={() => handleEditMap(map.id)}>Edit Parking Spot Map</button>
                                 </div>
                             ))
