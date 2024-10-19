@@ -209,11 +209,11 @@ function Operator() {
             if (height >= 1000 && width >= 500) {
                 setCardsPerPage(6);
             }
-            else if (width >= 1200) { // Large screens
+            else if (width >= 1200) {
                 setCardsPerPage(12);
-            } else if (width >= 768) { // Medium screens
+            } else if (width >= 768) {
                 setCardsPerPage(10);
-            } else if (width >= 390) { // Phone screens
+            } else if (width >= 390) {
                 setCardsPerPage(2);
             }
             else {
@@ -225,7 +225,7 @@ function Operator() {
         window.addEventListener('resize', updateCardsPerPage); // Update on resize
 
         return () => {
-            window.removeEventListener('resize', updateCardsPerPage); // Cleanup
+            window.removeEventListener('resize', updateCardsPerPage);
         };
     }, []);
 
@@ -253,7 +253,7 @@ function Operator() {
                                     <h4 className="fontcolorsss">Map ID: {map.id}</h4>
                                     <h4 className="fontcolorsss">Name: {map.name}</h4>
                                     <p className="fontcolorsss">Dimensions: {map.width} x {map.length}</p>
-                                    <p className="fontcolorsss">Status: {map.accepted ? 'Accepted' : 'Pending⏳'}</p>
+                                    <p className="fontcolorsss">Status: {map.accepted ? 'Accepted✅' : 'Pending⏳'}</p>
                                     <button className="Opbutton" onClick={() => handleEditMap(map.id)}>Edit Parking Spot Map</button>
                                 </div>
                             ))
