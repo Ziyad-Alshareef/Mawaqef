@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import api from "../api";
 import "../styles/ForgotPass.css";
+import LoadingIndicator from "../components/LoadingIndicator";
 
 function ForgotPassword() {
     const [email, setEmail] = useState('');
@@ -9,14 +10,18 @@ function ForgotPassword() {
     const [pin, setPin] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [passwordChanged, setPasswordChanged] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const handleSendPin = async () => {
         try {
+            setLoading(true);
             const response = await api.post("/api/forgot-password/", { email });
             setMessage(response.data.message);
             setPinSent(true);
+            setLoading(false);
         } catch (error) {
             setMessage(error.response.data.error);
+            setLoading(false);
         }
     };
 
@@ -30,11 +35,14 @@ function ForgotPassword() {
             return;
         }
         try {
+            setLoading(true);
             const response = await api.post('/api/reset-password/', { email, pin, new_password: newPassword });
-            setMessage(response.data.message);
+            setMessage("");
             setPasswordChanged(true);
+            setLoading(false);
         } catch (error) {
             setMessage(error.response.data.error);
+            setLoading(false);
         }
     };
 
@@ -51,6 +59,7 @@ function ForgotPassword() {
                             value={email.toLowerCase()}
                             onChange={(e) => setEmail(e.target.value)}
                         />
+                        {loading && <LoadingIndicator />}
                         <button className="forgot-password-button" onClick={handleSendPin}>Send PIN</button>
                     </div>
                 ) : !passwordChanged ? (
@@ -69,11 +78,13 @@ function ForgotPassword() {
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
                         />
+                        {loading && <LoadingIndicator />}
                         <button className="forgot-password-button" onClick={handleResetPassword}>Reset Password</button>
                     </div>
                 ) : (
                     <h4>Password reset successfully!😊</h4>
                 )}
+                {/*passwordChanged && <p>{message}</p>*/}
                 {message && <p>{message}</p>}
             </div>
             <div className="forgot-password-image"></div>

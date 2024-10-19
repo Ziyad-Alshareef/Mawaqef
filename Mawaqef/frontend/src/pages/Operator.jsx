@@ -68,13 +68,17 @@ function Operator() {
 
     const flipParkingSpotStatus = async (spotId) => {
         try {
+            setLoadingM(true);
             const response = await api.patch(`/api/parking-spot/${spotId}/flip-status/`);
             const updatedSpot = response.data;
+            fetchParkingSpots();
             setParkingSpots((prevSpots) =>
                 prevSpots.map((spot) => (spot.id === spotId ? updatedSpot : spot))
             );
+            setLoadingM(false);
         } catch (error) {
             console.error("Error flipping parking spot status:", error);
+            setLoadingM(false);
         }
     };
 
@@ -322,9 +326,9 @@ function Operator() {
                 <>
                     <button className="Opbutton" onClick={handleBack}>
                         Back
-                    </button>
+                    </button>{loadingM && <LoadingIndicator />}
                     <div className="table-cont"><div className="centerre"> </div>
-                        {loadingM && <LoadingIndicator />}
+                        
                         {/* Render parking spots in a table */}
                         <table>
                             <tbody>
@@ -337,9 +341,9 @@ function Operator() {
                                                     <td
                                                         key={col}
                                                         style={{ backgroundColor: spot ? getColorByStatus(spot.status, spot.sensor_status) : 'white' }}
-                                                        onClick={() => spot && flipParkingSpotStatus(spot.id)}
-                                                    >
-                                                        {spot ? `Spot ${spot.id}` : 'N/A'}
+                                                        
+                                                    >{/* onClick={() => spot && flipParkingSpotStatus(spot.id)} */}
+                                                        {spot ? `${spot.id}` : 'N/A'}
                                                     </td>
                                                 );
                                             })}

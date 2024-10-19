@@ -79,6 +79,7 @@ const AdminDashboard = () => {
 
   const fetchParkingSpots = async () => {
     try {
+      
       const response = await api.get(`/api/parking-map/${Mapid}/spots/`);
       setParkingSpots(response.data);
       setLoadingM(false);
@@ -88,7 +89,7 @@ const AdminDashboard = () => {
   };
   useEffect(() => {
     if (Mapid) {
-      console.log("Fetching parking spots for mapId:", Mapid);
+      console.log("Fetching parking spots for mapId:", Mapid);setParkingSpots([])
       fetchParkingSpots();
       const interval = setInterval(fetchParkingSpots, 5000);
       return () => clearInterval(interval);
@@ -430,6 +431,7 @@ const AdminDashboard = () => {
                     <th>Organization</th>
                     <th>Email</th>
                     <th>Map name</th>
+                    <th>Spots</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -439,6 +441,7 @@ const AdminDashboard = () => {
                       <td>{Map.org}</td>
                       <td>{Map.email}</td>
                       <td>{Map.name}</td>
+                      <td><button className="Opbutton" onClick={() => handleEditMap(Map.id)}>Show Parking Spots</button></td>
                       <td>
 
                         <button onClick={() => openModalM(Map, 'delete')}>Delete</button> {/* Delete button */}
