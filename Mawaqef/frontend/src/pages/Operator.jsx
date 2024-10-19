@@ -338,7 +338,7 @@ function Operator() {
                                             {[...Array(Math.max(...parkingSpots.map(spot => spot.x_axis)) + 1)].map((_, col) => {
                                                 const spot = parkingSpots.find(s => s.x_axis === col && s.y_axis === row);
                                                 return (
-                                                    <td
+                                                    <td className="tdspots"
                                                         key={col}
                                                         style={{ backgroundColor: spot ? getColorByStatus(spot.status, spot.sensor_status) : 'white' }}
                                                         
