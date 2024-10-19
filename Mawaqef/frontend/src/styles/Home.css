@@ -40,13 +40,7 @@ td {
 
 }
 
-td {
-  border: 1px solid black;
-  word-wrap: break-word;
-  /* Prevents overflow into neighboring cells */
-  overflow: scroll;
-  /* Hides any overflow text */
-}
+
 
 th {
   background-color: #f2f2f2;
@@ -430,7 +424,19 @@ form textarea:focus {
 
 }
 
-@media (max-width: 768px) {
+@media (max-width: 960px) {
+  td {
+    padding: 6px;
+    border: 1px solid black;
+    word-wrap: break-word;
+    /* Prevents overflow into neighboring cells */
+    overflow: auto;
+    /* Hides any overflow text */
+
+  }
+}
+
+@media (max-width: 800px) {
   table {
     width: 85%;
 
@@ -441,7 +447,20 @@ form textarea:focus {
   th,
   td {
     padding: 6px;
+    border: 1px solid black;
+    word-wrap: break-word;
+    /* Prevents overflow into neighboring cells */
+    overflow: scroll;
+    /* Hides any overflow text */
 
+  }
+
+  td {
+    border: 1px solid black;
+    word-wrap: break-word;
+    /* Prevents overflow into neighboring cells */
+    overflow: scroll;
+    /* Hides any overflow text */
   }
 }
 
@@ -457,5 +476,13 @@ form textarea:focus {
   td {
     padding: 4px;
 
+  }
+
+  td {
+    border: 1px solid black;
+    word-wrap: break-word;
+    /* Prevents overflow into neighboring cells */
+    overflow: scroll;
+    /* Hides any overflow text */
   }
 }
