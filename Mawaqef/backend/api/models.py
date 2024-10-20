@@ -154,17 +154,22 @@ def run_virtual_sensor_algorithm():
         # Get all parking spot IDs
         all_spots = list(ParkingSpot.objects.values_list('id', flat=True))
         
-        # Randomly select a subset of parking spots (e.g., 30% of all spots)
+        # Randomly select a subset of parking spots (e.g., 15% of all spots)
         num_spots = int(len(all_spots) * 0.15)  # Adjust percentage as needed
         selected_spots = random.sample(all_spots, num_spots) if num_spots > 0 else []
         
         # Update the randomly selected spots
         for spot_id in selected_spots:
-            spot = ParkingSpot.objects.get(id=spot_id)
-            spot.flip_status()
+            try:
+                spot = ParkingSpot.objects.get(id=spot_id)
+                spot.flip_status()
+            except ParkingSpot.DoesNotExist:
+                print(f"ParkingSpot with id {spot_id} does not exist.")
+            except Exception as e:
+                print(f"Error occurred while updating ParkingSpot {spot_id}: {e}")
         
         time.sleep(10)  # Run every 10 seconds
-
+        
 # Starting the background algorithm
 thread = threading.Thread(target=run_virtual_sensor_algorithm)
 thread.daemon = True

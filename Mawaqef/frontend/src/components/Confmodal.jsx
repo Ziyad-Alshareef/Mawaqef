@@ -20,7 +20,7 @@ const Confmodal = ({ isOpen, onClose, onConfirm, mapDetails, actionType }) => {
                 <p>{actionMessage}</p>
                 <p>Organization: {mapDetails?.org}</p>
                 <p>Operator Email: {mapDetails?.email}</p>
-                <p>Map Name {mapDetails?.name}</p>
+                <p>Map Name: {mapDetails?.name}</p>
                 <button onClick={onConfirm}>Yes</button>
                 <button onClick={onClose}>No</button>
             </div>

@@ -32,6 +32,7 @@ const AdminDashboard = () => {
   const [Mapid, setMapid] = useState("");
   const [parkingSpots, setParkingSpots] = useState([]);
   const [loadingM, setLoadingM] = useState(false);
+  const [loadingt, setLoadingt] = useState(false);
   const navigate = useNavigate();
   const rowsPerPage = 5;
 
@@ -171,7 +172,8 @@ const AdminDashboard = () => {
     setIsModalOpen(false);
     setIsTableVisible(true); // Show the table again after confirmation
   };
-  const handleConfirmM = async () => {
+  const handleConfirmM = async () => {setIsModalOpenM(false);
+    setLoadingt(true);
     if (actionTypeM === 'accept') {
       await handleAcceptM(currentMap.id);
     } else if (actionTypeM === 'reject') {
@@ -179,7 +181,7 @@ const AdminDashboard = () => {
     } else if (actionTypeM === 'delete') {
       await handleDeleteM(currentMap.id);
     }
-    setIsModalOpenM(false);
+    setLoadingt(false);
     setIsTableVisible(true); // Show the table again after confirmation
   };
 
@@ -208,6 +210,8 @@ const AdminDashboard = () => {
     try {
       await api.delete(`/api/operators/${operatorId}/Reject/`); // Use the correct endpoint
       setAllOperators((prev) => prev.filter((operator) => operator.id !== operatorId));
+      await fetchAllAuthMaps();
+      await fetchNonAutMaps();
     } catch (error) {
       console.error("Error deleting operator", error);
     }
@@ -277,7 +281,8 @@ const AdminDashboard = () => {
         <button onClick={() => { setShowAuthorized(false); setShowAllAuthorized(false); setShowNonAuthMaps(true); setShowAllAutMaps(false); }}>Show To Accept Maps</button>
         <button onClick={() => { setShowAuthorized(false); setShowAllAuthorized(false); setShowNonAuthMaps(false); setShowAllAutMaps(true); }}>Show All Accepted Maps</button>
       </div>
-
+      <br/>
+      {loadingt && <LoadingIndicator />}
       {showAuthorized && isTableVisible && ( // Check if the table should be visible
         <div className="table-container">
           <h2 className='Table-heading'>Accept Operators</h2>
@@ -470,9 +475,9 @@ const AdminDashboard = () => {
         <>
           <br /><div className="centerre"> <button className="Opbutton" onClick={handleBack}>
             Back
-          </button></div><br /><br />
+          </button></div><br />{loadingM && <LoadingIndicator />}<br />
           <div className="table-cont">
-            {loadingM && <LoadingIndicator />}
+            
             {/* Render parking spots in a table */}
             <table>
               <tbody>

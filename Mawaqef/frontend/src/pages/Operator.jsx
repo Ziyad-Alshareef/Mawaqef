@@ -17,6 +17,7 @@ function Operator() {
     const [Mapid, setMapid] = useState("");
     const [parkingSpots, setParkingSpots] = useState([]);
     const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
     const [mapId, setMapId] = useState("");
     const [showParkingMaps, setShowParkingMaps] = useState(false);
     const [showCreateMap, setShowCreateMap] = useState(false);
@@ -142,6 +143,7 @@ function Operator() {
 
     const handleCreateParkingMap = async () => {
         setError(null);
+        setSuccess(null);
 
 
         if (dimensions.width < 1 || dimensions.length < 1) {
@@ -149,6 +151,10 @@ function Operator() {
             return;
         }
 
+        if (name.length < 1 ) {
+            setError("Name cannot be empty.");
+            return;
+        }
         try {
             setLoadingM(true);
             const res = await api.post("/api/create-parking-map/", {
@@ -178,9 +184,10 @@ function Operator() {
             //setParkingMaps((prev) => [...prev, newMap]);
 
 
-            setShowCreateMap(false);
+            //setShowCreateMap(false);
             setLoadingM(false);
             setName("");
+            setSuccess("Parking Spots Map added successfully!")
             setDimensions({ width: 0, length: 0 });
         } catch (error) {
             console.error("Error creating parking map", error);
@@ -243,7 +250,7 @@ function Operator() {
             {isAuthorized && !isEditingMap && (
                 <div className="button-container">
                     <button className="Opbutton" onClick={() => { setShowParkingMaps(true); setShowCreateMap(false); }}>Show Parking Spot Maps</button>
-                    <button className="Opbutton" onClick={() => { setShowParkingMaps(false); setShowCreateMap(true); }}>Create Parking Spot Map</button>
+                    <button className="Opbutton" onClick={() => { setShowParkingMaps(false); setShowCreateMap(true); setError(null); setSuccess(null); }}>Create Parking Spot Map</button>
                 </div>
             )}
 
@@ -314,6 +321,7 @@ function Operator() {
                     </label>
                     <br />
                     {error && <p className="error-message">{error}</p>}
+                    {success && <p className="success-message">{success}</p>}
                     <br />
                     {loadingM && <LoadingIndicator />}
                     <br />

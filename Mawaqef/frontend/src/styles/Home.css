@@ -108,7 +108,13 @@ th {
   text-align: center;
 }
 
+.success-message {
+  color: green;
+  font-size: 12px;
 
+  margin-top: 8px;
+  text-align: center;
+}
 .create-map-button {
   background-color: #40648a;
   color: white;
