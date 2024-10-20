@@ -193,6 +193,7 @@ class CreateParkingSpotsMapView(APIView):
             length = request.data.get('length')
             width = request.data.get('width')
             orientation = request.data.get('orientation')
+            loc = request.data.get('loc')
             
             parking_map = ParkingSpotsMap.objects.create(
                 operator=request.user,
@@ -201,7 +202,8 @@ class CreateParkingSpotsMapView(APIView):
                 width=width,
                 orientation=orientation,
                 org=request.user.organization,
-                email=request.user.email
+                email=request.user.email,
+                loc = loc
             )
             
             # Automatically generate parking spots and sensors

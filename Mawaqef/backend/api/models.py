@@ -88,6 +88,7 @@ class ParkingSpotsMap(models.Model):
     accepted = models.BooleanField(default=False)
     org = models.CharField(max_length=255, blank=True, null=True)  # Organization for Operators
     email = models.EmailField(max_length=255)
+    loc = models.CharField(max_length=255)
 
     def __str__(self):
         return f"Map {self.id} by {self.operator.email}"
@@ -169,7 +170,7 @@ def run_virtual_sensor_algorithm():
                 print(f"Error occurred while updating ParkingSpot {spot_id}: {e}")
         
         time.sleep(10)  # Run every 10 seconds
-        
+
 # Starting the background algorithm
 thread = threading.Thread(target=run_virtual_sensor_algorithm)
 thread.daemon = True

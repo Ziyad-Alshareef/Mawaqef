@@ -387,6 +387,7 @@ const AdminDashboard = () => {
                     <th>Organization</th>
                     <th>Email</th>
                     <th>Map name</th>
+                    <th>Location</th>
                     <th>Spots</th>
                     <th>Actions</th>
                   </tr>
@@ -397,6 +398,7 @@ const AdminDashboard = () => {
                       <td>{Map.org}</td>
                       <td>{Map.email}</td>
                       <td>{Map.name}</td>
+                      <td><a href={Map.loc}> Location</a></td>
                       <td><button className="Opbutton" onClick={() => handleEditMap(Map.id)}>Show Parking Spots</button></td>
                       <td>
                         <button onClick={() => openModalM(Map, 'accept')}>Accept</button> {/* Delete button */}
@@ -436,6 +438,7 @@ const AdminDashboard = () => {
                     <th>Organization</th>
                     <th>Email</th>
                     <th>Map name</th>
+                    <th>Location</th>
                     <th>Spots</th>
                     <th>Actions</th>
                   </tr>
@@ -446,6 +449,7 @@ const AdminDashboard = () => {
                       <td>{Map.org}</td>
                       <td>{Map.email}</td>
                       <td>{Map.name}</td>
+                      <td><a href={Map.loc}> Location</a></td>
                       <td><button className="Opbutton" onClick={() => handleEditMap(Map.id)}>Show Parking Spots</button></td>
                       <td>
 

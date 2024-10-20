@@ -11,6 +11,7 @@ function Operator() {
     const [dimensions, setDimensions] = useState({ width: 0, length: 0 });
     const [orientation, setOrientation] = useState("horizontal");
     const [name, setName] = useState("");
+    const [loc, setLoc] = useState("");
     const [showAllMaps, setShowAllMaps] = useState(true);
     const [showAddMap, setshowAddMap] = useState(false);
     const [showMap, setShowMap] = useState(false);
@@ -162,6 +163,7 @@ function Operator() {
                 width: parseInt(dimensions.width),
                 length: parseInt(dimensions.length),
                 orientation: orientation,
+                loc : loc
             });
 
 
@@ -171,6 +173,7 @@ function Operator() {
                 width: res.data.width,
                 length: res.data.length,
                 orientation: res.data.orientation,
+                loc: res.data.loc,
             };
 
             try {
@@ -187,6 +190,7 @@ function Operator() {
             //setShowCreateMap(false);
             setLoadingM(false);
             setName("");
+            setLoc("");
             setSuccess("Parking Spots Map added successfully!")
             setDimensions({ width: 0, length: 0 });
         } catch (error) {
@@ -263,6 +267,7 @@ function Operator() {
                                 <div className="card" key={map.id}>
                                     <h4 className="fontcolorsss">Map ID: {map.id}</h4>
                                     <h4 className="fontcolorsss">Name: {map.name}</h4>
+                                    <a href={map.loc}> Location</a>
                                     <p className="fontcolorsss">Dimensions: {map.width} x {map.length}</p>
                                     <p className="fontcolorsss">Status: {map.accepted ? 'Accepted✅' : 'Pending⏳'}</p>
                                     <button className="Opbutton" onClick={() => handleEditMap(map.id)}>Edit Parking Spot Map</button>
@@ -317,6 +322,15 @@ function Operator() {
                             type="number"
                             value={dimensions.length}
                             onChange={(e) => setDimensions({ ...dimensions, length: e.target.value })}
+                        />
+                    </label>
+                    <br/>
+                    <label className="create-map-label">
+                        Location:
+                        <input
+                            type="text"
+                            value={loc}
+                            onChange={(e) => setLoc(e.target.value)}
                         />
                     </label>
                     <br />
