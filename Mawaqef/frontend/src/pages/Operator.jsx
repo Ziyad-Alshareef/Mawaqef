@@ -232,6 +232,9 @@ function Operator() {
             else if (height < 846) {
                 setCardsPerPage(1);
             }
+            else if (height ==1024 && width ==768){
+                setCardsPerPage(2);
+            }
             else if (width >= 1200) {
                 setCardsPerPage(12);
             } else if (width >= 768) {
