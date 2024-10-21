@@ -1,8 +1,14 @@
+.card {
+  color: #333;
+  font-size: 1em;
+}
+
 .table-cont {
   overflow-x: auto;
   overflow-y: auto;
 
-  max-width: 1500px;
+  max-width: 1550px;
+  /* عرض الجدول*/
   max-height: 650px;
 
   border: 1px solid #ccc;
@@ -115,6 +121,7 @@ th {
   margin-top: 8px;
   text-align: center;
 }
+
 .create-map-button {
   background-color: #40648a;
   color: white;
@@ -152,12 +159,13 @@ th {
   display: flex;
   flex-wrap: wrap;
 
-  justify-content: flex-start;
+  justify-content: center;
 
   gap: 20px;
 
   height: auto;
   width: auto;
+
 
 }
 
@@ -169,6 +177,7 @@ th {
   border-radius: 8px;
 
   padding: 15px;
+  padding-top: 1px;
 
   width: calc(20% - 20px);
 
@@ -179,6 +188,8 @@ th {
   height: auto;
   width: auto;
   text-align: center;
+
+
 }
 
 .card:hover {
@@ -216,6 +227,7 @@ div {
 
 .fontcolorsss {
   color: #333;
+  margin: 15px;
 }
 
 .notes-section h2 {
@@ -435,7 +447,16 @@ form textarea:focus {
 
 }
 
+
+
+
+
+
+
+
+
 @media (max-width: 960px) {
+
   td {
     padding: 6px;
     border: 1px solid black;
@@ -448,6 +469,7 @@ form textarea:focus {
 }
 
 @media (max-width: 800px) {
+
   table {
     width: 85%;
 
@@ -475,7 +497,10 @@ form textarea:focus {
   }
 }
 
+
+
 @media (max-width: 480px) {
+
   table {
     width: 100%;
 
@@ -495,5 +520,164 @@ form textarea:focus {
     /* Prevents overflow into neighboring cells */
     overflow: scroll;
     /* Hides any overflow text */
+  }
+}
+
+
+
+@media (max-width: 800px) {
+  .table-cont {
+    max-width: 500px;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .table-cont {
+    max-width: 375px;
+    max-height: 700px;
+  }
+}
+
+@media (max-width: 391px) {
+  .table-cont {
+    max-width: 320px;
+    max-height: 500px;
+  }
+
+
+}
+
+/* حق الريسبونسفنس */
+
+@media (max-width: 1369px) {
+  .table-cont {
+    max-width: 1200px;
+  }
+}
+
+@media (max-width: 1260px) {
+  .table-cont {
+    max-width: 1100px;
+  }
+}
+
+
+@media (max-width: 1160px) {
+  .table-cont {
+    max-width: 1000px;
+  }
+}
+
+
+@media (max-width: 1060px) {
+  .table-cont {
+    max-width: 900px;
+  }
+}
+
+@media (max-width: 960px) {
+  .table-cont {
+    max-width: 800px;
+  }
+}
+
+@media (max-width: 860px) {
+  .table-cont {
+    max-width: 700px;
+  }
+}
+
+@media (max-width: 760px) {
+  .table-cont {
+    max-width: 600px;
+  }
+}
+
+@media (max-width: 660px) {
+  .table-cont {
+    max-width: 500px;
+  }
+}
+
+@media (max-width: 560px) {
+  .table-cont {
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 460px) {
+  .table-cont {
+    max-width: 350px;
+  }
+}
+
+@media (max-width: 360px) {
+  .table-cont {
+    max-width: 200px;
+  }
+}
+
+/* حق الاطوال */
+/*
+@media (max-height: 668px) {
+  .table-cont {
+    max-height: 230px;
+  }
+}
+
+@media (max-height: 768px) {
+  .table-cont {
+    max-height: 280px;
+  }
+}
+
+@media (max-height: 868px) {
+  .table-cont {
+    max-height: 330px;
+  }
+}
+
+@media (max-height: 968px) {
+  .table-cont {
+    max-height: 380px;
+  }
+}
+
+@media (max-height: 1068px) {
+  .table-cont {
+    max-height: 430px;
+  }
+}
+
+@media (max-height: 1168px) {
+  .table-cont {
+    max-height: 480px;
+  }
+}
+
+@media (max-height: 1268px) {
+  .table-cont {
+    max-height: 530px;
+  }
+}
+
+@media (max-height: 1368px) {
+  .table-cont {
+    max-height: 580px;
+  }
+}
+
+@media (max-height: 1468px) {
+  .table-cont {
+    max-height: 630px;
+  }
+}
+  */
+
+@media (max-height: 845px) {
+  .card-container {
+    overflow: hidden;
+    max-height: 550px;
   }
 }

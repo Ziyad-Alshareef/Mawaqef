@@ -36,6 +36,7 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const rowsPerPage = 5;
 
+
   const getColorByStatus = (status, sensor_status) => {
     switch (status) {
       case "sensor":
@@ -80,7 +81,7 @@ const AdminDashboard = () => {
 
   const fetchParkingSpots = async () => {
     try {
-      
+
       const response = await api.get(`/api/parking-map/${Mapid}/spots/`);
       setParkingSpots(response.data);
       setLoadingM(false);
@@ -90,7 +91,7 @@ const AdminDashboard = () => {
   };
   useEffect(() => {
     if (Mapid) {
-      console.log("Fetching parking spots for mapId:", Mapid);setParkingSpots([])
+      console.log("Fetching parking spots for mapId:", Mapid); setParkingSpots([])
       fetchParkingSpots();
       const interval = setInterval(fetchParkingSpots, 5000);
       return () => clearInterval(interval);
@@ -172,7 +173,8 @@ const AdminDashboard = () => {
     setIsModalOpen(false);
     setIsTableVisible(true); // Show the table again after confirmation
   };
-  const handleConfirmM = async () => {setIsModalOpenM(false);
+  const handleConfirmM = async () => {
+    setIsModalOpenM(false);
     setLoadingt(true);
     if (actionTypeM === 'accept') {
       await handleAcceptM(currentMap.id);
@@ -281,7 +283,7 @@ const AdminDashboard = () => {
         <button onClick={() => { setShowAuthorized(false); setShowAllAuthorized(false); setShowNonAuthMaps(true); setShowAllAutMaps(false); }}>Show To Accept Maps</button>
         <button onClick={() => { setShowAuthorized(false); setShowAllAuthorized(false); setShowNonAuthMaps(false); setShowAllAutMaps(true); }}>Show All Accepted Maps</button>
       </div>
-      <br/>
+      <br />
       {loadingt && <LoadingIndicator />}
       {showAuthorized && isTableVisible && ( // Check if the table should be visible
         <div className="table-container">
@@ -477,11 +479,11 @@ const AdminDashboard = () => {
 
       {!isTableVisible && showMap && (
         <>
-          <br /><div className="centerre"> <button className="Opbutton" onClick={handleBack}>
+          <div className="centerre"> <button className="Opbutton" onClick={handleBack}>
             Back
           </button></div><br />{loadingM && <LoadingIndicator />}<br />
           <div className="table-cont">
-            
+
             {/* Render parking spots in a table */}
             <table>
               <tbody>

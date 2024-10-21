@@ -152,7 +152,7 @@ function Operator() {
             return;
         }
 
-        if (name.length < 1 ) {
+        if (name.length < 1) {
             setError("Name cannot be empty.");
             return;
         }
@@ -163,7 +163,7 @@ function Operator() {
                 width: parseInt(dimensions.width),
                 length: parseInt(dimensions.length),
                 orientation: orientation,
-                loc : loc
+                loc: loc
             });
 
 
@@ -221,8 +221,16 @@ function Operator() {
         const updateCardsPerPage = () => {
             const width = window.innerWidth;
             const height = window.innerHeight;
-            if (height >= 1000 && width >= 500) {
+            if (height >= 1000 && width >= 769) {
                 setCardsPerPage(6);
+            }
+            //
+            else if (height >= 1025 && width >= 768) {
+                setCardsPerPage(4);
+            }
+            //
+            else if (height < 846) {
+                setCardsPerPage(1);
             }
             else if (width >= 1200) {
                 setCardsPerPage(12);
@@ -324,7 +332,7 @@ function Operator() {
                             onChange={(e) => setDimensions({ ...dimensions, length: e.target.value })}
                         />
                     </label>
-                    <br/>
+                    <br />
                     <label className="create-map-label">
                         Location:
                         <input
@@ -350,7 +358,7 @@ function Operator() {
                         Back
                     </button>{loadingM && <LoadingIndicator />}
                     <div className="table-cont"><div className="centerre"> </div>
-                        
+
                         {/* Render parking spots in a table */}
                         <table>
                             <tbody>
@@ -363,7 +371,7 @@ function Operator() {
                                                     <td className="tdspots"
                                                         key={col}
                                                         style={{ backgroundColor: spot ? getColorByStatus(spot.status, spot.sensor_status) : 'white' }}
-                                                        
+
                                                     >{/* onClick={() => spot && flipParkingSpotStatus(spot.id)} */}
                                                         {spot ? `${spot.id}` : 'N/A'}
                                                     </td>
