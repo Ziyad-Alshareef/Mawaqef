@@ -16,6 +16,9 @@ function Operator() {
     const [showAddMap, setshowAddMap] = useState(false);
     const [showMap, setShowMap] = useState(false);
     const [Mapid, setMapid] = useState("");
+    const [OPName, setOPName] = useState("");
+    const [OPEmail, setOPEmail] = useState("");
+    const [OPPN, setOPPN] = useState("");
     const [parkingSpots, setParkingSpots] = useState([]);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
@@ -27,6 +30,58 @@ function Operator() {
     const [cardsPerPage, setCardsPerPage] = useState(10);
     const [loading, setLoading] = useState(true);
     const [loadingM, setLoadingM] = useState(false);
+    const [showProfile, setShowProfile] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [message, setMessage] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState(OPPN);
+    const [loadingP, setLoadingP] = useState(false);
+
+
+
+    const handleEditClick = () => {
+        setIsEditing(true);
+        setPhoneNumber(OPPN);
+        setMessage("");
+    };
+
+    const handleSaveClick = async () => {
+        setMessage("");
+        if (phoneNumber.length !=10){
+            setMessage("Phone number must be 10 digits long.");
+            return;
+        }
+        try {
+            setLoadingP(true);
+            await api.put("/api/update-phone/", { phone_number: phoneNumber });
+            setMessage("Phone number updated successfully!");
+            setOPPN(phoneNumber);
+            setIsEditing(false);
+            setLoadingP(false);
+        } catch (error) {
+            try {
+                setLoadingP(true);
+                await api.put("/api/update-phone/", { phone_number: phoneNumber });
+                setMessage("Phone number updated successfully!");
+                setOPPN(phoneNumber);
+                setIsEditing(false);
+                setLoadingP(false);
+            } catch (error) {
+                try {
+                    setLoadingP(true);
+                    await api.put("/api/update-phone/", { phone_number: phoneNumber });
+                    setMessage("Phone number updated successfully!");
+                    setOPPN(phoneNumber);
+                    setIsEditing(false);
+                    setLoadingP(false);
+                } catch (error) {
+                    console.error("Failed to update phone number:", error);
+                    setMessage("Failed to update phone number. Please try again.");
+                    setLoadingP(false);
+                }
+            }
+        }
+    };
+
 
     const getColorByStatus = (status, sensor_status) => {
         switch (status) {
@@ -97,6 +152,9 @@ function Operator() {
                 if (userRes.data.role !== "operator") {
                     navigate("/");
                 } else {
+                    setOPName(userRes.data.organization);
+                    setOPEmail(userRes.data.email);
+                    setOPPN(userRes.data.phone_number);
                     setIsAuthorized(userRes.data.authorized);
                     if (userRes.data.authorized) {
                         fetchParkingMaps(userRes.data.id);
@@ -264,8 +322,9 @@ function Operator() {
             <h2 className="welcome-operator">Operator Dashboard</h2>
             {isAuthorized && !isEditingMap && (
                 <div className="button-container">
-                    <button className="Opbutton" onClick={() => { setShowParkingMaps(true); setShowCreateMap(false); }}>Show Parking Spot Maps</button>
-                    <button className="Opbutton" onClick={() => { setShowParkingMaps(false); setShowCreateMap(true); setError(null); setSuccess(null); }}>Create Parking Spot Map</button>
+                    <button className="Opbutton" onClick={() => { setShowParkingMaps(true); setShowCreateMap(false); setShowProfile(false);}}>Show Parking Spot Maps</button>
+                    <button className="Opbutton" onClick={() => { setShowParkingMaps(false); setShowCreateMap(true); setShowProfile(false); setError(null); setSuccess(null); }}>Create Parking Spot Map</button>
+                    <button className="Opbutton" onClick={() => { setShowParkingMaps(false); setShowCreateMap(false); setShowProfile(true); setMessage(""); setIsEditing(false);}}>Show Profile details</button>
                 </div>
             )}
 
@@ -354,6 +413,44 @@ function Operator() {
                 </div>
             )}
 
+            {isAuthorized && showProfile && (
+                <div className="card">
+                    <h3 className="create-map-heading">Profile</h3>
+                   <br/>
+                        
+                        <h4 className="fontcolorsss">Oragnization: {OPName}</h4>
+                    
+                    <br />
+                    
+                        
+                        <h4 className="fontcolorsss">Email: {OPEmail}</h4>
+                    
+                    <br />
+                    
+                        
+                    <h4 className="fontcolorsss">
+                    Phone Number:{" "}
+                    {isEditing ? (
+                        <input
+                            type="text"
+                            value={phoneNumber}
+                            onChange={(e) => setPhoneNumber(e.target.value)}
+                        />
+                    ) : (
+                        OPPN
+                    )} 
+                    <button onClick={isEditing ? handleSaveClick : handleEditClick}>
+                        {isEditing ? "Save" : "Edit"}
+                    </button>
+                </h4>
+                <br />
+                {loadingP&& <LoadingIndicator />}
+                <br/>
+                {message && <p>{message}</p>} {/* Display success or failure message */}
+                    <br />
+                    
+                </div>
+            )}
 
             {isAuthorized && showMap && (
                 <>

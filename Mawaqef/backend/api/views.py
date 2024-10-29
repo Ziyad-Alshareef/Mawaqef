@@ -327,6 +327,18 @@ class ResetPasswordView(APIView):
         #except Operator.DoesNotExist:
           #  return Response({"error": "Operator not found"}, status=status.HTTP_404_NOT_FOUND)
 
+
+class UpdatePhoneNumberView(APIView):
+    def put(self, request):
+        user = request.user
+        phone_number = request.data.get("phone_number")
+        
+        if phone_number:
+            user.phone_number = phone_number  # assuming phone_number is in Profile model
+            user.save()
+            return Response({"message": "Phone number updated successfully"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "Phone number not provided"}, status=status.HTTP_400_BAD_REQUEST)
 '''
 
 class ParkingSpotsMapView(APIView):
