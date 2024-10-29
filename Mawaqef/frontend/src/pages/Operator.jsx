@@ -253,6 +253,7 @@ function Operator() {
             setDimensions({ width: 0, length: 0 });
         } catch (error) {
             console.error("Error creating parking map", error);
+            setError("Error creating parking map, Please try again.")
             fetchParkingMaps();
             setLoadingM(false);
         }
