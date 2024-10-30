@@ -132,23 +132,24 @@ class AuthorizeMapView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+#Updated below class to allow operators to delete there maps
 class RejectMapView(APIView):
-    permission_classes = [IsAuthenticated]
+       permission_classes = [IsAuthenticated]
 
-    def delete(self, request, map_id):
-        # Check if the user is an admin
-        if request.user.role != "admin":
-            return Response({"detail": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+       def delete(self, request, map_id):
+           # Check if the user is an admin or operator
+           if request.user.role not in ["admin", "operator"]:
+               return Response({"detail": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
 
-        # Attempt to retrieve the operator
-        try:
-            map = ParkingSpotsMap.objects.get(id=map_id)
-        except map.DoesNotExist:
-            return Response({"detail": "Map not found"}, status=status.HTTP_404_NOT_FOUND)
+           # Attempt to retrieve the map
+           try:
+               map = ParkingSpotsMap.objects.get(id=map_id)
+           except ParkingSpotsMap.DoesNotExist:
+               return Response({"detail": "Map not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        # Delete the operator from the database
-        map.delete()
-        return Response({"detail": "Map deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+           # Delete the map from the database
+           map.delete()
+           return Response({"detail": "Map deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
 
 
 class AllAuthorizedMapsView(APIView):

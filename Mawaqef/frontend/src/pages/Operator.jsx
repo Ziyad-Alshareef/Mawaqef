@@ -4,8 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN } from "../constants";
 import "../styles/Home.css";
 import LoadingIndicator from "../components/LoadingIndicator";
+import ConfirmationModal from "../components/ConfirmationModal";
 
 function Operator() {
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     const [isAuthorized, setIsAuthorized] = useState(false);
     const [parkingMaps, setParkingMaps] = useState([]);
     const [dimensions, setDimensions] = useState({ width: 0, length: 0 });
@@ -317,7 +321,17 @@ function Operator() {
     if (loading) {
         return <div>Loading...</div>;
     }
-
+    const handleDeleteMap = async (mapId) => {
+        try {
+            setLoadingM(true);
+            await api.delete(`/api/map/${mapId}/Reject/`); // API call to delete the map
+            setParkingMaps((prevMaps) => prevMaps.filter((map) => map.id !== mapId)); // Update state to remove the deleted map
+            setLoadingM(false);
+        } catch (error) {
+            console.error("Error deleting parking map:", error);
+            setLoadingM(false);
+        }
+    };
     return (
         <div className="operator-container">
             <h2 className="welcome-operator">Operator Dashboard</h2>
@@ -326,7 +340,7 @@ function Operator() {
                     <button className="Opbutton" onClick={() => { setShowParkingMaps(true); setShowCreateMap(false); setShowProfile(false); }}>Show Parking Spot Maps</button>
                     <button className="Opbutton" onClick={() => { setShowParkingMaps(false); setShowCreateMap(true); setShowProfile(false); setError(null); setSuccess(null); }}>Create Parking Spot Map</button>
                     <button className="Opbutton" onClick={() => { setShowParkingMaps(false); setShowCreateMap(false); setShowProfile(true); setMessage(""); setIsEditing(false); }}>Show Profile details</button>
-                </div>
+                    <button className="Opbutton" onClick={() => handleDeleteMap(map.id)}>Delete Map</button>              </div>
             )}
 
             {isAuthorized && showParkingMaps && (
@@ -336,12 +350,13 @@ function Operator() {
                         {currentCards.length > 0 ? (
                             currentCards.map((map) => (
                                 <div className="card" key={map.id}>
-                                    <h4 className="fontcolorsss">Map ID: {map.id}</h4>
+                                    {/* <h4 className="fontcolorsss">Map ID: {map.id}</h4> */}
                                     <h4 className="fontcolorsss">Name: {map.name}</h4>
                                     <a href={map.loc}> Location</a>
                                     <p className="fontcolorsss">Dimensions: {map.width} x {map.length}</p>
                                     <p className="fontcolorsss">Status: {map.accepted ? 'Accepted✅' : 'Pending⏳'}</p>
-                                    <button className="Opbutton" onClick={() => handleEditMap(map.id)}>Edit Parking Spot Map</button>
+                                    <button className="Opbutton" onClick={() => handleEditMap(map.id)}>Edit Parking Spot Map</button><br />
+                                    <button className="Opbutton" onClick={() => handleDeleteMap(map.id)}>Delete Map</button>
                                 </div>
                             ))
                         ) : (
