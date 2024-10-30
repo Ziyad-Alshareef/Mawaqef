@@ -278,10 +278,10 @@ const AdminDashboard = () => {
     <div className="admin-dashboard">
       <h1>Admin Dashboard</h1>
       <div className="button-container1">
-        <button onClick={() => { setShowAuthorized(true); setShowAllAuthorized(false); setShowNonAuthMaps(false); setShowAllAutMaps(false); }}>Show To Accept Operators</button>
-        <button onClick={() => { setShowAuthorized(false); setShowAllAuthorized(true); setShowNonAuthMaps(false); setShowAllAutMaps(false); }}>Show All Accepted Operators</button>
-        <button onClick={() => { setShowAuthorized(false); setShowAllAuthorized(false); setShowNonAuthMaps(true); setShowAllAutMaps(false); }}>Show To Accept Maps</button>
-        <button onClick={() => { setShowAuthorized(false); setShowAllAuthorized(false); setShowNonAuthMaps(false); setShowAllAutMaps(true); }}>Show All Accepted Maps</button>
+        <button onClick={() => { setShowAuthorized(true); setShowAllAuthorized(false); setShowNonAuthMaps(false); setShowAllAutMaps(false); }}>Pending Operators Requests</button>
+        <button onClick={() => { setShowAuthorized(false); setShowAllAuthorized(true); setShowNonAuthMaps(false); setShowAllAutMaps(false); }}>All Accepted Operators</button>
+        <button onClick={() => { setShowAuthorized(false); setShowAllAuthorized(false); setShowNonAuthMaps(true); setShowAllAutMaps(false); }}>Pending Maps Requests</button>
+        <button onClick={() => { setShowAuthorized(false); setShowAllAuthorized(false); setShowNonAuthMaps(false); setShowAllAutMaps(true); }}>All Accepted Maps</button>
       </div>
       <br />
       {loadingt && <LoadingIndicator />}
