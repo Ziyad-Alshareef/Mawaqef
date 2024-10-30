@@ -46,7 +46,7 @@ function Operator() {
 
     const handleSaveClick = async () => {
         setMessage("");
-        if (phoneNumber.length !=10){
+        if (phoneNumber.length != 10) {
             setMessage("Phone number must be 10 digits long.");
             return;
         }
@@ -291,7 +291,7 @@ function Operator() {
             else if (height < 846) {
                 setCardsPerPage(1);
             }
-            else if (height ==1024 && width ==768){
+            else if (height == 1024 && width == 768) {
                 setCardsPerPage(2);
             }
             else if (width >= 1200) {
@@ -323,9 +323,9 @@ function Operator() {
             <h2 className="welcome-operator">Operator Dashboard</h2>
             {isAuthorized && !isEditingMap && (
                 <div className="button-container">
-                    <button className="Opbutton" onClick={() => { setShowParkingMaps(true); setShowCreateMap(false); setShowProfile(false);}}>Show Parking Spot Maps</button>
+                    <button className="Opbutton" onClick={() => { setShowParkingMaps(true); setShowCreateMap(false); setShowProfile(false); }}>Show Parking Spot Maps</button>
                     <button className="Opbutton" onClick={() => { setShowParkingMaps(false); setShowCreateMap(true); setShowProfile(false); setError(null); setSuccess(null); }}>Create Parking Spot Map</button>
-                    <button className="Opbutton" onClick={() => { setShowParkingMaps(false); setShowCreateMap(false); setShowProfile(true); setMessage(""); setIsEditing(false);}}>Show Profile details</button>
+                    <button className="Opbutton" onClick={() => { setShowParkingMaps(false); setShowCreateMap(false); setShowProfile(true); setMessage(""); setIsEditing(false); }}>Show Profile details</button>
                 </div>
             )}
 
@@ -416,40 +416,40 @@ function Operator() {
 
             {isAuthorized && showProfile && (
                 <div className="card">
-                    <h3 className="create-map-heading">Profile</h3>
-                   <br/>
-                        
-                        <h4 className="fontcolorsss">Oragnization: {OPName}</h4>
-                    
+                    <h2 className="proffont">Profile</h2>
+
+
+                    <h4 className="proffont">Oragnization: {OPName}</h4>
+
+
+
+
+                    <h4 className="proffont">Email: {OPEmail}</h4>
+
+
+
+
+                    <h4 className="proffont">
+                        Phone Number:{" "}
+                        {isEditing ? (
+                            <input
+                                type="text"
+                                value={phoneNumber}
+                                onChange={(e) => setPhoneNumber(e.target.value)}
+                            />
+                        ) : (
+                            OPPN
+                        )}
+                        <br /><br /><button className="Opbutton" onClick={isEditing ? handleSaveClick : handleEditClick}>
+                            {isEditing ? "Save" : "Edit"}
+                        </button>
+                    </h4>
                     <br />
-                    
-                        
-                        <h4 className="fontcolorsss">Email: {OPEmail}</h4>
-                    
+                    {loadingP && <LoadingIndicator />}
                     <br />
-                    
-                        
-                    <h4 className="fontcolorsss">
-                    Phone Number:{" "}
-                    {isEditing ? (
-                        <input
-                            type="text"
-                            value={phoneNumber}
-                            onChange={(e) => setPhoneNumber(e.target.value)}
-                        />
-                    ) : (
-                        OPPN
-                    )} 
-                    <button onClick={isEditing ? handleSaveClick : handleEditClick}>
-                        {isEditing ? "Save" : "Edit"}
-                    </button>
-                </h4>
-                <br />
-                {loadingP&& <LoadingIndicator />}
-                <br/>
-                {message && <p>{message}</p>} {/* Display success or failure message */}
+                    {message && <p>{message}</p>} {/* Display success or failure message */}
                     <br />
-                    
+
                 </div>
             )}
 
