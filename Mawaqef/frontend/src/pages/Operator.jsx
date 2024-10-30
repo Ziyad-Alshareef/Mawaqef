@@ -8,8 +8,6 @@ import ConfirmationModal from "../components/ConfirmationModal";
 
 function Operator() {
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
     const [isAuthorized, setIsAuthorized] = useState(false);
     const [parkingMaps, setParkingMaps] = useState([]);
     const [dimensions, setDimensions] = useState({ width: 0, length: 0 });
@@ -321,17 +319,21 @@ function Operator() {
     if (loading) {
         return <div>Loading...</div>;
     }
+
+
+
     const handleDeleteMap = async (mapId) => {
         try {
             setLoadingM(true);
-            await api.delete(`/api/map/${mapId}/Reject/`); // API call to delete the map
-            setParkingMaps((prevMaps) => prevMaps.filter((map) => map.id !== mapId)); // Update state to remove the deleted map
+            await api.delete(`/api/map/${mapId}/Reject/`);
+            setParkingMaps((prevMaps) => prevMaps.filter((map) => map.id !== mapId));
             setLoadingM(false);
         } catch (error) {
             console.error("Error deleting parking map:", error);
             setLoadingM(false);
         }
     };
+
     return (
         <div className="operator-container">
             <h2 className="welcome-operator">Operator Dashboard</h2>
@@ -340,7 +342,7 @@ function Operator() {
                     <button className="Opbutton" onClick={() => { setShowParkingMaps(true); setShowCreateMap(false); setShowProfile(false); }}>Show Parking Spot Maps</button>
                     <button className="Opbutton" onClick={() => { setShowParkingMaps(false); setShowCreateMap(true); setShowProfile(false); setError(null); setSuccess(null); }}>Create Parking Spot Map</button>
                     <button className="Opbutton" onClick={() => { setShowParkingMaps(false); setShowCreateMap(false); setShowProfile(true); setMessage(""); setIsEditing(false); }}>Show Profile details</button>
-                    <button className="Opbutton" onClick={() => handleDeleteMap(map.id)}>Delete Map</button>              </div>
+                </div>
             )}
 
             {isAuthorized && showParkingMaps && (
