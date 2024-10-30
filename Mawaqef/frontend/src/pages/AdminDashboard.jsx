@@ -84,6 +84,10 @@ const AdminDashboard = () => {
 
       const response = await api.get(`/api/parking-map/${Mapid}/spots/`);
       setParkingSpots(response.data);
+      console.log(response.data[0].status);
+      console.log(response.data[0].sensor_status);
+      console.log(response.data.length);
+      // SPRINT 4 USER STORY: make a for loop that goes to each spot and detirmine if its a sensor dependent&&its status is used or unused and there should be counters
       setLoadingM(false);
     } catch (error) {
       console.error("Error fetching parking spots:", error);
