@@ -259,6 +259,8 @@ class FlipParkingSpotStatusView2(APIView):
         
 
 class ParkingSpotsView(APIView):
+    permission_classes = [AllowAny]  # Allow public access
+
     def get(self, request, map_id):
         spots = ParkingSpot.objects.filter(parking_spots_map_id=map_id)
         serializer = ParkingSpotSerializer(spots, many=True)

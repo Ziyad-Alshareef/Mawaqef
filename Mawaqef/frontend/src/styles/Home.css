@@ -101,6 +101,7 @@ th {
   color: #34495e;
   margin-bottom: 6px;
 
+
 }
 
 .create-map-label input {
@@ -114,11 +115,19 @@ th {
 
   font-size: 14px;
   transition: border-color 0.3s;
+  border-radius: 25px;
+  font-size: 1em;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #333;
+  outline: none;
+  transition: all 0.3s ease;
+  left: 50%;
 }
 
 .create-map-label input:focus {
-  border-color: #3498db;
-  outline: none;
+  border-color: #666666;
+
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
 }
 
 
@@ -128,6 +137,7 @@ th {
 
   margin-top: 8px;
   text-align: center;
+  margin-bottom: 0;
 }
 
 .success-message {
@@ -136,6 +146,7 @@ th {
 
   margin-top: 8px;
   text-align: center;
+  margin-bottom: 0;
 }
 
 .create-map-button {
@@ -146,7 +157,7 @@ th {
 
   padding: 10px 16px;
 
-  font-size: 14px;
+  font-size: 20px;
   cursor: pointer;
   display: block;
   width: 100%;
@@ -157,9 +168,13 @@ th {
 }
 
 .create-map-button:hover {
-  background-color: #2980b9;
+  background-color: #40648a;
 }
 
+.create-map-button:hover {
+  background-color: #5694d7;
+
+}
 
 
 .loading-indicator {
@@ -243,13 +258,23 @@ div {
 
 .fontcolorsss {
   color: #333;
-  margin: 15px;
+  margin: 10px;
 }
 
 .proffont {
   color: #333;
   margin: 20px;
   font-size: large;
+}
+
+.proffont input {
+  border: 1px solid #333;
+  border-radius: 25px;
+  font-size: 1em;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #333;
+  outline: none;
+  transition: all 0.3s ease;
 }
 
 .notes-section h2 {
@@ -295,6 +320,7 @@ form textarea {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+
 }
 
 form input[type="submit"] {
@@ -305,6 +331,7 @@ form input[type="submit"] {
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
+
 }
 
 form input[type="submit"]:hover {
@@ -484,7 +511,7 @@ form textarea:focus {
     border: 1px solid black;
     word-wrap: break-word;
     /* Prevents overflow into neighboring cells */
-    overflow: auto;
+
     /* Hides any overflow text */
 
   }
@@ -505,7 +532,7 @@ form textarea:focus {
     border: 1px solid black;
     word-wrap: break-word;
     /* Prevents overflow into neighboring cells */
-    overflow: scroll;
+
     /* Hides any overflow text */
 
   }
@@ -514,7 +541,7 @@ form textarea:focus {
     border: 1px solid black;
     word-wrap: break-word;
     /* Prevents overflow into neighboring cells */
-    overflow: scroll;
+
     /* Hides any overflow text */
   }
 }
@@ -540,7 +567,7 @@ form textarea:focus {
     border: 1px solid black;
     word-wrap: break-word;
     /* Prevents overflow into neighboring cells */
-    overflow: scroll;
+
     /* Hides any overflow text */
   }
 }
@@ -702,4 +729,16 @@ form textarea:focus {
     overflow: hidden;
     max-height: 550px;
   }
+
+}
+
+@media (max-height: 668px) {
+  .create-map-container {
+    overflow-y: scroll;
+    width: 300px;
+    max-height: 350px;
+
+
+  }
+
 }

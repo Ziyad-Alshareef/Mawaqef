@@ -176,7 +176,7 @@
 }
 
 .search-input1 {
-    width: 80%;
+    width: 83%;
     padding: 12px 20px;
     margin-bottom: 20px;
     border: 1px solid #333;
@@ -204,4 +204,145 @@
 .organizations-container1::-webkit-scrollbar-button {
     display: none;
 
+}
+
+.map-view-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.back-button {
+    background-color: #40648a;
+
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    align-self: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s ease-in-out;
+    margin-top: 50px;
+
+}
+
+.back-button:hover {
+    background-color: #5694d7;
+
+}
+
+.map-view-container {
+    padding: 1rem;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.back-button {
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.map-heading {
+    font-size: 2em;
+    color: #333;
+    /* Keeps the original color */
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-shadow: 2px 2px 10px rgba(194, 194, 194, 0.8),
+
+        4px 4px 5px rgba(0, 0, 0, 0.7);
+    background-color: rgb(255, 255, 255, 0.5);
+
+
+    padding: 10px 20px;
+
+    border-radius: 50px;
+
+    display: inline-block;
+}
+
+/* Table Styling */
+.map-container {
+    overflow-x: auto;
+}
+
+.map-table {
+    overflow-x: auto;
+    overflow-y: auto;
+
+    max-width: 50%;
+    /* عرض الجدول*/
+    max-height: 500px;
+
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 0 auto;
+    display: block;
+    white-space: nowrap;
+}
+
+.tdspots {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ccc;
+    text-align: center;
+    font-size: 0.875rem;
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+    .tdspots {
+        width: 30px;
+        height: 30px;
+        font-size: 0.75rem;
+    }
+
+    .back-button {
+        width: 100%;
+        padding: 0.75rem;
+    }
+
+    .map-heading {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .tdspots {
+        width: 25px;
+        height: 25px;
+        font-size: 0.625rem;
+    }
+
+    .map-heading {
+        font-size: 1.25rem;
+    }
+}
+
+/* Additional Styles for Usability */
+.tdspots:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.tdspots[style*='background-color: red'] {
+    color: white;
+    font-weight: bold;
+}
+
+.tdspots[style*='background-color: green'] {
+    color: white;
+    font-weight: bold;
 }

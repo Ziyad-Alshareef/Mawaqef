@@ -282,34 +282,34 @@ function Operator() {
         const updateCardsPerPage = () => {
             const width = window.innerWidth;
             const height = window.innerHeight;
-            if (height >= 1000 && width >= 769) {
-                setCardsPerPage(6);
-            }
-            //
-            else if (height >= 1025 && width >= 768) {
-                setCardsPerPage(4);
-            }
-            //
-            else if (height < 846) {
-                setCardsPerPage(1);
-            }
-            else if (height == 1024 && width == 768) {
-                setCardsPerPage(2);
-            }
-            else if (width >= 1200) {
+
+            if (width >= 1200 && height >= 1000) {
                 setCardsPerPage(12);
-            } else if (width >= 768) {
-                setCardsPerPage(10);
-            } else if (width >= 390) {
+
+            }
+            else if (height == 1025 && width == 768) {
                 setCardsPerPage(2);
             }
-            else {
-                setCardsPerPage(1); //very small
+            else if (height == 912 && width == 1368) {
+                setCardsPerPage(10);
+            }
+            else if (width >= 992 && height >= 800) {
+                setCardsPerPage(12);
+            } else if (width >= 768 && height >= 700) {
+                setCardsPerPage(6);
+            } else if (width >= 768 && height < 700) {
+                setCardsPerPage(4);
+            } else if (width >= 576 && height >= 500) {
+                setCardsPerPage(3);
+            } else if (width >= 390 && height >= 400) {
+                setCardsPerPage(2);
+            } else {
+                setCardsPerPage(1); // very small screens
             }
         };
 
-        updateCardsPerPage(); // Set initial value
-        window.addEventListener('resize', updateCardsPerPage); // Update on resize
+        window.addEventListener('resize', updateCardsPerPage);
+        updateCardsPerPage();
 
         return () => {
             window.removeEventListener('resize', updateCardsPerPage);
