@@ -91,10 +91,10 @@ const Organizations = () => {
     return (
         <div className="organizations-background1">
             <div className="organizations-container1">
-                <h1 className="heading1">Organizations</h1>
+                <h1 className="heading1">Organizations Maps</h1>
                 <input
                     type="text"
-                    placeholder="Search organizations..."
+                    placeholder="Search for an Organization Map..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="search-input1"

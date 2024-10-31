@@ -17,8 +17,10 @@ function Body1() {
                         e.target.style.display = 'none';
                     }}
                 />
+
                 <div className="search-container">
-                    <input type="text" placeholder="Search for an Organization" className="search-input" />
+                    <h1 className="search-container123">Find Your Parking Spot Easily🚗</h1>
+                    <input type="text" placeholder="Search for an Organization Map" className="search-input" />
                 </div>
             </div>
         </div>
