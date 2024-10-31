@@ -42,20 +42,21 @@
 .organizations-container1 {
     height: calc(100vh - 60px);
     max-height: 80vh;
-    max-width: 99vw;
+    max-width: 98vw;
     margin: 0 auto;
     padding: 20px;
-    background-color: rgba(245, 245, 245, 0.2);
-    border-radius: 8px;
+    background-color: rgba(245, 245, 245, 0);
+    border-radius: 1px;
+
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     overflow-y: auto;
     overflow-x: hidden;
     margin-bottom: 50px;
     scrollbar-width: thin;
-    /* For Firefox */
+
     scrollbar-color: #888 #f5f5f5;
-    /* For Firefox */
-    margin-top: 50px;
+
+    margin-top: 30px;
     text-align: center;
 
 }
@@ -93,14 +94,23 @@
 
 .heading1 {
     font-size: 2.5em;
-
     color: #333;
-
+    /* Keeps the original color */
     text-align: center;
     margin-bottom: 20px;
     font-weight: bold;
+    text-shadow: 2px 2px 10px rgba(194, 194, 194, 0.8),
 
-    text-shadow: 1px 1px 4px rgba(156, 156, 156, 0.5);
+        4px 4px 5px rgba(0, 0, 0, 0.7);
+    background-color: rgb(255, 255, 255, 0.5);
+
+
+    padding: 10px 20px;
+
+    border-radius: 50px;
+
+    display: inline-block;
+
 
 }
 
