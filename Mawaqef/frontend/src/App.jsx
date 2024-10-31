@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AdminDashboard from "./pages/AdminDashboard";
 import ForgotPassword from "./pages/ForgotPassword";
 import Body1 from "./pages/Body1";
+import Organizations from "./pages/Organizations";
 import { AuthContext, AuthProvider } from "./components/AuthContext"; // Import AuthContext and AuthProvider
 
 function Logout() {
@@ -42,7 +43,7 @@ function Navbar() {
         ) : userRole === 'operator' ? (
           <a href="/operator">Operator Dashboard</a>
         ) : (
-          <a href="/Ogranizations"></a> //here will be the organizations page in the next spritns
+          <a href="/Organizations">Organizations</a>
         )}
         {isLoggedIn ? (
           <a href="/logout">Sign Out</a>
@@ -77,6 +78,7 @@ function App() {
           <Route path="/AdminDashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/register" element={<RegisterAndLogout />} />
+          <Route path="/Organizations" element={<Organizations />} />
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </BrowserRouter>

@@ -353,3 +353,12 @@ class ParkingSpotsMapView(APIView):
             return Response({"detail": "Map not found"}, status=status.HTTP_404_NOT_FOUND)
 
 '''
+#A guest view
+class OrganizationsView(APIView):
+    permission_classes = [AllowAny]  
+    #maps = ParkingSpotsMap.objects.filter(accepted=True)
+    def get(self, request):
+        
+        organizations = ParkingSpotsMap.objects.filter(accepted=True)  
+        serializer = ParkingSpotsMapSerializer(organizations, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

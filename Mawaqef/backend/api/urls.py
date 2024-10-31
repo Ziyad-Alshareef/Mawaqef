@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import UnapprovedOperatorsView, AuthorizeOperatorView,UserDetailView, RejectOperatorView, AllAuthorizedOperatorsView, CreateParkingSpotsMapView, ParkingSpotsMapView, FlipParkingSpotStatusView2, FlipParkingSpotStatusView,ParkingSpotsView, ForgotPasswordView, ResetPasswordView, UnapprovedMapsView, AllAuthorizedMapsView, RejectMapView,AuthorizeMapView, UpdatePhoneNumberView
+from .views import UnapprovedOperatorsView, AuthorizeOperatorView,UserDetailView, RejectOperatorView, AllAuthorizedOperatorsView, CreateParkingSpotsMapView, ParkingSpotsMapView, FlipParkingSpotStatusView2, FlipParkingSpotStatusView,ParkingSpotsView, ForgotPasswordView, ResetPasswordView, UnapprovedMapsView, AllAuthorizedMapsView, RejectMapView,AuthorizeMapView, UpdatePhoneNumberView, OrganizationsView
 
 urlpatterns = [
     path("notes/", views.NoteListCreate.as_view(), name="note-list"),
@@ -22,4 +22,7 @@ urlpatterns = [
     path('map/<int:map_id>/authorize/', AuthorizeMapView.as_view(), name='authorize_map'),
     path('map/<int:map_id>/Reject/', RejectMapView.as_view(), name='reject_map'),
     path('update-phone/', UpdatePhoneNumberView.as_view(), name='update_phone'),
+   # path('organizations/', OrganizationsView.as_view(), name='organizations'),
+   path('organizations/', OrganizationsView.as_view(), name='organizations'),
+
 ]

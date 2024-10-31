@@ -1,0 +1,197 @@
+/* Organizations.css 
+.organizations-container {
+    padding: 20px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.card {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 15px;
+    width: 200px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+*/
+
+.organizations-background1 {
+    background-image: url("./ParkingSpots-1.png");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    padding: 50px 0;
+    height: 100vh;
+    width: 100vw;
+
+}
+
+.organizations-container1 {
+    height: calc(100vh - 60px);
+    max-height: 80vh;
+    max-width: 99vw;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(245, 245, 245, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-bottom: 50px;
+    scrollbar-width: thin;
+    /* For Firefox */
+    scrollbar-color: #888 #f5f5f5;
+    /* For Firefox */
+    margin-top: 50px;
+    text-align: center;
+
+}
+
+
+.organizations-container1::-webkit-scrollbar {
+    width: 8px;
+
+}
+
+.organizations-container1::-webkit-scrollbar-track {
+    background: #f5f5f5;
+
+    border-radius: 10px;
+}
+
+.organizations-container1::-webkit-scrollbar-thumb {
+    background-color: #888;
+
+    border-radius: 10px;
+    border: 2px solid #f5f5f5;
+
+}
+
+.organizations-container1::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+
+}
+
+.organizations-container1::-webkit-scrollbar-button {
+    display: none;
+
+}
+
+
+.heading1 {
+    font-size: 2.5em;
+
+    color: #333;
+
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+
+    text-shadow: 1px 1px 4px rgba(156, 156, 156, 0.5);
+
+}
+
+.search-input1 {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    align-items: center;
+}
+
+.card-container1 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.card1 {
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: calc(50% - 20px);
+    max-width: 300px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.card1:hover {
+    transform: translateY(-5px);
+}
+
+.card-title1 {
+    font-size: 1.2em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.card-text1 {
+    font-size: 1em;
+    color: #555;
+    margin: 5px 0;
+}
+
+.card-link1 a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 0.9em;
+}
+
+.card-link1 a:hover {
+    text-decoration: underline;
+}
+
+.no-results1 {
+    text-align: center;
+    color: #888;
+    font-size: 1.2em;
+    margin-top: 20px;
+}
+
+.search-input1 {
+    width: 80%;
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    border: 1px solid #333;
+    border-radius: 25px;
+    font-size: 1em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #333;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.search-input1:focus {
+    border-color: #666666;
+
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+
+}
+
+.search-input1::placeholder {
+    color: #aaa;
+
+    font-style: italic;
+}
+
+.organizations-container1::-webkit-scrollbar-button {
+    display: none;
+
+}
