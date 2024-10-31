@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Organizations.css";
-import "../styles/home.css";
+import "../styles/Home.css";
 import axios from "axios";
 import LoadingIndicator from "../components/LoadingIndicator";
 
@@ -79,20 +79,22 @@ const Organizations = () => {
     };
 
     return (
+
         <div className="organizations-background1">
-            {showMap ? (
-                // Map View
-                <div className="map-view-container">
-                    <button className="back-button" onClick={handleBack}>
-                        Back
-                    </button>
-                    <h2 className="map-heading">Parking Map for {selectedOrg?.name}</h2>
+            {showMap ? (<div className="map-view-container2">
+
+                <h2 className="map-heading">Parking Map for {selectedOrg?.name}</h2>
+                <button className="back-button" onClick={handleBack}>
+                    Back
+                </button><br />
+                <div className="table-cont1">
+
                     {loadingM ? (
                         <LoadingIndicator />
                     ) : (
-                        <div className="map-container">
+                        <div className="centerre2">
                             {parkingSpots.length > 0 ? (
-                                <table className="map-table">
+                                <table>
                                     <tbody>
                                         {[...Array(Math.max(...parkingSpots.map((spot) => spot.y_axis)) + 1)].map(
                                             (_, row) => (
@@ -104,7 +106,7 @@ const Organizations = () => {
                                                             );
                                                             return (
                                                                 <td
-                                                                    className="tdspots"
+                                                                    className="tdspots2"
                                                                     key={col}
                                                                     style={{
                                                                         backgroundColor: spot
@@ -127,7 +129,7 @@ const Organizations = () => {
                             )}
                         </div>
                     )}
-                </div>
+                </div> </div>
             ) : (
                 // Organization List View
                 <div className="organizations-container1">
@@ -162,7 +164,7 @@ const Organizations = () => {
                     </div>
                 </div>
             )}
-        </div>
+        </div >
     );
 };
 

@@ -206,12 +206,15 @@
 
 }
 
-.map-view-container {
+
+
+.map-view-container2 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    padding: 5px;
 }
+
 
 .back-button {
     background-color: #40648a;
@@ -237,21 +240,9 @@
 
 }
 
-.map-view-container {
-    padding: 1rem;
-    max-width: 1200px;
-    margin: auto;
-}
 
-.back-button {
-    padding: 0.5rem 1rem;
-    margin-bottom: 1rem;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-}
+
+
 
 .map-heading {
     font-size: 2em;
@@ -273,18 +264,13 @@
     display: inline-block;
 }
 
-/* Table Styling */
-.map-container {
-    overflow-x: auto;
-}
-
-.map-table {
+.table-cont1 {
     overflow-x: auto;
     overflow-y: auto;
 
-    max-width: 50%;
+    max-width: 1550px;
     /* عرض الجدول*/
-    max-height: 500px;
+    max-height: 650px;
 
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -293,56 +279,115 @@
     white-space: nowrap;
 }
 
-.tdspots {
-    width: 40px;
-    height: 40px;
+.table-cont1 {
+    overflow-x: auto;
+    overflow-y: auto;
+    max-width: 1550px;
+    /* Set max width for large tables */
+    max-height: 650px;
+    /* Set max height */
     border: 1px solid #ccc;
-    text-align: center;
-    font-size: 0.875rem;
+    border-radius: 5px;
+    margin: 0 auto;
+    display: block;
+    white-space: nowrap;
 }
 
-/* Responsive Styling */
-@media (max-width: 768px) {
-    .tdspots {
-        width: 30px;
-        height: 30px;
-        font-size: 0.75rem;
-    }
+.centerre2 {
+    margin: 0;
+    position: absolute;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
 
-    .back-button {
-        width: 100%;
-        padding: 0.75rem;
-    }
+table {
+    border-collapse: collapse;
+    width: max-content;
+    min-width: 100%;
+    table-layout: fixed;
+}
 
-    .map-heading {
-        font-size: 1.5rem;
+table,
+th,
+td {
+    border: 1px solid black;
+}
+
+th,
+td {
+    padding: 10px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1369px) {
+    .table-cont1 {
+        max-width: 1200px;
     }
 }
 
-@media (max-width: 480px) {
-    .tdspots {
-        width: 25px;
-        height: 25px;
-        font-size: 0.625rem;
-    }
-
-    .map-heading {
-        font-size: 1.25rem;
+@media (max-width: 1260px) {
+    .table-cont1 {
+        max-width: 1100px;
     }
 }
 
-/* Additional Styles for Usability */
-.tdspots:hover {
-    opacity: 0.8;
-    cursor: pointer;
+@media (max-width: 1160px) {
+    .table-cont1 {
+        max-width: 1000px;
+    }
 }
 
-.tdspots[style*='background-color: red'] {
-    color: white;
-    font-weight: bold;
+@media (max-width: 1060px) {
+    .table-cont1 {
+        max-width: 900px;
+    }
 }
 
-.tdspots[style*='background-color: green'] {
-    color: white;
-    font-weight: bold;
+@media (max-width: 960px) {
+    .table-cont1 {
+        max-width: 800px;
+    }
+}
+
+@media (max-width: 860px) {
+    .table-cont1 {
+        max-width: 700px;
+    }
+}
+
+@media (max-width: 760px) {
+    .table-cont1 {
+        max-width: 600px;
+    }
+}
+
+@media (max-width: 660px) {
+    .table-cont1 {
+        max-width: 500px;
+    }
+}
+
+@media (max-width: 560px) {
+    .table-cont1 {
+        max-width: 400px;
+    }
+}
+
+@media (max-width: 460px) {
+    .table-cont1 {
+        max-width: 350px;
+    }
+}
+
+@media (max-width: 360px) {
+    .table-cont1 {
+        max-width: 200px;
+    }
 }
