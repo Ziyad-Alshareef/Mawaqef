@@ -285,7 +285,8 @@
 
 /* Center alignment */
 .centerre3 {
-    display: flex;
+
+    display: block;
     justify-content: center;
     align-items: center;
 }
@@ -302,8 +303,10 @@
 .table-cont3 th,
 .table-cont3 td {
     border: 1px solid #000;
-    margin-left: 10px;
-    /* Ensure all cell borders are black */
+    padding: 5px;
+
+    margin: 0;
+
 }
 
 .table-cont3 th {
