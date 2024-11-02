@@ -8,12 +8,14 @@
 }
 
 .admin-dashboard h1 {
+
     color: #333;
 
     text-align: center;
     margin-bottom: 20px;
     font-size: 2.5em;
     padding-top: 20px;
+
 }
 
 .table-container {
@@ -32,12 +34,15 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: #fff;
 
+
 }
 
 .admin-dashboard table,
 .admin-dashboard th,
 .admin-dashboard td {
     border: 1px solid #ddd;
+    overflow-x: auto;
+
 }
 
 .admin-dashboard th,
@@ -45,6 +50,7 @@
     padding: 12px;
     text-align: left;
     color: #4a4a4a;
+    text-align: center;
 
 }
 
@@ -91,12 +97,13 @@
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 18px;
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 4px;
     transition: background-color 0.2s ease-in-out;
 }
+
 
 .admin-dashboard button:hover {
     background-color: #0056b3;
@@ -150,6 +157,9 @@
 
 .button-container1 {
     text-align: center;
+
+
+
 }
 
 @media (max-width: 768px) {
@@ -174,7 +184,7 @@
     }
 
     .admin-dashboard button {
-        font-size: 0.4em;
+        font-size: 0.7em;
 
         padding: 10px 10px;
 
@@ -231,5 +241,150 @@
     th,
     td {
         padding: 4px;
+    }
+}
+
+/* AdminDashboard Responsive CSS */
+
+/* Base styles for map view container */
+
+/* AdminDashboard Responsive CSS */
+
+/* Ensure full scrolling capability within the map view */
+.map-view-container3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 5px;
+    height: 75vh;
+    overflow: auto;
+}
+
+.back-button {
+    margin-bottom: 15px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+/* Ensure table container is fully scrollable */
+.table-cont3 {
+    max-width: 90vw;
+    max-height: 100%;
+    /* Limit height within parent container */
+    overflow: auto;
+    /* Allow horizontal and vertical scrolling for large tables */
+    margin-top: 0;
+    border-collapse: collapse;
+}
+
+/* Center alignment */
+.centerre3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Styles for table in parking spot grid */
+.table-cont3 table {
+    border-collapse: collapse;
+    border: 1px solid #000;
+    /* Set table border to black */
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table-cont3 th,
+.table-cont3 td {
+    border: 1px solid #000;
+    margin-left: 10px;
+    /* Ensure all cell borders are black */
+}
+
+.table-cont3 th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.table-cont3 td {
+    transition: background-color 0.3s;
+}
+
+/* Specific styles for parking spot cells */
+.tdspots3 {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    border: 1px solid #000;
+}
+
+/* Message styling */
+.Gmessage {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #555;
+}
+
+/* Responsive adjustments */
+
+/* Small screens (phones) */
+@media (max-width: 600px) {
+    .map-view-container3 {
+        padding: 10px;
+    }
+
+    .back-button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+
+    .table-cont3 table td {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* Scrollbar customization */
+.table-cont3::-webkit-scrollbar {
+    width: 2px;
+    background-color: #333;
+}
+
+.table-cont3::-webkit-scrollbar:horizontal {
+    height: 6px;
+    /* Height for horizontal scrollbar */
+}
+
+.table-cont3::-webkit-scrollbar-track {
+    background: #f5f5f5;
+    border-radius: 10px;
+}
+
+.table-cont3::-webkit-scrollbar-thumb {
+    background-color: #333;
+    border-radius: 10px;
+}
+
+.table-cont3::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+.table-cont3::-webkit-scrollbar-button {
+    display: none;
+}
+
+/* Additional adjustments for shorter screens */
+@media (max-height: 668px) {
+    .table-cont3 {
+        max-height: 90%;
+    }
+
+    .map-view-container3 {
+        height: 70vh;
     }
 }

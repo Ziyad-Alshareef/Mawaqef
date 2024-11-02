@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN } from "../constants";
 import api from "../api";
 import "../styles/AdminDashboard.css";
+import "../styles/Organizations.css";
 import ConfirmationModal from "../components/ConfirmationModal";
 import Confmodal from "../components/Confmodal";
 import LoadingIndicator from "../components/LoadingIndicator";
@@ -456,7 +457,7 @@ const AdminDashboard = () => {
                       <td>{Map.email}</td>
                       <td>{Map.name}</td>
                       <td><a href={Map.loc}> Location</a></td>
-                      <td><button className="Opbutton" onClick={() => handleEditMap(Map.id)}>Show Parking Spots</button></td>
+                      <td><button className="Opbutton" onClick={() => handleEditMap(Map.id)}>Show</button></td>
                       <td>
 
                         <button onClick={() => openModalM(Map, 'delete')}>Delete</button> {/* Delete button */}
@@ -483,34 +484,49 @@ const AdminDashboard = () => {
 
       {!isTableVisible && showMap && (
         <>
-          <div className="centerre"> <button className="Opbutton" onClick={handleBack}>
-            Back
-          </button></div><br />{loadingM && <LoadingIndicator />}<br />
-          <div className="table-cont">
+          <div className="map-view-container3">
+            <button className="back-button" onClick={handleBack}>
+              Back
+            </button>
 
-            {/* Render parking spots in a table */}
-            <table>
-              <tbody>
-                {parkingSpots.length > 0 && (
-                  [...Array(Math.max(...parkingSpots.map(spot => spot.y_axis)) + 1)].map((_, row) => (
-                    <tr key={row}>
-                      {[...Array(Math.max(...parkingSpots.map(spot => spot.x_axis)) + 1)].map((_, col) => {
-                        const spot = parkingSpots.find(s => s.x_axis === col && s.y_axis === row);
-                        return (
-                          <td className="tdspots"
-                            key={col}
-                            style={{ backgroundColor: spot ? getColorByStatus(spot.status, spot.sensor_status) : 'white' }}
-                          //onClick={() => spot && flipParkingSpotStatus(spot.id)}
-                          >
-                            {/*spot ? `Spot ${spot.id}` : 'N/A'*/}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
+            <div className="table-cont3">
+              {loadingM ? (
+                <LoadingIndicator />
+              ) : (
+                <div className="centerre3">
+                  {parkingSpots.length > 0 ? (
+                    <table>
+                      <tbody>
+                        {[...Array(Math.max(...parkingSpots.map(spot => spot.y_axis)) + 1)].map((_, row) => (
+                          <tr key={row}>
+                            {[...Array(Math.max(...parkingSpots.map(spot => spot.x_axis)) + 1)].map((_, col) => {
+                              const spot = parkingSpots.find(s => s.x_axis === col && s.y_axis === row);
+                              return (
+                                <td
+                                  className="tdspots3"
+                                  key={col}
+                                  style={{
+                                    backgroundColor: spot
+                                      ? getColorByStatus(spot.status, spot.sensor_status)
+                                      : 'white',
+                                    border: '1px solid #000',
+                                    width: '20px',
+                                    height: '20px' // Added border style
+                                  }}
+                                >
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  ) : (
+                    <p className="Gmessage">No parking spots available.</p>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </>
       )}
