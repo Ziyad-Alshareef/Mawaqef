@@ -36,13 +36,9 @@ const Organizations = () => {
         setFilteredOrganizations(results);
     }, [searchTerm, organizations]);
 
-    const handleCardClick = async (org) => {
-        setSelectedOrg(org);
-        setShowMap(true);
-        setLoadingM(true);
-
+    const fetchParkingSpots = async (orgId) => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/parking-map/${org.id}/spots/`);
+            const response = await axios.get(`http://localhost:8000/api/parking-map/${orgId}/spots/`);
             console.log("Parking spots response:", response.data);
             if (Array.isArray(response.data)) {
                 setParkingSpots(response.data);
@@ -52,10 +48,25 @@ const Organizations = () => {
         } catch (error) {
             console.error("Error fetching parking spots:", error);
             setParkingSpots([]);
-        } finally {
-            setLoadingM(false);
         }
     };
+
+    const handleCardClick = (org) => {
+        setSelectedOrg(org);
+        setShowMap(true);
+        setLoadingM(true);
+        fetchParkingSpots(org.id).finally(() => setLoadingM(false));
+    };
+    // FETCHING PARKING SPOTS FUNCTION, dont make it less than 1 second unless you want your server to fry out
+    useEffect(() => {
+        if (showMap && selectedOrg) {
+            const interval = setInterval(() => {
+                fetchParkingSpots(selectedOrg.id);
+            }, 5000);
+
+            return () => clearInterval(interval);
+        }
+    }, [showMap, selectedOrg]);
 
     const handleBack = () => {
         setShowMap(false);
@@ -79,59 +90,58 @@ const Organizations = () => {
     };
 
     return (
-
         <div className="organizations-background1">
-            {showMap ? (<div className="map-view-container2">
-
-                <h2 className="map-heading">{selectedOrg?.name} Parking Map</h2>
-                <button className="back-button" onClick={handleBack}>
-                    Back
-                </button><br />
-                <div className="table-cont1">
-
-                    {loadingM ? (
-                        <LoadingIndicator />
-                    ) : (
-                        <div className="centerre2">
-                            {parkingSpots.length > 0 ? (
-                                <table>
-                                    <tbody>
-                                        {[...Array(Math.max(...parkingSpots.map((spot) => spot.y_axis)) + 1)].map(
-                                            (_, row) => (
-                                                <tr key={row}>
-                                                    {[...Array(Math.max(...parkingSpots.map((spot) => spot.x_axis)) + 1)].map(
-                                                        (_, col) => {
-                                                            const spot = parkingSpots.find(
-                                                                (s) => s.x_axis === col && s.y_axis === row
-                                                            );
-                                                            return (
-                                                                <td
-                                                                    className="tdspots2"
-                                                                    key={col}
-                                                                    style={{
-                                                                        backgroundColor: spot
-                                                                            ? getColorByStatus(spot.status, spot.sensor_status)
-                                                                            : "white",
-                                                                    }}
-                                                                >
-                                                                    { }
-                                                                </td>
-                                                            );
-                                                        }
-                                                    )}
-                                                </tr>
-                                            )
-                                        )}
-                                    </tbody>
-                                </table>
-                            ) : (
-                                <p className="Gmessage">No parking spots available.</p>
-                            )}
-                        </div>
-                    )}
-                </div> </div>
+            {showMap ? (
+                <div className="map-view-container2">
+                    <h2 className="map-heading">{selectedOrg?.name} Parking Map</h2>
+                    <button className="back-button" onClick={handleBack}>
+                        Back
+                    </button>
+                    <br />
+                    <div className="table-cont1">
+                        {loadingM ? (
+                            <LoadingIndicator />
+                        ) : (
+                            <div className="centerre2">
+                                {parkingSpots.length > 0 ? (
+                                    <table>
+                                        <tbody>
+                                            {[...Array(Math.max(...parkingSpots.map((spot) => spot.y_axis)) + 1)].map(
+                                                (_, row) => (
+                                                    <tr key={row}>
+                                                        {[...Array(Math.max(...parkingSpots.map((spot) => spot.x_axis)) + 1)].map(
+                                                            (_, col) => {
+                                                                const spot = parkingSpots.find(
+                                                                    (s) => s.x_axis === col && s.y_axis === row
+                                                                );
+                                                                return (
+                                                                    <td
+                                                                        className="tdspots2"
+                                                                        key={col}
+                                                                        style={{
+                                                                            backgroundColor: spot
+                                                                                ? getColorByStatus(spot.status, spot.sensor_status)
+                                                                                : "white",
+                                                                        }}
+                                                                    >
+                                                                        { }
+                                                                    </td>
+                                                                );
+                                                            }
+                                                        )}
+                                                    </tr>
+                                                )
+                                            )}
+                                        </tbody>
+                                    </table>
+                                ) : (
+                                    <p className="Gmessage">No parking spots available.</p>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                </div>
             ) : (
-                // Organization List View
                 <div className="organizations-container1">
                     <h1 className="heading1">Organizations Maps</h1>
                     <input
@@ -164,7 +174,7 @@ const Organizations = () => {
                     </div>
                 </div>
             )}
-        </div >
+        </div>
     );
 };
 
