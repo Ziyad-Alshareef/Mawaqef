@@ -12,12 +12,14 @@ const Organizations = () => {
     const [selectedOrg, setSelectedOrg] = useState(null);
     const [parkingSpots, setParkingSpots] = useState([]);
     const [loadingM, setLoadingM] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchOrganizations = async () => {
             try {
                 const response = await axios.get("http://localhost:8000/api/organizations/");
                 console.log("Organizations fetched: ", response.data);
+                setLoading(false);
                 setOrganizations(response.data);
                 setFilteredOrganizations(response.data);
             } catch (error) {
@@ -152,7 +154,8 @@ const Organizations = () => {
                         className="search-input1"
                     />
                     <div className="card-container1">
-                        {filteredOrganizations.length > 0 ? (
+                        {loading && <LoadingIndicator />}
+                        {!loading &&filteredOrganizations.length> 0 ? (
                             filteredOrganizations.map((org) => (
                                 <div
                                     className="card1"
@@ -169,8 +172,10 @@ const Organizations = () => {
                                 </div>
                             ))
                         ) : (
-                            <p className="Gmessage">No organizations found.</p>
-                        )}
+                            // 
+                        <br/>)}
+                        {!loading &&filteredOrganizations.length== 0?(<p className="Gmessage2">No organizations found.</p>) :(<br/>) }
+                        
                     </div>
                 </div>
             )}

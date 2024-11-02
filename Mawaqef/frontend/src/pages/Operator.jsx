@@ -5,6 +5,7 @@ import { ACCESS_TOKEN } from "../constants";
 import "../styles/Home.css";
 import LoadingIndicator from "../components/LoadingIndicator";
 import ConfirmationModal from "../components/ConfirmationModal";
+import Confmodal2 from "../components/Confmodal2";
 
 function Operator() {
 
@@ -37,7 +38,10 @@ function Operator() {
     const [message, setMessage] = useState("");
     const [phoneNumber, setPhoneNumber] = useState(OPPN);
     const [loadingP, setLoadingP] = useState(false);
-
+    const [isModalOpenM, setIsModalOpenM] = useState(false);
+    const [actionTypeM, setActionTypeM] = useState(null);
+    const [currentMap, setCurrentMap] = useState(null);
+    const [loadingt, setLoadingt] = useState(false);
 
 
     const handleEditClick = () => {
@@ -124,7 +128,22 @@ function Operator() {
         }
     };
 
-
+    const openModalM = (map, action) => {
+        setCurrentMap(map);
+        setActionTypeM(action);
+        setShowParkingMaps(false); // Hide the table when the modal opens
+        setIsModalOpenM(true);
+      };
+      const handleConfirmM = async () => {
+        setIsModalOpenM(false);
+        setLoadingt(true);
+        
+        if (actionTypeM === 'delete') {
+          await handleDeleteMap(currentMap.id);
+        }
+        setLoadingt(false);
+        setShowParkingMaps(true); // Show the table again after confirmation
+      };
     const flipParkingSpotStatus = async (spotId) => {
         try {
             setLoadingM(true);
@@ -344,7 +363,7 @@ function Operator() {
                     <button className="Opbutton" onClick={() => { setShowParkingMaps(false); setShowCreateMap(false); setShowProfile(true); setMessage(""); setIsEditing(false); }}>Show Profile details</button>
                 </div>
             )}
-
+            {loadingt && <LoadingIndicator />}
             {isAuthorized && showParkingMaps && (
                 <>
                     <h3 className="fontcolorsss">Parking Spot Maps</h3>
@@ -358,7 +377,8 @@ function Operator() {
                                     <p className="fontcolorsss">Dimensions: {map.width} x {map.length}</p>
                                     <p className="fontcolorsss">Status: {map.accepted ? 'Accepted✅' : 'Pending⏳'}</p>
                                     <button className="Opbutton" onClick={() => handleEditMap(map.id)}>Edit Parking Spot Map</button><br />
-                                    <button className="Opbutton" onClick={() => handleDeleteMap(map.id)}>Delete Map</button>
+                                    {/*<button className="Opbutton" onClick={() => handleDeleteMap(map.id)}>Delete Map</button>*/}
+                                    <button className="Opbuttonr" onClick={() => openModalM(map, 'delete')}>Delete</button>
                                 </div>
                             ))
                         ) : (
@@ -511,6 +531,16 @@ function Operator() {
                     </p>
                 </div>
             )}
+            <Confmodal2
+        isOpen={isModalOpenM}
+        onClose={() => {
+          setIsModalOpenM(false);
+          setShowParkingMaps(true); // Show the table again if modal is closed
+        }}
+        onConfirm={handleConfirmM}
+        mapDetails={currentMap}
+        actionType={actionTypeM} // Pass the action type to the modal
+      />
         </div>
     );
 }
