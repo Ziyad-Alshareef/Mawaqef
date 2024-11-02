@@ -742,3 +742,32 @@ form textarea:focus {
   }
 
 }
+
+.table-cont::-webkit-scrollbar {
+  width: 2px;
+  background-color: #333;
+}
+
+.table-cont::-webkit-scrollbar:horizontal {
+  height: 6px;
+  /* Height for horizontal scrollbar */
+}
+
+.table-cont::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 10px;
+}
+
+.table-cont::-webkit-scrollbar-thumb {
+  background-color: #333;
+  border-radius: 10px;
+  border: 2px solid #333;
+}
+
+.table-cont::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+.table-cont::-webkit-scrollbar-button {
+  display: none;
+}
