@@ -181,11 +181,12 @@
     margin-bottom: 20px;
     border: 1px solid #333;
     border-radius: 25px;
-    font-size: 1em;
+    font-size: 1.75vh;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #333;
     outline: none;
     transition: all 0.3s ease;
+    color: rgb(214, 214, 214);
 }
 
 .search-input1:focus {
@@ -318,13 +319,8 @@
 
 
 .tdspots2 {
-    height: 4vw;
-
-    width: 4vw;
-
-    max-height: 40px;
-
-    max-width: 40px;
+    width: 20px;
+    height: 20px;
 
     cursor: pointer;
 }
@@ -437,4 +433,13 @@
 
 .table-cont1::-webkit-scrollbar-button {
     display: none;
+}
+
+.Gmessage {
+    color: #333;
+
+    text-align: center;
+    margin-bottom: 5px;
+    font-size: 2em;
+    padding-top: 15px;
 }

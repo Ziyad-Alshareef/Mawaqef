@@ -83,7 +83,7 @@ const Organizations = () => {
         <div className="organizations-background1">
             {showMap ? (<div className="map-view-container2">
 
-                <h2 className="map-heading">Parking Map for {selectedOrg?.name}</h2>
+                <h2 className="map-heading">{selectedOrg?.name} Parking Map</h2>
                 <button className="back-button" onClick={handleBack}>
                     Back
                 </button><br />
@@ -125,7 +125,7 @@ const Organizations = () => {
                                     </tbody>
                                 </table>
                             ) : (
-                                <p>No parking spots available.</p>
+                                <p className="Gmessage">No parking spots available.</p>
                             )}
                         </div>
                     )}
@@ -136,7 +136,7 @@ const Organizations = () => {
                     <h1 className="heading1">Organizations Maps</h1>
                     <input
                         type="text"
-                        placeholder="Search for an Organization Map..."
+                        placeholder="Search for an Organization's Parking Map..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="search-input1"
@@ -159,7 +159,7 @@ const Organizations = () => {
                                 </div>
                             ))
                         ) : (
-                            <p className="no-results1">No organizations found.</p>
+                            <p className="Gmessage">No organizations found.</p>
                         )}
                     </div>
                 </div>

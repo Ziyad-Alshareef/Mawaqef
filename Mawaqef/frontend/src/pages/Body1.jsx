@@ -20,7 +20,7 @@ function Body1() {
 
                 <div className="search-container">
                     <h1 className="search-container123">Find Your Parking Spot Easily🚗</h1>
-                    <input type="text" placeholder="Search for an Organization Map" className="search-input" />
+                    <input type="text" placeholder="Search for an Organization's Parking Map..." className="search-input" />
                 </div>
             </div>
         </div>
