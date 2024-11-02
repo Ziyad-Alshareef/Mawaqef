@@ -14,6 +14,7 @@ const Organizations = () => {
     const [loadingM, setLoadingM] = useState(false);
     const [loading, setLoading] = useState(true);
 
+
     useEffect(() => {
         const fetchOrganizations = async () => {
             try {
@@ -154,8 +155,8 @@ const Organizations = () => {
                         className="search-input1"
                     />
                     <div className="card-container1">
-                        {loading && <LoadingIndicator />}
-                        {!loading &&filteredOrganizations.length> 0 ? (
+                    {loading && <LoadingIndicator />}
+                    {!loading &&filteredOrganizations.length> 0 && (
                             filteredOrganizations.map((org) => (
                                 <div
                                     className="card1"
@@ -171,12 +172,8 @@ const Organizations = () => {
                                     </p>
                                 </div>
                             ))
-                        ) : (
-                            // 
-                        <br/>)}
-                        {!loading &&filteredOrganizations.length== 0?(<p className="Gmessage2">No organizations found.</p>) :(<br/>) }
-                        
-                    </div>
+                        )}
+                    </div>{!loading &&filteredOrganizations.length== 0?(<p className="Gmessage2">No organizations found.</p>) :(<br/>) }
                 </div>
             )}
         </div>
