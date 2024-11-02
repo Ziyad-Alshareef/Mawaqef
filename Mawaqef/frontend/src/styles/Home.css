@@ -749,7 +749,7 @@ form textarea:focus {
 }
 
 .table-cont::-webkit-scrollbar:horizontal {
-  height: 6px;
+  height: 4px;
   /* Height for horizontal scrollbar */
 }
 
