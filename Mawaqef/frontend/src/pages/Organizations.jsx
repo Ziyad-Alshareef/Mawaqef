@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import "../styles/Organizations.css";
 import "../styles/Home.css";
 import axios from "axios";
 import LoadingIndicator from "../components/LoadingIndicator";
 
 const Organizations = () => {
+    const location = useLocation();
     const [organizations, setOrganizations] = useState([]);
     const [filteredOrganizations, setFilteredOrganizations] = useState([]);
-    const [searchTerm, setSearchTerm] = useState("");
+    const [searchTerm, setSearchTerm] = useState(location.state?.searchTerm || "");
     const [showMap, setShowMap] = useState(false);
     const [selectedOrg, setSelectedOrg] = useState(null);
     const [parkingSpots, setParkingSpots] = useState([]);
     const [loadingM, setLoadingM] = useState(false);
     const [loading, setLoading] = useState(true);
-
 
     useEffect(() => {
         const fetchOrganizations = async () => {
@@ -60,7 +61,7 @@ const Organizations = () => {
         setLoadingM(true);
         fetchParkingSpots(org.id).finally(() => setLoadingM(false));
     };
-    // FETCHING PARKING SPOTS FUNCTION, dont make it less than 1 second unless you want your server to fry out
+
     useEffect(() => {
         if (showMap && selectedOrg) {
             const interval = setInterval(() => {
@@ -155,8 +156,8 @@ const Organizations = () => {
                         className="search-input1"
                     />
                     <div className="card-container1">
-                    {loading && <LoadingIndicator />}
-                    {!loading &&filteredOrganizations.length> 0 && (
+                        {loading && <LoadingIndicator />}
+                        {!loading && filteredOrganizations.length > 0 && (
                             filteredOrganizations.map((org) => (
                                 <div
                                     className="card1"
@@ -173,7 +174,12 @@ const Organizations = () => {
                                 </div>
                             ))
                         )}
-                    </div>{!loading &&filteredOrganizations.length== 0?(<p className="Gmessage2">No organizations found.</p>) :(<br/>) }
+                    </div>
+                    {!loading && filteredOrganizations.length === 0 ? (
+                        <p className="Gmessage2">No organizations found.</p>
+                    ) : (
+                        <br />
+                    )}
                 </div>
             )}
         </div>
