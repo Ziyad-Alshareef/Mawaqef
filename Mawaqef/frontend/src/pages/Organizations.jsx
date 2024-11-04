@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "../styles/Organizations.css";
 import "../styles/Home.css";
-import axios from "axios";
+import api from "../api";
 import LoadingIndicator from "../components/LoadingIndicator";
 
 const Organizations = () => {
@@ -19,7 +19,7 @@ const Organizations = () => {
     useEffect(() => {
         const fetchOrganizations = async () => {
             try {
-                const response = await axios.get("http://localhost:8000/api/organizations/");
+                const response = await api.get("/api/organizations/");
                 console.log("Organizations fetched: ", response.data);
                 setLoading(false);
                 setOrganizations(response.data);
@@ -42,7 +42,7 @@ const Organizations = () => {
 
     const fetchParkingSpots = async (orgId) => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/parking-map/${orgId}/spots/`);
+            const response = await api.get(`/api/parking-map/${orgId}/spots/`);
             console.log("Parking spots response:", response.data);
             if (Array.isArray(response.data)) {
                 setParkingSpots(response.data);
