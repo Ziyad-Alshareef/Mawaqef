@@ -172,9 +172,9 @@ def run_virtual_sensor_algorithm():
         time.sleep(10)  # Run every 10 seconds
 
 # Starting the background algorithm
-thread = threading.Thread(target=run_virtual_sensor_algorithm)
-thread.daemon = True
-thread.start()
+#thread = threading.Thread(target=run_virtual_sensor_algorithm)
+#thread.daemon = True
+#thread.start()
 
 
 import random
