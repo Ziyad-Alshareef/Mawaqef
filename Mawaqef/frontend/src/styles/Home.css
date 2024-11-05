@@ -266,6 +266,11 @@ div {
   margin: 20px;
   font-size: large;
 }
+.proffontb {
+  color: #333;
+  margin: 20px;
+  font-size:x-large;
+}
 
 .proffont input {
   border: 1px solid #333;

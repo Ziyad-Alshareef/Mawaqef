@@ -84,9 +84,45 @@ function Operator() {
                     setIsEditing(false);
                     setLoadingP(false);
                 } catch (error) {
-                    console.error("Failed to update phone number:", error);
-                    setMessage("Failed to update phone number. Please try again.");
-                    setLoadingP(false);
+                    try {
+                        setLoadingP(true);
+                        await api.put("/api/update-phone/", { phone_number: phoneNumber });
+                        setMessage("Phone number updated successfully!");
+                        setOPPN(phoneNumber);
+                        setIsEditing(false);
+                        setLoadingP(false);
+                    } catch (error) {
+                        try {
+                            setLoadingP(true);
+                            await api.put("/api/update-phone/", { phone_number: phoneNumber });
+                            setMessage("Phone number updated successfully!");
+                            setOPPN(phoneNumber);
+                            setIsEditing(false);
+                            setLoadingP(false);
+                        } catch (error) {
+                            try {
+                                setLoadingP(true);
+                                await api.put("/api/update-phone/", { phone_number: phoneNumber });
+                                setMessage("Phone number updated successfully!");
+                                setOPPN(phoneNumber);
+                                setIsEditing(false);
+                                setLoadingP(false);
+                            } catch (error) {
+                                try {
+                                    setLoadingP(true);
+                                    await api.put("/api/update-phone/", { phone_number: phoneNumber });
+                                    setMessage("Phone number updated successfully!");
+                                    setOPPN(phoneNumber);
+                                    setIsEditing(false);
+                                    setLoadingP(false);
+                                } catch (error) {
+                                    console.error("Failed to update phone number:", error);
+                                    setMessage("Failed to update phone number. Please try again.");
+                                    setLoadingP(false);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -116,9 +152,27 @@ function Operator() {
             setParkingMaps(res.data);
             setLoading(false);
         } catch (error) {
-            setLoading(false);
-            console.error("Failed to load parking maps", error);
-
+            try {
+                const res = await api.get(`/api/parking-map/${operatorId}/`);
+                setParkingMaps(res.data);
+                setLoading(false);
+            } catch (error) {
+                try {
+                    const res = await api.get(`/api/parking-map/${operatorId}/`);
+                    setParkingMaps(res.data);
+                    setLoading(false);
+                } catch (error) {
+                    try {
+                        const res = await api.get(`/api/parking-map/${operatorId}/`);
+                        setParkingMaps(res.data);
+                        setLoading(false);
+                    } catch (error) {
+                        setLoading(false);
+                        console.error("Failed to load parking maps", error);
+            
+                    }
+                }
+            }
         }
     };
 
@@ -128,7 +182,25 @@ function Operator() {
             setParkingSpots(response.data);
             setLoadingM(false);
         } catch (error) {
-            console.error("Error fetching parking spots:", error);
+            try {
+                const response = await api.get(`/api/parking-map/${Mapid}/spots/`);
+                setParkingSpots(response.data);
+                setLoadingM(false);
+            } catch (error) {
+                try {
+                    const response = await api.get(`/api/parking-map/${Mapid}/spots/`);
+                    setParkingSpots(response.data);
+                    setLoadingM(false);
+                } catch (error) {
+                    try {
+                        const response = await api.get(`/api/parking-map/${Mapid}/spots/`);
+                        setParkingSpots(response.data);
+                        setLoadingM(false);
+                    } catch (error) {
+                        console.error("Error fetching parking spots:", error);
+                    }
+                }
+            }
         }
     };
 
@@ -159,8 +231,30 @@ function Operator() {
             );
             setLoadingM(false);
         } catch (error) {
-            console.error("Error flipping parking spot status:", error);
-            setLoadingM(false);
+            try {
+                setLoadingM(true);
+                const response = await api.patch(`/api/parking-spot/${spotId}/flip-status/`);
+                const updatedSpot = response.data;
+                fetchParkingSpots();
+                setParkingSpots((prevSpots) =>
+                    prevSpots.map((spot) => (spot.id === spotId ? updatedSpot : spot))
+                );
+                setLoadingM(false);
+            } catch (error) {
+                try {
+                    setLoadingM(true);
+                    const response = await api.patch(`/api/parking-spot/${spotId}/flip-status/`);
+                    const updatedSpot = response.data;
+                    fetchParkingSpots();
+                    setParkingSpots((prevSpots) =>
+                        prevSpots.map((spot) => (spot.id === spotId ? updatedSpot : spot))
+                    );
+                    setLoadingM(false);
+                } catch (error) {
+                    console.error("Error flipping parking spot status:", error);
+                    setLoadingM(false);
+                }
+            }
         }
     };
 
@@ -186,8 +280,38 @@ function Operator() {
                     } else setLoading(false);
                 }
             } catch (error) {
-                console.error("Unauthorized", error);
-                navigate("/login");
+                try {
+                    const userRes = await api.get("/api/user/");
+                    if (userRes.data.role !== "operator") {
+                        navigate("/");
+                    } else {
+                        setOPName(userRes.data.organization);
+                        setOPEmail(userRes.data.email);
+                        setOPPN(userRes.data.phone_number);
+                        setIsAuthorized(userRes.data.authorized);
+                        if (userRes.data.authorized) {
+                            fetchParkingMaps(userRes.data.id);
+                        } else setLoading(false);
+                    }
+                } catch (error) {
+                    try {
+                        const userRes = await api.get("/api/user/");
+                        if (userRes.data.role !== "operator") {
+                            navigate("/");
+                        } else {
+                            setOPName(userRes.data.organization);
+                            setOPEmail(userRes.data.email);
+                            setOPPN(userRes.data.phone_number);
+                            setIsAuthorized(userRes.data.authorized);
+                            if (userRes.data.authorized) {
+                                fetchParkingMaps(userRes.data.id);
+                            } else setLoading(false);
+                        }
+                    } catch (error) {
+                        console.error("Unauthorized", error);
+                        navigate("/login");
+                    }
+                }
             }
         };
 
@@ -221,7 +345,17 @@ function Operator() {
             const res = await api.get(`/api/parking-map/${operatorId}/`); // Correct URL
             setParkingMaps(res.data);
         } catch (error) {
-            console.error("Failed to load parking maps", error);
+            try {
+                const res = await api.get(`/api/parking-map/${operatorId}/`); // Correct URL
+                setParkingMaps(res.data);
+            } catch (error) {
+                try {
+                    const res = await api.get(`/api/parking-map/${operatorId}/`); // Correct URL
+                    setParkingMaps(res.data);
+                } catch (error) {
+                    console.error("Failed to load parking maps", error);
+                }
+            }
         }
     };
 
@@ -264,7 +398,21 @@ function Operator() {
                 loadParkingMaps(userRes2.data.id);
 
             } catch (error) {
-                console.error("Unauthorized", error);
+                try {
+                    const userRes2 = await api.get("/api/user/");
+                    loadParkingMaps(userRes2.data.id);
+    
+                } catch (error) {
+                    try {
+                        const userRes2 = await api.get("/api/user/");
+                        loadParkingMaps(userRes2.data.id);
+        
+                    } catch (error) {
+                        console.error("Unauthorized", error);
+        
+                    }
+    
+                }
 
             }
             //setParkingMaps((prev) => [...prev, newMap]);
@@ -277,10 +425,116 @@ function Operator() {
             setSuccess("Parking Spots Map added successfully!")
             setDimensions({ width: 0, length: 0 });
         } catch (error) {
-            console.error("Error creating parking map", error);
-            setError("Error creating parking map, Please try again.")
-            fetchParkingMaps();
-            setLoadingM(false);
+            try {
+                setLoadingM(true);
+                const res = await api.post("/api/create-parking-map/", {
+                    name: name,
+                    width: parseInt(dimensions.width),
+                    length: parseInt(dimensions.length),
+                    orientation: orientation,
+                    loc: loc
+                });
+    
+    
+                const newMap = {
+                    id: res.data.id,
+                    name: res.data.name,
+                    width: res.data.width,
+                    length: res.data.length,
+                    orientation: res.data.orientation,
+                    loc: res.data.loc,
+                };
+    
+                try {
+                    const userRes2 = await api.get("/api/user/");
+                    loadParkingMaps(userRes2.data.id);
+    
+                } catch (error) {
+                    try {
+                        const userRes2 = await api.get("/api/user/");
+                        loadParkingMaps(userRes2.data.id);
+        
+                    } catch (error) {
+                        try {
+                            const userRes2 = await api.get("/api/user/");
+                            loadParkingMaps(userRes2.data.id);
+            
+                        } catch (error) {
+                            console.error("Unauthorized", error);
+            
+                        }
+        
+                    }
+    
+                }
+                //setParkingMaps((prev) => [...prev, newMap]);
+    
+    
+                //setShowCreateMap(false);
+                setLoadingM(false);
+                setName("");
+                setLoc("");
+                setSuccess("Parking Spots Map added successfully!")
+                setDimensions({ width: 0, length: 0 });
+            } catch (error) {
+                try {
+                    setLoadingM(true);
+                    const res = await api.post("/api/create-parking-map/", {
+                        name: name,
+                        width: parseInt(dimensions.width),
+                        length: parseInt(dimensions.length),
+                        orientation: orientation,
+                        loc: loc
+                    });
+        
+        
+                    const newMap = {
+                        id: res.data.id,
+                        name: res.data.name,
+                        width: res.data.width,
+                        length: res.data.length,
+                        orientation: res.data.orientation,
+                        loc: res.data.loc,
+                    };
+        
+                    try {
+                        const userRes2 = await api.get("/api/user/");
+                        loadParkingMaps(userRes2.data.id);
+        
+                    } catch (error) {
+                        try {
+                            const userRes2 = await api.get("/api/user/");
+                            loadParkingMaps(userRes2.data.id);
+            
+                        } catch (error) {
+                            try {
+                                const userRes2 = await api.get("/api/user/");
+                                loadParkingMaps(userRes2.data.id);
+                
+                            } catch (error) {
+                                console.error("Unauthorized", error);
+                
+                            }
+            
+                        }
+        
+                    }
+                    //setParkingMaps((prev) => [...prev, newMap]);
+        
+        
+                    //setShowCreateMap(false);
+                    setLoadingM(false);
+                    setName("");
+                    setLoc("");
+                    setSuccess("Parking Spots Map added successfully!")
+                    setDimensions({ width: 0, length: 0 });
+                } catch (error) {
+                    console.error("Error creating parking map", error);
+                    setError("Error creating parking map, Please try again.")
+                    fetchParkingMaps();
+                    setLoadingM(false);
+                }
+            }
         }
     };
 
@@ -352,8 +606,36 @@ function Operator() {
             setParkingMaps((prevMaps) => prevMaps.filter((map) => map.id !== mapId));
             setLoadingM(false);
         } catch (error) {
-            console.error("Error deleting parking map:", error);
-            setLoadingM(false);
+            try {
+                setLoadingM(true);
+                await api.delete(`/api/map/${mapId}/Reject/`);
+                setParkingMaps((prevMaps) => prevMaps.filter((map) => map.id !== mapId));
+                setLoadingM(false);
+            } catch (error) {
+                try {
+                    setLoadingM(true);
+                    await api.delete(`/api/map/${mapId}/Reject/`);
+                    setParkingMaps((prevMaps) => prevMaps.filter((map) => map.id !== mapId));
+                    setLoadingM(false);
+                } catch (error) {
+                    try {
+                        setLoadingM(true);
+                        await api.delete(`/api/map/${mapId}/Reject/`);
+                        setParkingMaps((prevMaps) => prevMaps.filter((map) => map.id !== mapId));
+                        setLoadingM(false);
+                    } catch (error) {
+                        try {
+                            setLoadingM(true);
+                            await api.delete(`/api/map/${mapId}/Reject/`);
+                            setParkingMaps((prevMaps) => prevMaps.filter((map) => map.id !== mapId));
+                            setLoadingM(false);
+                        } catch (error) {
+                            console.error("Error deleting parking map:", error);
+                            setLoadingM(false);
+                        }
+                    }
+                }
+            }
         }
     };
 
@@ -457,18 +739,16 @@ function Operator() {
 
             {isAuthorized && showProfile && (
                 <div className="card">
-                    <h2 className="proffont">Profile</h2>
-
-
+                    <br/>
+                    <h2 className="proffontb">Profile</h2>
+                    
                     <h4 className="proffont">Oragnization: {OPName}</h4>
 
-
-
+                    
 
                     <h4 className="proffont">Email: {OPEmail}</h4>
 
-
-
+                    
 
                     <h4 className="proffont">
                         Phone Number:{" "}
@@ -485,11 +765,11 @@ function Operator() {
                             {isEditing ? "Save" : "Edit"}
                         </button>
                     </h4>
-                    <br />
+                    {message && <p>{message}</p>} 
                     {loadingP && <LoadingIndicator />}
-                    <br />
-                    {message && <p>{message}</p>} {/* Display success or failure message */}
-                    <br />
+                    
+                    {/* Display success or failure message */}
+                    
 
                 </div>
             )}
