@@ -56,6 +56,10 @@ function Operator() {
             setMessage("Phone number must be 10 digits long.");
             return;
         }
+        if (phoneNumber==OPPN){
+            setIsEditing(false);
+            setLoadingP(false);
+            return;}
         try {
             setLoadingP(true);
             await api.put("/api/update-phone/", { phone_number: phoneNumber });
