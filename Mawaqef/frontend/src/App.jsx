@@ -39,7 +39,8 @@ function Navbar() {
       </div>
       <div className="navbar-right">
         {userRole === 'admin' ? (
-          <a href="/AdminDashboard">Admin Dashboard</a>
+          <><a href="/AdminDashboard">Admin Dashboard</a>
+          <a href="/Organizations">Organizations</a></>
         ) : userRole === 'operator' ? (
           <a href="/operator">Operator Dashboard</a>
         ) : (
