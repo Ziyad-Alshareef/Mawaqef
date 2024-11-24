@@ -1,6 +1,6 @@
 from api.models import User
 from rest_framework import serializers
-from .models import Note
+from .models import Note, MapReport
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -85,3 +85,10 @@ class VirtualSensorSerializer(serializers.ModelSerializer):
     class Meta:
         model = VirtualSensor
         fields = '__all__'
+
+class MapReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MapReport
+        fields = ['id', 'parking_map', 'text', 'created_at', 
+                 'font_size', 'font_family', 'text_align', 
+                 'font_weight', 'font_style']

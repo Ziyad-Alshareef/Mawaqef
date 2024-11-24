@@ -2,12 +2,12 @@ from django.shortcuts import render
 from api.models import User
 from rest_framework.views import APIView
 from rest_framework import generics
-from .serializers import UserSerializer, NoteSerializer, OperatorAuthorizeSerializer,OperatorSerializer, ParkingSpotsMapSerializer, ParkingSpotSerializer
+from .serializers import UserSerializer, NoteSerializer, OperatorAuthorizeSerializer,OperatorSerializer, ParkingSpotsMapSerializer, ParkingSpotSerializer, MapReportSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Note
 from rest_framework.response import Response
 from rest_framework import status
-from .models import ParkingSpotsMap, ParkingSpot, VirtualSensor
+from .models import ParkingSpotsMap, ParkingSpot, VirtualSensor, MapReport
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import CustomTokenObtainPairSerializer, MapAuthorizeSerializer
 from rest_framework import status as rest_status
@@ -342,19 +342,28 @@ class UpdatePhoneNumberView(APIView):
             return Response({"message": "Phone number updated successfully"}, status=status.HTTP_200_OK)
         else:
             return Response({"error": "Phone number not provided"}, status=status.HTTP_400_BAD_REQUEST)
-'''
 
-class ParkingSpotsMapView(APIView):
-    def get(self, request, operator_id):
-        try:
-            parking_map = ParkingSpotsMap.objects.get( operator_id=operator_id)
-            spots = ParkingSpot.objects.filter(parking_spots_map_id=parking_map.id)
-            spots_serializer = ParkingSpotSerializer(spots, many=True)
-            return Response(spots_serializer.data)
-        except ParkingSpotsMap.DoesNotExist:
-            return Response({"detail": "Map not found"}, status=status.HTTP_404_NOT_FOUND)
+class CreateMapReportView(APIView):
+    permission_classes = [AllowAny]
 
-'''
+    def post(self, request):
+        serializer = MapReportSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class GetMapReportsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, map_id):
+        if request.user.role != 'operator':
+            return Response({"detail": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+        
+        reports = MapReport.objects.filter(parking_map_id=map_id).order_by('-created_at')
+        serializer = MapReportSerializer(reports, many=True)
+        return Response(serializer.data)
+
 #A guest view
 class OrganizationsView(APIView):
     permission_classes = [AllowAny]  
@@ -364,3 +373,17 @@ class OrganizationsView(APIView):
         organizations = ParkingSpotsMap.objects.filter(accepted=True)  
         serializer = ParkingSpotsMapSerializer(organizations, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class DeleteMapReportView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, report_id):
+        if request.user.role != 'operator':
+            return Response({"detail": "Unauthorized"}, status=status.HTTP_403_FORBIDDEN)
+        
+        try:
+            report = MapReport.objects.get(id=report_id)
+            report.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except MapReport.DoesNotExist:
+            return Response({"detail": "Report not found"}, status=status.HTTP_404_NOT_FOUND)

@@ -451,3 +451,275 @@
     font-size: 2em;
     padding-top: 15px;
 }
+
+.report-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #f0ad4e;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.report-button:hover {
+    background-color: #ec971f;
+}
+
+.report-form {
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.report-form textarea {
+    width: 90%;
+    padding: 15px;
+    margin: 0 auto 10px auto;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    display: block;
+    resize: vertical;
+    min-height: 120px;
+    max-height: 300px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.report-form textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.report-form textarea::placeholder {
+    color: #6c757d;
+    /*font-style: italic;*/
+}
+
+.report-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.report-buttons button {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.report-buttons button:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+}
+
+.report-buttons button:active {
+    transform: translateY(1px);
+}
+
+.report-buttons button:last-child {
+    background-color: #6c757d;
+}
+
+.report-buttons button:last-child:hover {
+    background-color: #5a6268;
+}
+
+.char-count {
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+    margin-top: 12px;
+    font-family: 'Arial', sans-serif;
+}
+
+.success-message {
+    color: #28a745;
+    text-align: center;
+    font-weight: bold;
+    margin: 20px 0;
+    font-size: 16px;
+    padding: 10px;
+    background-color: #d4edda;
+    border-radius: 5px;
+}
+
+.error-message {
+    color: #dc3545;
+    text-align: center;
+    margin: 10px 0;
+    font-size: 14px;
+    padding: 8px;
+    background-color: #f8d7da;
+    border-radius: 5px;
+}
+
+.text-controls {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    border: 1px solid #ddd;
+}
+
+.text-controls select {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    color: black;
+    font-size: 14px;
+    min-width: 80px;
+}
+
+.text-controls button {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    min-width: 60px;
+    color: black;
+    font-weight: normal;
+    font-size: 14px;
+}
+
+.text-controls button.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+/* Add hover effects */
+.text-controls select:hover,
+.text-controls button:hover {
+    border-color: #007bff;
+    background-color: #f8f9fa;
+    color: #000000;
+}
+
+/* Update existing textarea styles */
+.report-form textarea {
+    width: 90%;
+    padding: 15px;
+    margin: 0 auto 10px auto;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    display: block;
+    resize: vertical;
+    min-height: 120px;
+    max-height: 300px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    /* Remove fixed font styles to allow for dynamic styling */
+}
+
+/* Add media queries for text controls */
+@media screen and (max-width: 768px) {
+    .text-controls {
+        padding: 6px;
+        gap: 6px;
+    }
+
+    .text-controls select,
+    .text-controls button {
+        padding: 4px 6px;
+        font-size: 13px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .text-controls {
+        padding: 4px;
+        gap: 4px;
+    }
+
+    .text-controls select,
+    .text-controls button {
+        padding: 3px 5px;
+        font-size: 12px;
+        min-width: 60px;
+    }
+
+    .report-form {
+        width: 95%;
+        padding: 10px;
+    }
+
+    .report-form textarea {
+        width: 95%;
+        padding: 8px;
+    }
+
+    .report-buttons {
+        gap: 8px;
+    }
+
+    .report-buttons button {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+
+    .char-count {
+        font-size: 12px;
+    }
+}
+
+.parking-stats {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stat-label {
+    font-weight: bold;
+    color: #333;
+}
+
+.stat-value {
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+}
+
+.stat-value.available {
+    background-color: green;
+}
+
+.stat-value.occupied {
+    background-color: red;
+}

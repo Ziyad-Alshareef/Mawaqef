@@ -15,6 +15,19 @@ const Organizations = () => {
     const [parkingSpots, setParkingSpots] = useState([]);
     const [loadingM, setLoadingM] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [showReportForm, setShowReportForm] = useState(false);
+    const [reportText, setReportText] = useState('');
+    const [reportSuccess, setReportSuccess] = useState(false);
+    const [error, setError] = useState(null);
+    const [textStyle, setTextStyle] = useState({
+        fontSize: '16px',
+        fontFamily: 'Arial',
+        textAlign: 'left',
+        fontWeight: 'normal',
+        fontStyle: 'normal'
+    });
+    const [usedSpots, setUsedSpots] = useState(0);
+    const [unusedSpots, setUnusedSpots] = useState(0);
 
     useEffect(() => {
         const fetchOrganizations = async () => {
@@ -40,18 +53,41 @@ const Organizations = () => {
         setFilteredOrganizations(results);
     }, [searchTerm, organizations]);
 
+    const countParkingSpots = (spots) => {
+        let used = 0;
+        let unused = 0;
+        
+        spots.forEach(spot => {
+            if (spot.status === 'sensor') {
+                if (spot.sensor_status === 'used') {
+                    used++;
+                } else {
+                    unused++;
+                }
+            }
+        });
+        
+        setUsedSpots(used);
+        setUnusedSpots(unused);
+    };
+
     const fetchParkingSpots = async (orgId) => {
         try {
             const response = await api.get(`/api/parking-map/${orgId}/spots/`);
             console.log("Parking spots response:", response.data);
             if (Array.isArray(response.data)) {
                 setParkingSpots(response.data);
+                countParkingSpots(response.data);
             } else {
                 setParkingSpots([]);
+                setUsedSpots(0);
+                setUnusedSpots(0);
             }
         } catch (error) {
             console.error("Error fetching parking spots:", error);
             setParkingSpots([]);
+            setUsedSpots(0);
+            setUnusedSpots(0);
         }
     };
 
@@ -93,6 +129,41 @@ const Organizations = () => {
         }
     };
 
+    const handleSubmitReport = async () => {
+        if (!reportText.trim()) {
+            setError("Please enter an issue");
+            return;
+        }
+        
+        try {
+            await api.post('/api/map-report/', {
+                parking_map: selectedOrg.id,
+                text: reportText,
+                font_size: textStyle.fontSize,
+                font_family: textStyle.fontFamily,
+                text_align: textStyle.textAlign,
+                font_weight: textStyle.fontWeight,
+                font_style: textStyle.fontStyle
+            });
+            setReportSuccess(true);
+            setReportText('');
+            setTimeout(() => {
+                setShowReportForm(false);
+                setReportSuccess(false);
+            }, 2000);
+        } catch (error) {
+            console.error('Error submitting report:', error);
+            setError("Failed to submit report. Please try again.");
+        }
+    };
+
+    const handleStyleChange = (property, value) => {
+        setTextStyle(prev => ({
+            ...prev,
+            [property]: value
+        }));
+    };
+
     return (
         <div className="organizations-background1">
             {showMap ? (
@@ -106,42 +177,135 @@ const Organizations = () => {
                         {loadingM ? (
                             <LoadingIndicator />
                         ) : (
-                            <div className="centerre2">
-                                {parkingSpots.length > 0 ? (
-                                    <table>
-                                        <tbody>
-                                            {[...Array(Math.max(...parkingSpots.map((spot) => spot.y_axis)) + 1)].map(
-                                                (_, row) => (
-                                                    <tr key={row}>
-                                                        {[...Array(Math.max(...parkingSpots.map((spot) => spot.x_axis)) + 1)].map(
-                                                            (_, col) => {
-                                                                const spot = parkingSpots.find(
-                                                                    (s) => s.x_axis === col && s.y_axis === row
-                                                                );
-                                                                return (
-                                                                    <td
-                                                                        className="tdspots2"
-                                                                        key={col}
-                                                                        style={{
-                                                                            backgroundColor: spot
-                                                                                ? getColorByStatus(spot.status, spot.sensor_status)
-                                                                                : "white",
-                                                                        }}
-                                                                    >
-                                                                        { }
-                                                                    </td>
-                                                                );
-                                                            }
+                            <>
+                                {!showReportForm ? (
+                                    <>
+                                        <div className="parking-stats">
+                                            <div className="stat-item">
+                                                <span className="stat-label">Available:</span>
+                                                <span className="stat-value available">{unusedSpots}</span>
+                                            </div>
+                                            <div className="stat-item">
+                                                <span className="stat-label">Occupied:</span>
+                                                <span className="stat-value occupied">{usedSpots}</span>
+                                            </div>
+                                        </div>
+                                        <div className="centerre2">
+                                            {parkingSpots.length > 0 ? (
+                                                <table>
+                                                    <tbody>
+                                                        {[...Array(Math.max(...parkingSpots.map((spot) => spot.y_axis)) + 1)].map(
+                                                            (_, row) => (
+                                                                <tr key={row}>
+                                                                    {[...Array(Math.max(...parkingSpots.map((spot) => spot.x_axis)) + 1)].map(
+                                                                        (_, col) => {
+                                                                            const spot = parkingSpots.find(
+                                                                                (s) => s.x_axis === col && s.y_axis === row
+                                                                            );
+                                                                            return (
+                                                                                <td
+                                                                                    className="tdspots2"
+                                                                                    key={col}
+                                                                                    style={{
+                                                                                        backgroundColor: spot
+                                                                                            ? getColorByStatus(spot.status, spot.sensor_status)
+                                                                                            : "white",
+                                                                                    }}
+                                                                                >
+                                                                                    { }
+                                                                                </td>
+                                                                            );
+                                                                        }
+                                                                    )}
+                                                                </tr>
+                                                            )
                                                         )}
-                                                    </tr>
-                                                )
+                                                    </tbody>
+                                                </table>
+                                            ) : (
+                                                <p className="Gmessage">No parking spots available.</p>
                                             )}
-                                        </tbody>
-                                    </table>
+                                        </div>
+                                        <button 
+                                            className="report-button"
+                                            onClick={() => { setShowReportForm(true); setError(null); }}
+                                        >
+                                            Is there any issue?
+                                        </button>
+                                    </>
                                 ) : (
-                                    <p className="Gmessage">No parking spots available.</p>
+                                    <div className="report-form">
+                                        {reportSuccess ? (
+                                            <p className="success-message">Report submitted successfully!</p>
+                                        ) : (
+                                            <>
+                                                <div className="text-controls">
+                                                    <select 
+                                                        onChange={(e) => handleStyleChange('fontSize', e.target.value)}
+                                                        value={textStyle.fontSize}
+                                                    >
+                                                        <option value="12px">Small Text</option>
+                                                        <option value="16px">Medium Text</option>
+                                                        <option value="20px">Large Text</option>
+                                                    </select>
+
+                                                    <select 
+                                                        onChange={(e) => handleStyleChange('fontFamily', e.target.value)}
+                                                        value={textStyle.fontFamily}
+                                                    >
+                                                        <option value="Arial">Arial Font</option>
+                                                        <option value="Times New Roman">Times New Roman</option>
+                                                        <option value="Courier New">Courier New</option>
+                                                    </select>
+
+                                                    <select 
+                                                        onChange={(e) => handleStyleChange('textAlign', e.target.value)}
+                                                        value={textStyle.textAlign}
+                                                    >
+                                                        <option value="left">Align Left</option>
+                                                        <option value="center">Align Center</option>
+                                                        <option value="right">Align Right</option>
+                                                    </select>
+
+                                                    <button 
+                                                        type="button" 
+                                                        onClick={() => handleStyleChange('fontWeight', textStyle.fontWeight === 'bold' ? 'normal' : 'bold')}
+                                                        className={textStyle.fontWeight === 'bold' ? 'active' : ''}
+                                                        title="Bold"
+                                                    >
+                                                        Bold
+                                                    </button>
+
+                                                    <button 
+                                                        type="button" 
+                                                        onClick={() => handleStyleChange('fontStyle', textStyle.fontStyle === 'italic' ? 'normal' : 'italic')}
+                                                        className={textStyle.fontStyle === 'italic' ? 'active' : ''}
+                                                        title="Italic"
+                                                    >
+                                                        Italic
+                                                    </button>
+                                                </div>
+
+                                                <textarea
+                                                    value={reportText}
+                                                    onChange={(e) => setReportText(e.target.value)}
+                                                    maxLength={255}
+                                                    placeholder="Describe the issue..."
+                                                    rows={5}
+                                                    cols={10}
+                                                    style={textStyle}
+                                                />
+                                                {error && <p className="error-message">{error}</p>}
+                                                <div className="report-buttons">
+                                                    <button onClick={handleSubmitReport}>Submit</button>
+                                                    <button onClick={() => setShowReportForm(false)}>Cancel</button>
+                                                </div>
+                                                <p className="char-count">{reportText.length}/255</p>
+                                            </>
+                                        )}
+                                    </div>
                                 )}
-                            </div>
+                            </>
                         )}
                     </div>
                 </div>

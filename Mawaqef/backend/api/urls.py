@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import UnapprovedOperatorsView, AuthorizeOperatorView,UserDetailView, RejectOperatorView, AllAuthorizedOperatorsView, CreateParkingSpotsMapView, ParkingSpotsMapView, FlipParkingSpotStatusView2, FlipParkingSpotStatusView,ParkingSpotsView, ForgotPasswordView, ResetPasswordView, UnapprovedMapsView, AllAuthorizedMapsView, RejectMapView,AuthorizeMapView, UpdatePhoneNumberView, OrganizationsView
+from .views import UnapprovedOperatorsView, AuthorizeOperatorView,UserDetailView, RejectOperatorView, AllAuthorizedOperatorsView, CreateParkingSpotsMapView, ParkingSpotsMapView, FlipParkingSpotStatusView2, FlipParkingSpotStatusView,ParkingSpotsView, ForgotPasswordView, ResetPasswordView, UnapprovedMapsView, AllAuthorizedMapsView, RejectMapView,AuthorizeMapView, UpdatePhoneNumberView, OrganizationsView, CreateMapReportView, GetMapReportsView, DeleteMapReportView
 
 urlpatterns = [
     path("notes/", views.NoteListCreate.as_view(), name="note-list"),
@@ -24,5 +24,8 @@ urlpatterns = [
     path('update-phone/', UpdatePhoneNumberView.as_view(), name='update_phone'),
    # path('organizations/', OrganizationsView.as_view(), name='organizations'),
    path('organizations/', OrganizationsView.as_view(), name='organizations'),
+   path('map-report/', CreateMapReportView.as_view(), name='create_map_report'),
+   path('map-reports/<int:map_id>/', GetMapReportsView.as_view(), name='get_map_reports'),
+   path('map-report/<int:report_id>/', DeleteMapReportView.as_view(), name='delete_map_report'),
 
 ]

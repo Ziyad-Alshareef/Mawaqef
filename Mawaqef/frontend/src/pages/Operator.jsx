@@ -6,6 +6,7 @@ import "../styles/Home.css";
 import LoadingIndicator from "../components/LoadingIndicator";
 import ConfirmationModal from "../components/ConfirmationModal";
 import Confmodal2 from "../components/Confmodal2";
+import Confmodal3 from "../components/Confmodal3";
 
 function Operator() {
 
@@ -42,6 +43,11 @@ function Operator() {
     const [actionTypeM, setActionTypeM] = useState(null);
     const [currentMap, setCurrentMap] = useState(null);
     const [loadingt, setLoadingt] = useState(false);
+    const [showReports, setShowReports] = useState(false);
+    const [mapReports, setMapReports] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedReport, setSelectedReport] = useState(null);
+    const [isModalOpenM3, setIsModalOpenM3] = useState(false);
 
 
     const handleEditClick = () => {
@@ -222,7 +228,7 @@ function Operator() {
       };
     const flipParkingSpotStatus = async (spotId) => {
         try {
-            setLoadingM(true);
+            //setLoadingM(true);
             const response = await api.patch(`/api/parking-spot/${spotId}/flip-status/`);
             const updatedSpot = response.data;
             fetchParkingSpots();
@@ -639,14 +645,39 @@ function Operator() {
         }
     };
 
+    const handleViewReports = async (mapId) => {
+        try {
+            const response = await api.get(`/api/map-reports/${mapId}/`);
+            setMapReports(response.data);
+            setShowParkingMaps(false);
+            setShowReports(true);
+        } catch (error) {
+            console.error('Error fetching reports:', error);
+        }
+    };
+
+    const handleDeleteReport = async () => {
+        try {
+            await api.delete(`/api/map-report/${selectedReport.id}/`);
+            setMapReports(prevReports => 
+                prevReports.filter(report => report.id !== selectedReport.id)
+            );
+            setIsModalOpenM3(false);
+            setSelectedReport(null);
+            setShowReports(true);
+        } catch (error) {
+            console.error('Error deleting report:', error);
+        }
+    };
+
     return (
         <div className="operator-container">
             <h2 className="welcome-operator">Operator Dashboard</h2>
             {isAuthorized && !isEditingMap && (
                 <div className="button-container">
-                    <button className="Opbutton" onClick={() => { setShowParkingMaps(true); setShowCreateMap(false); setShowProfile(false); }}>Show Parking Spot Maps</button>
-                    <button className="Opbutton" onClick={() => { setShowParkingMaps(false); setShowCreateMap(true); setShowProfile(false); setError(null); setSuccess(null); }}>Create Parking Spot Map</button>
-                    <button className="Opbutton" onClick={() => { setShowParkingMaps(false); setShowCreateMap(false); setShowProfile(true); setMessage(""); setIsEditing(false); }}>Show Profile Details</button>
+                    <button className="Opbutton" onClick={() => { setShowParkingMaps(true); setShowCreateMap(false); setShowProfile(false);setShowReports(false); }}>Show Parking Spot Maps</button>
+                    <button className="Opbutton" onClick={() => { setShowParkingMaps(false); setShowCreateMap(true); setShowProfile(false); setError(null); setSuccess(null);setShowReports(false); }}>Create Parking Spot Map</button>
+                    <button className="Opbutton" onClick={() => { setShowParkingMaps(false); setShowCreateMap(false); setShowProfile(true); setMessage(""); setIsEditing(false);setShowReports(false); }}>Show Profile Details</button>
                 </div>
             )}
             {loadingt && <LoadingIndicator />}
@@ -665,6 +696,7 @@ function Operator() {
                                     <button className="Opbutton" onClick={() => handleEditMap(map.id)}>Edit Parking Spot Map</button><br />
                                     {/*<button className="Opbutton" onClick={() => handleDeleteMap(map.id)}>Delete Map</button>*/}
                                     <button className="Opbuttonr" onClick={() => openModalM(map, 'delete')}>Delete</button>
+                                    <button className="Opbutton" onClick={() => handleViewReports(map.id)}>View Issues</button>
                                 </div>
                             ))
                         ) : (
@@ -793,7 +825,7 @@ function Operator() {
                                                     <td className="tdspots"
                                                         key={col}
                                                         style={{ backgroundColor: spot ? getColorByStatus(spot.status, spot.sensor_status) : 'white' }}
-
+                                                        onClick={() => spot && flipParkingSpotStatus(spot.id)}
                                                     >{/* onClick={() => spot && flipParkingSpotStatus(spot.id)} */}
                                                         {spot ? `${spot.id}` : 'N/A'}
                                                     </td>
@@ -807,6 +839,64 @@ function Operator() {
                     </div>
                 </>
             )}
+
+            {showReports && !isModalOpenM3 && (
+                <div className="reports-container">
+                    <button className="back-button" onClick={() => {
+                        setShowReports(false);
+                        setShowParkingMaps(true);
+                    }}>
+                        Back to Maps
+                    </button>
+                    <h2>Map Issues</h2>
+                    {mapReports.length > 0 ? (
+                        <div className="reports-list">
+                            {mapReports.map(report => (
+                                <div key={report.id} className="report-item">
+                                    <div className="report-header">
+                                        <p 
+                                            className="report-text"
+                                            style={{
+                                                fontSize: report.font_size,
+                                                fontFamily: report.font_family,
+                                                textAlign: report.text_align,
+                                                fontWeight: report.font_weight,
+                                                fontStyle: report.font_style
+                                            }}
+                                        >
+                                            {report.text}
+                                        </p>
+                                        <button 
+                                            className="delete-report-btn"
+                                            onClick={() => {
+                                                setSelectedReport(report);
+                                                setIsModalOpenM3(true);
+                                            }}
+                                        >
+                                            ×
+                                        </button>
+                                    </div>
+                                    <small className="report-date">
+                                        {new Date(report.created_at).toLocaleString()}
+                                    </small>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (<div><br/>
+                        <h2>No reports found for this map.</h2>
+                    </div>)}
+                </div>
+            )}
+
+            <Confmodal3
+                isOpen={isModalOpenM3}
+                onClose={() => {
+                    setIsModalOpenM3(false);
+                    setSelectedReport(null);
+                }}
+                onConfirm={handleDeleteReport}
+                message="Are you sure you want to delete this report?"
+            />
 
             {!isAuthorized && (
                 <div>

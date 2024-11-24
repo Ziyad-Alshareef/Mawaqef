@@ -192,3 +192,17 @@ class Operator(models.Model):
 
     def pin_is_valid(self, input_pin):
         return self.pin == input_pin and self.pin_expiration > datetime.datetime.now()
+
+# Add this new model
+class MapReport(models.Model):
+    parking_map = models.ForeignKey(ParkingSpotsMap, on_delete=models.CASCADE)
+    text = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    font_size = models.CharField(max_length=10, default='16px')
+    font_family = models.CharField(max_length=50, default='Arial')
+    text_align = models.CharField(max_length=10, default='left')
+    font_weight = models.CharField(max_length=10, default='normal')
+    font_style = models.CharField(max_length=10, default='normal')
+
+    def __str__(self):
+        return f"Report for Map {self.parking_map.id}"
