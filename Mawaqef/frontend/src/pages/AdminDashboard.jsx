@@ -45,12 +45,52 @@ const AdminDashboard = () => {
       case "maintenance":
         return "yellow";
       case "unavailable":
-        return "gray";
+        return "transparent";
       case "road":
-        return "black";
+        return "rgba(0, 0, 0, 0.5)"; // 50% transparent black
       default:
         return "white";
     }
+  };
+
+  /*const getSpotClasses = (spot) => {
+    if (!spot) return 'tdspots3';
+    let classes = 'tdspots3';
+    
+    if (spot.status === 'unavailable') {
+        classes += ' spot-unavailable';
+    } else if (spot.status === 'road') {
+        classes += ' spot-road';
+    }
+
+    return classes;
+  };*/
+
+  const getBorderStyle = (spot, parkingSpots) => {
+    if (!spot) return "1px solid #000";
+    
+    const borders = {
+        borderTop: "1px solid #000",
+        borderRight: "1px solid #000",
+        borderBottom: "1px solid #000",
+        borderLeft: "1px solid #000"
+    };
+
+    // Check adjacent cells
+    const topSpot = parkingSpots.find(s => s.x_axis === spot.x_axis && s.y_axis === spot.y_axis - 1);
+    const rightSpot = parkingSpots.find(s => s.x_axis === spot.x_axis + 1 && s.y_axis === spot.y_axis);
+    const bottomSpot = parkingSpots.find(s => s.x_axis === spot.x_axis && s.y_axis === spot.y_axis + 1);
+    const leftSpot = parkingSpots.find(s => s.x_axis === spot.x_axis - 1 && s.y_axis === spot.y_axis);
+
+    // Remove borders between matching unavailable or road spots
+    if (spot.status === "unavailable" || spot.status === "road") {
+        if (topSpot?.status === spot.status) borders.borderTop = "none";
+        if (rightSpot?.status === spot.status) borders.borderRight = "none";
+        if (bottomSpot?.status === spot.status) borders.borderBottom = "none";
+        if (leftSpot?.status === spot.status) borders.borderLeft = "none";
+    }
+
+    return borders;
   };
 
   useEffect(() => {
@@ -274,6 +314,19 @@ const AdminDashboard = () => {
   const indexOfFirstRowAllMaps = indexOfLastRowAllMaps - rowsPerPage;
   const currentRowsAllMaps = allMaps.slice(indexOfFirstRowAllMaps, indexOfLastRowAllMaps);
   const totalPagesAllMaps = Math.ceil(allMaps.length / rowsPerPage);
+
+  const getSpotClasses = (spot) => {
+    if (!spot) return 'tdspots3';
+    let classes = 'tdspots3';
+    
+    if (spot.status === 'unavailable') {
+        classes += ' spot-unavailable';
+    } else if (spot.status === 'road') {
+        classes += ' spot-road';
+    }
+
+    return classes;
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -503,15 +556,15 @@ const AdminDashboard = () => {
                               const spot = parkingSpots.find(s => s.x_axis === col && s.y_axis === row);
                               return (
                                 <td
-                                  className="tdspots3"
+                                  className={getSpotClasses(spot)}
                                   key={col}
                                   style={{
-                                    backgroundColor: spot
-                                      ? getColorByStatus(spot.status, spot.sensor_status)
-                                      : 'white',
-                                    border: '1px solid #000',
                                     width: '20px',
-                                    height: '20px' // Added border style
+                                    height: '50px',
+                                    ...(spot ? getBorderStyle(spot, parkingSpots) : { border: "1px solid #000" }),
+                                    ...(spot && spot.status === 'sensor' ? { 
+                                        backgroundColor: getColorByStatus(spot.status, spot.sensor_status)
+                                    } : {})
                                   }}
                                 >
                                 </td>

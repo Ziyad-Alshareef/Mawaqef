@@ -320,9 +320,10 @@
 
 .tdspots2 {
     width: 20px;
-    height: 20px;
-
-    cursor: pointer;
+    height: 50px;
+    min-width: 20px;
+    min-height: 50px;
+    padding: 0;
 }
 
 
@@ -722,4 +723,17 @@
 
 .stat-value.occupied {
     background-color: red;
+}
+
+/* Add new classes for different spot types */
+.spot-unavailable {
+    background-color: transparent !important;
+}
+
+.spot-road {
+    background-color: rgba(0, 0, 0, 0.75) !important;
+}
+
+.no-border {
+    border: none !important;
 }

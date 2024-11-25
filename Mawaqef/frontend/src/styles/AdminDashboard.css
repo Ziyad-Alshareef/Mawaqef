@@ -322,8 +322,23 @@
 .tdspots3 {
     width: 20px;
     height: 20px;
-    cursor: pointer;
-    border: 1px solid #000;
+    min-width: 20px;
+    min-height: 20px;
+    padding: 0;
+    /* Remove any existing border styles from here */
+}
+
+/* Add the same spot type classes if they're not already imported from Organizations.css */
+.spot-unavailable {
+    background-color: transparent !important;
+}
+
+.spot-road {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.no-border {
+    border: none !important;
 }
 
 /* Message styling */
@@ -390,4 +405,33 @@
     .map-view-container3 {
         height: 70vh;
     }
+}
+
+/* Remove striping but preserve spot colors */
+.table-cont3 table tr:nth-child(even),
+.table-cont3 table tr:nth-child(odd) {
+    background-color: transparent !important;
+}
+
+/* Base styles for spots */
+.tdspots3 {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    min-height: 20px;
+    padding: 0;
+}
+
+/* Specific spot types */
+.spot-unavailable {
+    background-color: transparent !important;
+}
+
+.spot-road {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Allow inline background colors for sensor spots */
+.tdspots3:not(.spot-unavailable):not(.spot-road) {
+    background-color: inherit;
 }

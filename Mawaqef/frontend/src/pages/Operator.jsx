@@ -48,6 +48,7 @@ function Operator() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedReport, setSelectedReport] = useState(null);
     const [isModalOpenM3, setIsModalOpenM3] = useState(false);
+    const [showTooltip, setShowTooltip] = useState(false);
 
 
     const handleEditClick = () => {
@@ -142,9 +143,9 @@ function Operator() {
             case "maintenance":
                 return "yellow";
             case "unavailable":
-                return "gray";
+                return "transparent";
             case "road":
-                return "black";
+                return "rgba(0, 0, 0, 0.5)";
             default:
                 return "white";
         }
@@ -810,10 +811,10 @@ function Operator() {
                 <>
                     <button className="Opbutton" onClick={handleBack}>
                         Back
-                    </button>{loadingM && <LoadingIndicator />}
-                    <div className="table-cont"><div className="centerre"> </div>
-
-                        {/* Render parking spots in a table */}
+                    </button>
+                    {loadingM && <LoadingIndicator />}
+                    <div className="table-cont">
+                        <div className="centerre"> </div>
                         <table>
                             <tbody>
                                 {parkingSpots.length > 0 && (
@@ -836,6 +837,15 @@ function Operator() {
                                 )}
                             </tbody>
                         </table>
+                        <div 
+                            className={`tooltip-container ${showTooltip ? 'expanded' : ''}`}
+                            onClick={() => setShowTooltip(!showTooltip)}
+                        >
+                            <div className="tooltip-icon"></div>
+                            <div className="tooltip-text">
+                                Change a parking spot status by clicking on it
+                            </div>
+                        </div>
                     </div>
                 </>
             )}

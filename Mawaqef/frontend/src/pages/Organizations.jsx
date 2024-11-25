@@ -112,6 +112,8 @@ const Organizations = () => {
         setShowMap(false);
         setSelectedOrg(null);
         setParkingSpots([]);
+        setReportText('');
+        setShowReportForm(false);
     };
 
     const getColorByStatus = (status, sensor_status) => {
@@ -121,12 +123,57 @@ const Organizations = () => {
             case "maintenance":
                 return "yellow";
             case "unavailable":
-                return "gray";
+                return "transparent";
             case "road":
-                return "black";
+                return "rgba(0, 0, 0, 0.8)";
             default:
                 return "white";
         }
+    };
+
+    const getSpotClasses = (spot) => {
+        if (!spot) return 'tdspots2';
+        let classes = 'tdspots2';
+        
+        if (spot.status === 'unavailable') {
+            classes += ' spot-unavailable';
+        } else if (spot.status === 'road') {
+            classes += ' spot-road';
+        }
+
+        return classes;
+    };
+
+    const getBorderStyle = (spot, parkingSpots) => {
+        if (!spot) return "1px solid #000";
+        
+        const borders = {
+            top: "1px solid #000",
+            right: "1px solid #000",
+            bottom: "1px solid #000",
+            left: "1px solid #000"
+        };
+
+        // Check adjacent cells
+        const topSpot = parkingSpots.find(s => s.x_axis === spot.x_axis && s.y_axis === spot.y_axis - 1);
+        const rightSpot = parkingSpots.find(s => s.x_axis === spot.x_axis + 1 && s.y_axis === spot.y_axis);
+        const bottomSpot = parkingSpots.find(s => s.x_axis === spot.x_axis && s.y_axis === spot.y_axis + 1);
+        const leftSpot = parkingSpots.find(s => s.x_axis === spot.x_axis - 1 && s.y_axis === spot.y_axis);
+
+        // Remove borders between matching unavailable or road spots
+        if (spot.status === "unavailable" || spot.status === "road") {
+            if (topSpot?.status === spot.status) borders.top = "none";
+            if (rightSpot?.status === spot.status) borders.right = "none";
+            if (bottomSpot?.status === spot.status) borders.bottom = "none";
+            if (leftSpot?.status === spot.status) borders.left = "none";
+        }
+
+        return {
+            borderTop: borders.top,
+            borderRight: borders.right,
+            borderBottom: borders.bottom,
+            borderLeft: borders.left
+        };
     };
 
     const handleSubmitReport = async () => {
@@ -169,6 +216,7 @@ const Organizations = () => {
             {showMap ? (
                 <div className="map-view-container2">
                     <h2 className="map-heading">{selectedOrg?.name} Parking Map</h2>
+                    
                     <button className="back-button" onClick={handleBack}>
                         Back
                     </button>
@@ -204,12 +252,13 @@ const Organizations = () => {
                                                                             );
                                                                             return (
                                                                                 <td
-                                                                                    className="tdspots2"
+                                                                                    className={getSpotClasses(spot)}
                                                                                     key={col}
                                                                                     style={{
-                                                                                        backgroundColor: spot
+                                                                                        ...getBorderStyle(spot, parkingSpots),
+                                                                                        backgroundColor: spot && spot.status !== 'unavailable' && spot.status !== 'road'
                                                                                             ? getColorByStatus(spot.status, spot.sensor_status)
-                                                                                            : "white",
+                                                                                            : undefined
                                                                                     }}
                                                                                 >
                                                                                     { }
