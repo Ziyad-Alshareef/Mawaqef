@@ -63,10 +63,11 @@ function Operator() {
             setMessage("Phone number must be 10 digits long.");
             return;
         }
-        if (phoneNumber==OPPN){
+        if (phoneNumber == OPPN) {
             setIsEditing(false);
             setLoadingP(false);
-            return;}
+            return;
+        }
         try {
             setLoadingP(true);
             await api.put("/api/update-phone/", { phone_number: phoneNumber });
@@ -176,7 +177,7 @@ function Operator() {
                     } catch (error) {
                         setLoading(false);
                         console.error("Failed to load parking maps", error);
-            
+
                     }
                 }
             }
@@ -216,17 +217,17 @@ function Operator() {
         setActionTypeM(action);
         setShowParkingMaps(false); // Hide the table when the modal opens
         setIsModalOpenM(true);
-      };
-      const handleConfirmM = async () => {
+    };
+    const handleConfirmM = async () => {
         setIsModalOpenM(false);
         setLoadingt(true);
-        
+
         if (actionTypeM === 'delete') {
-          await handleDeleteMap(currentMap.id);
+            await handleDeleteMap(currentMap.id);
         }
         setLoadingt(false);
         setShowParkingMaps(true); // Show the table again after confirmation
-      };
+    };
     const flipParkingSpotStatus = async (spotId) => {
         try {
             //setLoadingM(true);
@@ -408,17 +409,17 @@ function Operator() {
                 try {
                     const userRes2 = await api.get("/api/user/");
                     loadParkingMaps(userRes2.data.id);
-    
+
                 } catch (error) {
                     try {
                         const userRes2 = await api.get("/api/user/");
                         loadParkingMaps(userRes2.data.id);
-        
+
                     } catch (error) {
                         console.error("Unauthorized", error);
-        
+
                     }
-    
+
                 }
 
             }
@@ -441,8 +442,8 @@ function Operator() {
                     orientation: orientation,
                     loc: loc
                 });
-    
-    
+
+
                 const newMap = {
                     id: res.data.id,
                     name: res.data.name,
@@ -451,32 +452,32 @@ function Operator() {
                     orientation: res.data.orientation,
                     loc: res.data.loc,
                 };
-    
+
                 try {
                     const userRes2 = await api.get("/api/user/");
                     loadParkingMaps(userRes2.data.id);
-    
+
                 } catch (error) {
                     try {
                         const userRes2 = await api.get("/api/user/");
                         loadParkingMaps(userRes2.data.id);
-        
+
                     } catch (error) {
                         try {
                             const userRes2 = await api.get("/api/user/");
                             loadParkingMaps(userRes2.data.id);
-            
+
                         } catch (error) {
                             console.error("Unauthorized", error);
-            
+
                         }
-        
+
                     }
-    
+
                 }
                 //setParkingMaps((prev) => [...prev, newMap]);
-    
-    
+
+
                 //setShowCreateMap(false);
                 setLoadingM(false);
                 setName("");
@@ -493,8 +494,8 @@ function Operator() {
                         orientation: orientation,
                         loc: loc
                     });
-        
-        
+
+
                     const newMap = {
                         id: res.data.id,
                         name: res.data.name,
@@ -503,32 +504,32 @@ function Operator() {
                         orientation: res.data.orientation,
                         loc: res.data.loc,
                     };
-        
+
                     try {
                         const userRes2 = await api.get("/api/user/");
                         loadParkingMaps(userRes2.data.id);
-        
+
                     } catch (error) {
                         try {
                             const userRes2 = await api.get("/api/user/");
                             loadParkingMaps(userRes2.data.id);
-            
+
                         } catch (error) {
                             try {
                                 const userRes2 = await api.get("/api/user/");
                                 loadParkingMaps(userRes2.data.id);
-                
+
                             } catch (error) {
                                 console.error("Unauthorized", error);
-                
+
                             }
-            
+
                         }
-        
+
                     }
                     //setParkingMaps((prev) => [...prev, newMap]);
-        
-        
+
+
                     //setShowCreateMap(false);
                     setLoadingM(false);
                     setName("");
@@ -660,7 +661,7 @@ function Operator() {
     const handleDeleteReport = async () => {
         try {
             await api.delete(`/api/map-report/${selectedReport.id}/`);
-            setMapReports(prevReports => 
+            setMapReports(prevReports =>
                 prevReports.filter(report => report.id !== selectedReport.id)
             );
             setIsModalOpenM3(false);
@@ -676,9 +677,9 @@ function Operator() {
             <h2 className="welcome-operator">Operator Dashboard</h2>
             {isAuthorized && !isEditingMap && (
                 <div className="button-container">
-                    <button className="Opbutton" onClick={() => { setShowParkingMaps(true); setShowCreateMap(false); setShowProfile(false);setShowReports(false); }}>Show Parking Spot Maps</button>
-                    <button className="Opbutton" onClick={() => { setShowParkingMaps(false); setShowCreateMap(true); setShowProfile(false); setError(null); setSuccess(null);setShowReports(false); }}>Create Parking Spot Map</button>
-                    <button className="Opbutton" onClick={() => { setShowParkingMaps(false); setShowCreateMap(false); setShowProfile(true); setMessage(""); setIsEditing(false);setShowReports(false); }}>Show Profile Details</button>
+                    <button className="Opbutton" onClick={() => { setShowParkingMaps(true); setShowCreateMap(false); setShowProfile(false); setShowReports(false); }}>Show Parking Spot Maps</button>
+                    <button className="Opbutton" onClick={() => { setShowParkingMaps(false); setShowCreateMap(true); setShowProfile(false); setError(null); setSuccess(null); setShowReports(false); }}>Create Parking Spot Map</button>
+                    <button className="Opbutton" onClick={() => { setShowParkingMaps(false); setShowCreateMap(false); setShowProfile(true); setMessage(""); setIsEditing(false); setShowReports(false); }}>Show Profile Details</button>
                 </div>
             )}
             {loadingt && <LoadingIndicator />}
@@ -772,16 +773,16 @@ function Operator() {
 
             {isAuthorized && showProfile && (
                 <div className="card">
-                    <br/>
+                    <br />
                     <h2 className="proffontb">Profile</h2>
-                    
+
                     <h4 className="proffont">Oragnization: {OPName}</h4>
 
-                    
+
 
                     <h4 className="proffont">Email: {OPEmail}</h4>
 
-                    
+
 
                     <h4 className="proffont">
                         Phone Number:{" "}
@@ -798,11 +799,11 @@ function Operator() {
                             {isEditing ? "Save" : "Edit"}
                         </button>
                     </h4>
-                    {message && <p>{message}</p>} 
+                    {message && <p>{message}</p>}
                     {loadingP && <LoadingIndicator />}
-                    
+
                     {/* Display success or failure message */}
-                    
+
 
                 </div>
             )}
@@ -837,7 +838,7 @@ function Operator() {
                                 )}
                             </tbody>
                         </table>
-                        <div 
+                        <div
                             className={`tooltip-container ${showTooltip ? 'expanded' : ''}`}
                             onClick={() => setShowTooltip(!showTooltip)}
                         >
@@ -851,51 +852,52 @@ function Operator() {
             )}
 
             {showReports && !isModalOpenM3 && (
-                <div className="reports-container">
+                <>
                     <button className="back-button" onClick={() => {
                         setShowReports(false);
                         setShowParkingMaps(true);
                     }}>
                         Back to Maps
                     </button>
-                    <h2>Map Issues</h2>
-                    {mapReports.length > 0 ? (
-                        <div className="reports-list">
-                            {mapReports.map(report => (
-                                <div key={report.id} className="report-item">
-                                    <div className="report-header">
-                                        <p 
-                                            className="report-text"
-                                            style={{
-                                                fontSize: report.font_size,
-                                                fontFamily: report.font_family,
-                                                textAlign: report.text_align,
-                                                fontWeight: report.font_weight,
-                                                fontStyle: report.font_style
-                                            }}
-                                        >
-                                            {report.text}
-                                        </p>
-                                        <button 
-                                            className="delete-report-btn"
-                                            onClick={() => {
-                                                setSelectedReport(report);
-                                                setIsModalOpenM3(true);
-                                            }}
-                                        >
-                                            ×
-                                        </button>
+                    <div className="reports-container">
+                        <h2>Map Issues</h2>
+                        {mapReports.length > 0 ? (
+                            <div className="reports-list">
+                                {mapReports.map(report => (
+                                    <div key={report.id} className="report-item">
+                                        <div className="report-header">
+                                            <p
+                                                className="report-text"
+                                                style={{
+                                                    fontSize: report.font_size,
+                                                    fontFamily: report.font_family,
+                                                    textAlign: report.text_align,
+                                                    fontWeight: report.font_weight,
+                                                    fontStyle: report.font_style
+                                                }}
+                                            >
+                                                {report.text}
+                                            </p>
+                                            <button
+                                                className="delete-report-btn"
+                                                onClick={() => {
+                                                    setSelectedReport(report);
+                                                    setIsModalOpenM3(true);
+                                                }}
+                                            >
+                                                ×
+                                            </button>
+                                        </div>
+                                        <small className="report-date">
+                                            {new Date(report.created_at).toLocaleString()}
+                                        </small>
                                     </div>
-                                    <small className="report-date">
-                                        {new Date(report.created_at).toLocaleString()}
-                                    </small>
-                                </div>
-                            ))}
-                        </div>
-                    ) : (<div><br/>
-                        <h2>No reports found for this map.</h2>
-                    </div>)}
-                </div>
+                                ))}
+                            </div>
+                        ) : (<div><br />
+                            <h2>No reports found for this map.</h2>
+                        </div>)}
+                    </div> </>
             )}
 
             <Confmodal3
@@ -916,15 +918,15 @@ function Operator() {
                 </div>
             )}
             <Confmodal2
-        isOpen={isModalOpenM}
-        onClose={() => {
-          setIsModalOpenM(false);
-          setShowParkingMaps(true); // Show the table again if modal is closed
-        }}
-        onConfirm={handleConfirmM}
-        mapDetails={currentMap}
-        actionType={actionTypeM} // Pass the action type to the modal
-      />
+                isOpen={isModalOpenM}
+                onClose={() => {
+                    setIsModalOpenM(false);
+                    setShowParkingMaps(true); // Show the table again if modal is closed
+                }}
+                onConfirm={handleConfirmM}
+                mapDetails={currentMap}
+                actionType={actionTypeM} // Pass the action type to the modal
+            />
         </div>
     );
 }
